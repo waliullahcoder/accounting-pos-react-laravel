@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { logout } from '../features/auth/authSlice';
+import { logout } from '../store';
 
 const Logout = () => {
   const dispatch = useDispatch();

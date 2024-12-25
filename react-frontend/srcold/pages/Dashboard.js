@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import LogoutButton from '../components/Button/LogoutButton';
+import LogoutButton from './LogoutButton';
 
 const Dashboard = () => {
   const isSuperAdmin = useSelector((state) => state.auth.isSuperAdmin);
