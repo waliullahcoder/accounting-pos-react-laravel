@@ -1,0 +1,71 @@
+	src/
+	├── api/                     # API-related files (Axios setup, API call functions, etc.)
+	│   ├── axiosInstance.js     # Axios base instance setup
+	│   ├── endpoints.js         # API endpoints/constants
+	│   └── authApi.js           # Example API file for authentication
+	│
+	├── app/                     # Redux store setup and global configurations
+	│   ├── store.js             # Redux store configuration
+	│   ├── rootReducer.js       # Combine all reducers
+	│   └── middleware/          # Custom middleware (if needed)
+	│       └── logger.js        # Example middleware for logging actions
+	│
+	├── assets/                  # Static assets like images, fonts, and styles
+	│   ├── images/              # Images
+	│   ├── fonts/               # Fonts
+	│   └── styles/              # Global styles
+	│       ├── variables.scss   # SCSS variables
+	│       └── global.scss      # Global SCSS styles
+	│
+	├── components/              # Reusable components
+	│   ├── Button/              # Example component (folder per component)
+	│   │   ├── Button.jsx       
+	│   │   ├── Button.test.js   # Unit tests
+	│   │   └── Button.module.scss # Scoped styles for the component
+	│   ├── Header/
+	│   └── Footer/
+	│
+	├── features/                # Redux slices for specific features or domains
+	│   ├── auth/                # Example feature for authentication
+	│   │   ├── authSlice.js     # Redux slice
+	│   │   ├── authSelectors.js # Selectors for this slice
+	│   │   ├── authActions.js   # Actions (if not using `createSlice`)
+	│   │   └── authThunks.js    # Thunks for async actions
+	│   ├── cart/
+	│   └── user/
+	│
+	├── hooks/                   # Custom hooks
+	│   ├── useAuth.js           # Example custom hook for authentication
+	│   └── useDebounce.js       # Example custom hook for debouncing
+	│
+	├── layouts/                 # Layout components
+	│   ├── MainLayout.jsx       # Main layout
+	│   ├── AdminLayout.jsx      # Admin dashboard layout
+	│   └── AuthLayout.jsx       # Layout for auth-related pages
+	│
+	├── pages/                   # Page components (screens)
+	│   ├── Home/                # Home page
+	│   │   ├── Home.jsx
+	│   │   ├── Home.module.scss
+	│   │   └── Home.test.js
+	│   ├── About/
+	│   ├── Dashboard/
+	│   └── NotFound/            # 404 page
+	│
+	├── routes/                  # App routing
+	│   ├── AppRouter.jsx        # Main router configuration
+	│   └── routesConfig.js      # Routes and route metadata
+	│
+	├── services/                # Business logic, utilities, or external services
+	│   ├── authService.js       # Example service for authentication logic
+	│   ├── storageService.js    # Example service for localStorage/sessionStorage
+	│   └── apiService.js        # Service to call APIs
+	│
+	├── utils/                   # Utility functions and helpers
+	│   ├── constants.js         # App-wide constants
+	│   ├── helpers.js           # Generic helper functions
+	│   └── validators.js        # Form or input validation logic
+	│
+	├── index.js                 # App entry point
+	├── App.js                   # Root component
+	└── app.css                  # Global styles (if not using SCSS)
