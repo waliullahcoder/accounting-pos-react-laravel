@@ -3,12 +3,14 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import store from './app/store/configureStore';
 import AppRoutes from './routes/AppRoutes';
-
+import { MaterialTailwindControllerProvider } from "./context/index"; 
 const App = () => (
   <Provider store={store}>
-    <BrowserRouter>
+     <BrowserRouter>
+    <MaterialTailwindControllerProvider>
       <AppRoutes />
-    </BrowserRouter>
+    </MaterialTailwindControllerProvider>
+  </BrowserRouter>,
   </Provider>
 );
 

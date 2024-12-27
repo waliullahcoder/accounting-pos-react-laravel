@@ -1,11 +1,11 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
-import Login from '../pages/Login';
-import Dashboard from '../pages/Dashboard';
-import AdminDashboard from '../pages/AdminDashboard';
-import Logout from '../pages/Logout';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard";
+import AdminDashboard from "../pages/AdminDashboard";
+import Logout from "../pages/Logout";
 
 const AppRoutes = () => (
   <Routes>
@@ -28,11 +28,12 @@ const AppRoutes = () => (
     <Route
       path="/admin"
       element={
-        <PrivateRoute isAdmin>
+        <PrivateRoute isAdmin={true}>
           <AdminDashboard />
         </PrivateRoute>
       }
     />
+    {/* Allow /logout for both users and admins */}
     <Route
       path="/logout"
       element={
@@ -41,6 +42,7 @@ const AppRoutes = () => (
         </PrivateRoute>
       }
     />
+    {/* Redirect to /login for unmatched routes */}
     <Route path="*" element={<Navigate to="/login" />} />
   </Routes>
 );
