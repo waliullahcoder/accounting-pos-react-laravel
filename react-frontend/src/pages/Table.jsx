@@ -1,15 +1,15 @@
-import { Routes, Route } from "react-router-dom";
+
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
 import LogoutButton from "../components/Button/LogoutButton";
 import Tables from "../pages/dashboard/tables";
 import {
-  Sidenav,
   DashboardNavbar,
   Configurator,
   Footer,
+  AdminSidenav,
 } from "../widgets/layout/index";
-import routes from "../routes";
+import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 
 export function Table() {
@@ -18,8 +18,8 @@ export function Table() {
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
-      <Sidenav
-        routes={routes}
+      <AdminSidenav
+        routes={AdminMenuData}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
@@ -39,15 +39,6 @@ export function Table() {
         </IconButton>
         <LogoutButton/>
         <Tables/>
-        <Routes>
-          {routes.map(
-            ({ layout, pages }) =>
-              layout === "dashboard" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )}
-        </Routes>
         <div className="text-blue-gray-600">
           <Footer />
         </div>
@@ -56,6 +47,5 @@ export function Table() {
   );
 }
 
-//AdminDashboard.displayName = "/src/layout/dashboard.jsx";
 
 export default Table;

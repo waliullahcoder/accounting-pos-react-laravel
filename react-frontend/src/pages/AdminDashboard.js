@@ -1,4 +1,3 @@
-import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
 import Home from "../pages/dashboard/home"; 
@@ -8,7 +7,7 @@ import {
   Configurator,
   Footer,
 } from "../widgets/layout/index";
-import routes from "../routes";
+import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 
 export function AdminDashboard() {
@@ -20,7 +19,7 @@ export function AdminDashboard() {
       
       
       <AdminSidenav
-        routes={routes}
+        routes={AdminMenuData}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
@@ -39,15 +38,6 @@ export function AdminDashboard() {
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
         <Home/>
-        <Routes>
-          {routes.map(
-            ({ layout, pages }) =>
-              layout === "dashboard" &&
-              pages.map(({ path, element }) => (
-                <Route exact path={path} element={element} />
-              ))
-          )}
-        </Routes>
         <div className="text-blue-gray-600">
           <Footer />
         </div>
@@ -55,7 +45,5 @@ export function AdminDashboard() {
     </div>
   );
 }
-
-//AdminDashboard.displayName = "/src/layout/dashboard.jsx";
 
 export default AdminDashboard;
