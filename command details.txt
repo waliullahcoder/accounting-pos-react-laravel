@@ -1,0 +1,53 @@
+node
+==========================
+npm install
+npm install --save-dev nodemon jest
+
+npm run dev
+node server.js
+-------------------------
+In Node.js, instead of Laravel's migration system, you would typically use a migration tool or package for managing database schema changes. Some common tools include:
+
+    Sequelize (ORM): Sequelize is a popular ORM for Node.js that comes with built-in support for migrations. You can use Sequelize to create, apply, and revert migrations.
+    Install Sequelize CLI:
+
+    #npm install sequelize sequelize-cli
+
+To create a migration:
+
+    #npx sequelize-cli migration:generate --name create-users-table
+
+To run migrations:
+
+    #npx sequelize-cli db:migrate
+
+Knex.js (Query Builder): Knex.js is a SQL query builder for Node.js that also supports migrations. You can use Knex's migration commands to manage your database schema.
+
+    Install Knex:
+
+    #npm install knex
+
+To create a migration:
+
+    #npx knex migrate:make create_users_table
+
+To run migrations:
+
+    #npx knex migrate:latest
+
+TypeORM (ORM for TypeScript/JavaScript): TypeORM supports migrations for both TypeScript and JavaScript projects. It’s often used with TypeScript for more structured applications.
+
+    Install TypeORM and its CLI:
+
+    #npm install typeorm
+
+To generate and run migrations:
+
+    #npx typeorm migration:generate -n CreateUsersTable
+    #npx typeorm migration:run
+
+These tools are the closest equivalents to Laravel's migration system, helping you manage schema changes in your Node.js applications.
+-------------------
+
+React
+========================

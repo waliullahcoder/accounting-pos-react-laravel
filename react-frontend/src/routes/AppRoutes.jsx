@@ -5,7 +5,8 @@ import PublicRoute from "./PublicRoute";
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import AdminDashboard from "../pages/AdminDashboard";
-import Logout from "../pages/Logout";
+import Table from "../pages/Table";
+// import Logout from "../pages/Logout";
 
 const AppRoutes = () => (
   <Routes>
@@ -33,15 +34,23 @@ const AppRoutes = () => (
         </PrivateRoute>
       }
     />
+     <Route
+      path="/admin/table"
+      element={
+        <PrivateRoute isAdmin={true}>
+          <Table />
+        </PrivateRoute>
+      }
+    />
     {/* Allow /logout for both users and admins */}
-    <Route
+    {/* <Route
       path="/logout"
       element={
         <PrivateRoute>
           <Logout />
         </PrivateRoute>
       }
-    />
+    /> */}
     {/* Redirect to /login for unmatched routes */}
     <Route path="*" element={<Navigate to="/login" />} />
   </Routes>

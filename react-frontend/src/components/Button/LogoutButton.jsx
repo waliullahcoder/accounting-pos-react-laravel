@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { logoutauthapi } from '../../api/axiosInstance'; // Import the logoutauthapi method
 import { logout } from "../../features/auth/authSlice";
 
 const LogoutButton = () => {
@@ -12,15 +12,8 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       if (token) {
-        await axios.post(
-          "http://localhost:8000/api/auth/logout",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        // Use the logoutauthapi method
+        await logoutauthapi(token);
         dispatch(logout()); // Clear Redux state
         localStorage.removeItem("token"); // Clear local storage
         navigate("/login", { replace: true }); // Redirect to login page
@@ -42,4 +35,3 @@ const LogoutButton = () => {
 };
 
 export default LogoutButton;
-

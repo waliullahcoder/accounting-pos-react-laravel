@@ -1,0 +1,55 @@
+	my-laravel-app/
+	├── app/
+	│   ├── Console/                  # Artisan commands
+	│   ├── Exceptions/               # Custom exceptions
+	│   ├── Http/
+	│   │   ├── Controllers/          # Controllers for HTTP requests
+	│   │   ├── Middleware/           # HTTP middleware (authentication, logging, etc.)
+	│   │   ├── Requests/             # Form requests for validation
+	│   │   └── Resources/            # JSON API resources, response formatting
+	│   ├── Jobs/                     # Jobs for queues and background processing
+	│   ├── Listeners/                # Event listeners
+	│   ├── Mail/                     # Mailable classes for email
+	│   ├── Models/                   # Eloquent models
+	│   ├── Notifications/            # Notification classes
+	│   ├── Policies/                 # Authorization policies
+	│   ├── Providers/                # Service providers
+	│   ├── Repositories/             # Data layer (implementing repository pattern)
+	│   ├── Rules/                    # Custom validation rules
+	│   └── Services/                 # Service classes (business logic)
+	├── bootstrap/
+	│   └── cache/                    # Cache for Laravel services
+	├── config/                       # Configuration files (database, queues, mail, etc.)
+	├── database/
+	│   ├── factories/                # Model factories for testing
+	│   ├── migrations/               # Database migration files
+	│   ├── seeds/                    # Database seeders
+	│   └── SQL/                      # SQL dump files (if any)
+	├── public/                        # Publicly accessible files (e.g., index.php, assets)
+	│   ├── assets/                   # Frontend assets (compiled CSS, JS)
+	│   ├── images/                   # Image files (for public access)
+	├── resources/
+	│   ├── lang/                     # Language files for localization
+	│   ├── views/                    # Blade templates for frontend
+	│   └── sass/                     # Sass files (if using Laravel Mix)
+	├── routes/                       # Route files
+	│   ├── api.php                   # API routes
+	│   ├── channels.php              # Broadcasting channels
+	│   ├── console.php               # Artisan console commands routes
+	│   ├── web.php                   # Web routes
+	├── storage/
+	│   ├── app/                      # Application data (uploads, logs, etc.)
+	│   ├── framework/                # Laravel framework files (cache, sessions, etc.)
+	│   └── logs/                     # Application log files
+	├── tests/                        # Tests for the application
+	│   ├── Feature/                  # Feature tests (HTTP, database, etc.)
+	│   └── Unit/                     # Unit tests (individual components, services)
+	├── .env                          # Environment configuration
+	├── .gitignore                    # Git ignore file
+	├── composer.json                 # Composer dependencies
+	├── composer.lock                 # Lock file for Composer dependencies
+	├── package.json                  # NPM dependencies (if using frontend tools like Laravel Mix)
+	├── phpunit.xml                   # PHPUnit configuration
+	├── README.md                     # Project documentation
+	├── artisan                       # Laravel command-line interface
+	└── server.php                    # Entry point for the application (usually not modified)

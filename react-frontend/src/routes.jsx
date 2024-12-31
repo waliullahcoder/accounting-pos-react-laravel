@@ -9,6 +9,8 @@ import {
 import { Home, Profile, Tables, Notifications } from "./pages/dashboard/index";
 import { SignIn, SignUp } from "./pages/auth/index";
 import LogoutButton from "./components/Button/LogoutButton";
+import Table from "./pages/Table";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -16,13 +18,13 @@ const icon = {
 
 export const routes = [
   {
-    layout: "dashboard",
+    layout: "admin",
     pages: [
       {
         icon: <HomeIcon {...icon} />,
-        name: "dashboard",
-        path: "/home",
-        element: <Home />,
+        name: "Admin Dashboard",
+        path: "",
+        element: <AdminDashboard />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
@@ -32,9 +34,9 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
+        name: "table",
+        path: "/table",
+        element: <Table />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -59,8 +61,15 @@ export const routes = [
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        icon: <RectangleStackIcon {...icon} />,
+        name: "Logout",
+        path: "/logout",
+        element: <LogoutButton />,
       }
     ],
+    
   },
 ];
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/auth/authSlice'; // Import login action from store
-import axios from 'axios';
+//import axios from 'axios';
+import { loginauthapi } from '../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {  Card,
@@ -17,13 +18,10 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+    //const loginapi='http://localhost:8000/api/auth/login';
+    //const loginapi='http://localhost:5000/api/auth/login';
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', {
-        email,
-        password,
-      });
-
+      const response = await loginauthapi(email, password); 
       const { access_token, is_superadmin } = response.data;
 
       // Save token in localStorage to persist login

@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
-import LogoutButton from "../components/Button/LogoutButton";
+import Home from "../pages/dashboard/home"; 
 import {
-  Sidenav,
+  AdminSidenav,
   DashboardNavbar,
   Configurator,
   Footer,
@@ -17,7 +17,9 @@ export function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
-      <Sidenav
+      
+      
+      <AdminSidenav
         routes={routes}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
@@ -36,7 +38,7 @@ export function AdminDashboard() {
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
-        <LogoutButton/>
+        <Home/>
         <Routes>
           {routes.map(
             ({ layout, pages }) =>

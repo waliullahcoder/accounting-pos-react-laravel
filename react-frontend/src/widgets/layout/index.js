@@ -1,3 +1,4 @@
+export * from "./AdminSidenav";
 export * from "./sidenav";
 export * from "./dashboard-navbar";
 export * from "./configurator";

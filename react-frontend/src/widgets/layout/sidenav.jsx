@@ -17,7 +17,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
-
+  
+ 
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -106,6 +107,6 @@ Sidenav.propTypes = {
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-Sidenav.displayName = "/src/widgets/layout/sidnave.jsx";
+// Sidenav.displayName = "/src/widgets/layout/sidnave.jsx";
 
 export default Sidenav;
