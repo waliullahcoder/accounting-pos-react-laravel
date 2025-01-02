@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
-const PrivateRoute = ({ children, isAdmin = false }) => {
+const PrivateMiddleware = ({ children, isAdmin = false }) => {
   const { token, isSuperAdmin } = useSelector((state) => state.auth);
 
   const location = useLocation();
@@ -24,4 +24,4 @@ const PrivateRoute = ({ children, isAdmin = false }) => {
   return children;
 };
 
-export default PrivateRoute;
+export default PrivateMiddleware;

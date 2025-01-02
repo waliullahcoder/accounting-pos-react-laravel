@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Table from "../pages/Table";
+
+import {Table} from "../components/AdminComponents";
 import DashboardAnalytics from "../pages/DashboardAnalytics";
 import DashboardReporting from "../pages/DashboardReporting";
 import DashboardProjects from "../pages/DashboardProjects";

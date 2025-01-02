@@ -1,1 +1,0 @@
-// Button.test.js placeholder
