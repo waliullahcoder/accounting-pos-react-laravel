@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutauthapi } from '../../api/axiosInstance'; // Import the logoutauthapi method
+import { logoutauthapi } from '../../services/axiosInstance'; // Import the logoutauthapi method
 import { logout } from "../../features/auth/authSlice";
 
-const LogoutButton = () => {
+const Logout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
@@ -25,13 +25,12 @@ const LogoutButton = () => {
   };
 
   return (
-    <button
+    <p
       onClick={handleLogout}
-      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
     >
       Logout
-    </button>
+    </p>
   );
 };
 
-export default LogoutButton;
+export default Logout;

@@ -11,8 +11,9 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import * as Icons from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronRightIcon, ChevronDownIcon, PowerIcon } from "@heroicons/react/24/outline";
 import { useMaterialTailwindController } from "../../context/index";
+import Logout from "../../pages/auth/Logout";
 
 export function AdminSidenav() {
   const [controller] = useMaterialTailwindController();
@@ -95,7 +96,24 @@ export function AdminSidenav() {
             </ListItem>
           );
         })}
+
+      
+        <ListItem
+            variant="text"
+            color={sidenavType === "dark" ? "white" : "blue-gray"}
+            className="flex items-center gap-4 px-4 capitalize"
+            fullWidth
+          >
+          <PowerIcon style={{ height: "20px", width: "20px" }} />
+          <Typography
+             color="inherit"
+             className="font-medium capitalize"
+          ><Logout />
+          </Typography>
+            
+        </ListItem>
       </List>
+      
     </aside>
   );
 }

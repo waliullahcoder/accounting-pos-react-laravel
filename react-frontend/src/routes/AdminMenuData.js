@@ -1,4 +1,5 @@
 export const AdminMenuData = [
+  { title: "Admin Dashboard", icon: "HomeIcon", path: "/admin" },
     {
       title: "Admin",
       icon: "PresentationChartBarIcon",
@@ -17,8 +18,7 @@ export const AdminMenuData = [
         { title: "Products", path: "/ecommerce/products" },
       ],
     },
-    { title: "Inbox", icon: "InboxIcon", path: "/inbox" },
-    { title: "Profile", icon: "UserCircleIcon", path: "/profile" },
+   
     { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },
   ];
   

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import apis from './authApi';
+import apis from '../api/authApi';
 
 // Function to log in
 const loginauthapi = async (email, password) => {

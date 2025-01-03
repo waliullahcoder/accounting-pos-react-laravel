@@ -6,23 +6,23 @@ import {
   DashboardNavbar,
   Configurator,
   Footer,
-  AdminSidenav,
+  Sidenav,
 } from "../widgets/layout/index";
-import {AdminMenuData} from "../routes/AdminMenuData";
+import {UserMenuData} from "../routes/UserMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 
-export function Table() {
+export function UserTable() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
-      <AdminSidenav
-        routes={AdminMenuData}
-        brandImg={
-          sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
-        }
-      />
+       <Sidenav
+              routes={UserMenuData}
+              brandImg={
+                sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
+              }
+            />
       
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
@@ -46,4 +46,4 @@ export function Table() {
 }
 
 
-export default Table;
+export default UserTable;

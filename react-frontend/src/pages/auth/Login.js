@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/auth/authSlice'; // Import login action from store
+import { login } from '../../features/auth/authSlice'; // Import login action from store
 //import axios from 'axios';
-import { loginauthapi } from '../api/axiosInstance';
+import { loginauthapi } from '../../services/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {  Card,
