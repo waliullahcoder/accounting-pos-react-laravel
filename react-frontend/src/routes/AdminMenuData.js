@@ -18,6 +18,38 @@ export const AdminMenuData = [
         { title: "Products", path: "/ecommerce/products" },
       ],
     },
+    {
+      title: "E-Commerce",
+      icon: "ShoppingBagIcon",
+      subMenu: [
+        { title: "Orders", path: "/ecommerce/orders" },
+        { title: "Products", path: "/ecommerce/products" },
+      ],
+    },
+    {
+      title: "E-Commerce",
+      icon: "ShoppingBagIcon",
+      subMenu: [
+        { title: "Orders", path: "/ecommerce/orders" },
+        { title: "Products", path: "/ecommerce/products" },
+      ],
+    },
+    {
+      title: "E-Commerce",
+      icon: "ShoppingBagIcon",
+      subMenu: [
+        { title: "Orders", path: "/ecommerce/orders" },
+        { title: "Products", path: "/ecommerce/products" },
+      ],
+    },
+    {
+      title: "E-Commerce",
+      icon: "ShoppingBagIcon",
+      subMenu: [
+        { title: "Orders", path: "/ecommerce/orders" },
+        { title: "Products", path: "/ecommerce/products" },
+      ],
+    },
    
     { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },
   ];
