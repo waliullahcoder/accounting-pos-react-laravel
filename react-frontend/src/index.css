@@ -13,3 +13,9 @@
   .w-2\/5 {
     width: 30% !important;
   }
+  .p-3{
+    padding: 3px;
+  }
+  .pl-8{
+    padding-left: 0px;
+  }

@@ -1,24 +1,32 @@
 export const UserMenuData = [
     { title: "User Dashboard", icon: "HomeIcon", path: "/dashboard" },
+    { title: "Eample Table", icon: "PresentationChartBarIcon", path: "/dashboard/table" },
+      
       {
-        title: "Dashboard",
+        title: "Customer",
         icon: "PresentationChartBarIcon",
         subMenu: [
-          { title: "Table", path: "/dashboard/table" },
-          { title: "Analytics", path: "/dashboard/analytics" },
-          { title: "Reporting", path: "/dashboard/reporting" },
-          { title: "Projects", path: "/dashboard/projects" },
+          { title: "Create", path: "/customer/create" },
+          { title: "Manage", path: "/customer/manage" },
+          { title: "History", path: "/customer/history" },
         ],
       },
       {
-        title: "E-Commerce",
+        title: "Invoice",
         icon: "ShoppingBagIcon",
         subMenu: [
-          { title: "Orders", path: "/ecommerce/orders" },
-          { title: "Products", path: "/ecommerce/products" },
+          { title: "Create", path: "/invoice/create" },
+          { title: "Manage", path: "/invoice/manage" },
+          { title: "History", path: "/invoice/history" },
         ],
       },
-     
-      { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },
+      {
+        title: "Settings",
+        icon: "Cog6ToothIcon",
+        subMenu: [
+          { title: "Profile", path: "/settings/profile" },
+          { title: "Password", path: "/settings/password" },
+        ],
+      },
     ];
     

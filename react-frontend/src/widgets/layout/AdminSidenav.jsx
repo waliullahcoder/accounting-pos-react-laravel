@@ -10,10 +10,16 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import * as Icons from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon, PowerIcon } from "@heroicons/react/24/outline";
+import { 
+  ChevronRightIcon, 
+  ChevronDownIcon, 
+  PowerIcon
+} from "@heroicons/react/24/outline";
 import { useMaterialTailwindController } from "../../context/index";
 import Logout from "../../pages/auth/Logout";
+
+// Import all solid icons dynamically
+import * as Icons from "@heroicons/react/24/solid";
 
 export function AdminSidenav() {
   const [controller] = useMaterialTailwindController();
@@ -41,7 +47,12 @@ export function AdminSidenav() {
         <List className="flex-1">
           {AdminMenuData.map((menu, index) => {
             const Icon = Icons[menu.icon];
-  
+
+            if (!Icon) {
+              console.error(`Icon "${menu.icon}" not found in heroicons.`);
+              return null;
+            }
+
             return menu.subMenu ? (
               <Accordion
                 key={menu.title}
@@ -114,7 +125,6 @@ export function AdminSidenav() {
       </div>
     </aside>
   );
-  
 }
 
 export default AdminSidenav;
