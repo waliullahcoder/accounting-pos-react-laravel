@@ -3,5 +3,13 @@
 @tailwind utilities;
 
 .bg-custom {
-    background-image: url('./img/background-image.png');
+    background-image: url('./assets/img/background-image.png');
+  }
+
+.mt-24  {
+  margin-top: 0px !important;
+  }
+
+  .w-2\/5 {
+    width: 30% !important;
   }

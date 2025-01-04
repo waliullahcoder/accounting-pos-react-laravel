@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { PublicMiddleware } from "../app/middleware/indexMiddleware";
-import { Login } from "../components/PublicComponents";
+import { Login, SignUp } from "../components/PublicComponents";
 
 const PublicRoutes = [
   <Route
@@ -10,6 +10,15 @@ const PublicRoutes = [
     element={
       <PublicMiddleware>
         <Login />
+      </PublicMiddleware>
+    }
+  />,
+  <Route
+    key="signup"
+    path="/auth/sign-up"
+    element={
+      <PublicMiddleware>
+        <SignUp />
       </PublicMiddleware>
     }
   />,
