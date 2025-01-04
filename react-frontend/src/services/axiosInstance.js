@@ -12,15 +12,20 @@ const loginauthapi = async (email, password) => {
   }
 };
 // Register function
-const registerauthapi = async (email, password, username) => {
-    try {
-      const response = await axios.post(apis.registerapi, { email, password, username });
-      return response; // Return the full response
-    } catch (error) {
-      console.error("Register API Error:", error);
-      throw error;
-    }
-  };
+
+const registerauthapi = async ({ first_name, last_name, email, phone_number, zip_code, is_superadmin, password }) => {
+  try {
+    const password="password";
+    const response = await axios.post(apis.registerapi, {
+      first_name, last_name, email, phone_number, zip_code, is_superadmin, password
+    });
+    return response; // Return the full response
+  } catch (error) {
+    console.error("Register API Error:", error.message);
+    throw error; // Rethrow the error for handling in calling code
+  }
+};
+
   
   // Logout function
   const logoutauthapi = async (token) => {
