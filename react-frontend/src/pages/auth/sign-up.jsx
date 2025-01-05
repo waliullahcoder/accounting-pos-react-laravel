@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { register } from "../../features/auth/registerSlice";
+import { register } from "../../slices/auth/registerSlice";
 import {
   Input,
   Checkbox,

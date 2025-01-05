@@ -5,7 +5,6 @@ import {
   IconButton,
   Switch,
   Typography,
-  Chip,
 } from "@material-tailwind/react";
 import {
   useMaterialTailwindController,
@@ -15,36 +14,36 @@ import {
   setFixedNavbar,
 } from "../../context/index";
 
-function formatNumber(number, decPlaces) {
-  decPlaces = Math.pow(10, decPlaces);
+// function formatNumber(number, decPlaces) {
+//   decPlaces = Math.pow(10, decPlaces);
 
-  const abbrev = ["K", "M", "B", "T"];
+//   const abbrev = ["K", "M", "B", "T"];
 
-  for (let i = abbrev.length - 1; i >= 0; i--) {
-    var size = Math.pow(10, (i + 1) * 3);
+//   for (let i = abbrev.length - 1; i >= 0; i--) {
+//     var size = Math.pow(10, (i + 1) * 3);
 
-    if (size <= number) {
-      number = Math.round((number * decPlaces) / size) / decPlaces;
+//     if (size <= number) {
+//       number = Math.round((number * decPlaces) / size) / decPlaces;
 
-      if (number == 1000 && i < abbrev.length - 1) {
-        number = 1;
-        i++;
-      }
+//       if (number === 1000 && i < abbrev.length - 1) {
+//         number = 1;
+//         i++;
+//       }
 
-      number += abbrev[i];
+//       number += abbrev[i];
 
-      break;
-    }
-  }
+//       break;
+//     }
+//   }
 
-  return number;
-}
+//   return number;
+// }
 
 export function Configurator() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } =
     controller;
-  const [stars, setStars] = React.useState(0);
+  // const [stars, setStars] = React.useState(0);
 
   const sidenavColors = {
     white: "from-gray-100 to-gray-100 border-gray-200",
@@ -55,13 +54,13 @@ export function Configurator() {
     pink: "from-pink-400 to-pink-600",
   };
 
-  React.useEffect(() => {
-    const stars = fetch(
-      "https://api.github.com/repos/creativetimofficial/material-tailwind-dashboard-react"
-    )
-      .then((response) => response.json())
-      .then((data) => setStars(formatNumber(data.stargazers_count, 1)));
-  }, []);
+  // React.useEffect(() => {
+  //   const stars = fetch(
+  //     "https://api.github.com/repos/creativetimofficial/material-tailwind-dashboard-react"
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => setStars(formatNumber(data.stargazers_count, 1)));
+  // }, []);
 
   return (
     <aside
@@ -178,7 +177,7 @@ export function Configurator() {
             target="_blank"
             rel="noreferrer"
           >
-            <Chip
+            {/* <Chip
               value={`${stars} - Stars`}
               icon={
                 <svg
@@ -195,7 +194,7 @@ export function Configurator() {
                 </svg>
               }
               className="bg-blue-gray-900 px-4"
-            />
+            /> */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

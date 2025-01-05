@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutauthapi } from '../../services/axiosInstance'; // Import the logoutauthapi method
-import { logout } from "../../features/auth/authSlice";
+import { logout } from "../../slices/auth/authSlice";
 
 const Logout = () => {
   const dispatch = useDispatch();
