@@ -2,6 +2,8 @@ node
 ==========================
 npm install
 npm install --save-dev nodemon jest
+npm install knex
+npx knex migrate:latest --knexfile ./src/config/knexfile.js
 
 npm run dev
 node server.js
@@ -52,3 +54,17 @@ These tools are the closest equivalents to Laravel's migration system, helping y
 React
 ========================
 npm install react-select
+
+
+
+Laravel
+==================
+Usage: php artisan migrate:refresh 
+Purpose: Resets the database to a clean slate, making it ideal for development and testing 
+
+Here are some other related commands: 
+
+    migrate:fresh: Drops all tables from the database and then executes the migrate command
+    migrate:refresh --seed: Refreshes the database and runs all database seeds
+    migrate:refresh --step=5: Rolls back and re-migrates the last five migrations
+    migrate:fresh --database=admin: Drops all database tables from the specified database connection
