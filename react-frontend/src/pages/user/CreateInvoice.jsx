@@ -11,24 +11,30 @@ import {
   setTax,
   setSelectedProduct,
   setQuantity,
-} from '../../slices/invoiceSlice';
+} from "../../slices/invoiceSlice";
 
 const CreateInvoice = () => {
   const dispatch = useDispatch();
-  const { products, customer, discount, tax, selectedProduct, quantity } = useSelector((state) => state.invoice);
+
+  // Extracting state from Redux
+  const { products, customer, discount, tax, selectedProduct, quantity } = useSelector(
+    (state) => state.invoice
+  );
+
+  // Customer and Product Lists
+  const customerList = [
+    { id: 1, name: "Customer 1" },
+    { id: 2, name: "Customer 2" },
+    { id: 3, name: "Customer 3" },
+  ];
 
   const productList = [
-    { id: 1, name: 'Product 1', price: 100 },
-    { id: 2, name: 'Product 2', price: 200 },
-    { id: 3, name: 'Product 3', price: 300 },
+    { id: 1, name: "Product 1", price: 100 },
+    { id: 2, name: "Product 2", price: 200 },
+    { id: 3, name: "Product 3", price: 300 },
   ];
 
-  const customerList = [
-    { id: 1, name: 'Customer 1' },
-    { id: 2, name: 'Customer 2' },
-    { id: 3, name: 'Customer 3' },
-  ];
-
+  // Add Product Handler
   const handleAddProduct = () => {
     const product = productList.find((prod) => prod.id === selectedProduct?.value);
     if (product) {
@@ -36,14 +42,17 @@ const CreateInvoice = () => {
     }
   };
 
+  // Remove Product Handler
   const handleRemoveProduct = (id) => {
     dispatch(removeProduct(id));
   };
 
+  // Quantity Change Handler
   const handleQuantityChange = (id, increment) => {
     dispatch(updateQuantity({ id, increment }));
   };
 
+  // Calculate Totals
   const calculateTotals = () => {
     const subTotal = products.reduce((acc, product) => acc + product.total, 0);
     const discountAmount = (discount / 100) * subTotal;
@@ -57,14 +66,19 @@ const CreateInvoice = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-4 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold mb-4">Invoice</h1>
+      <h1 className="text-2xl font-bold mb-4">Create Invoice</h1>
 
       {/* Customer Selection */}
       <div className="mb-4">
         <Select
           placeholder="Select Customer"
-          options={customerList.map((cust) => ({ value: cust.id, label: cust.name }))}
-          value={customerList.find((cust) => cust.id === customer) || null}
+          options={customerList.map((cust) => ({
+            value: cust.id,
+            label: cust.name,
+          }))}
+          value={customerList
+            .map((cust) => ({ value: cust.id, label: cust.name }))
+            .find((option) => option.value === customer) || null}
           onChange={(selectedOption) => dispatch(setCustomer(selectedOption.value))}
         />
       </div>
@@ -74,8 +88,13 @@ const CreateInvoice = () => {
         <div className="w-1/2">
           <Select
             placeholder="Select Product"
-            options={productList.map((prod) => ({ value: prod.id, label: prod.name }))}
-            value={productList.find((prod) => prod.id === selectedProduct?.value) || null}
+            options={productList.map((prod) => ({
+              value: prod.id,
+              label: prod.name,
+            }))}
+            value={productList
+              .map((prod) => ({ value: prod.id, label: prod.name }))
+              .find((option) => option.value === selectedProduct?.value) || null}
             onChange={(selectedOption) => dispatch(setSelectedProduct(selectedOption))}
           />
         </div>
@@ -83,7 +102,7 @@ const CreateInvoice = () => {
           <Input
             label="Quantity"
             type="number"
-            value={quantity || ''}
+            value={quantity || ""}
             onChange={(e) => dispatch(setQuantity(Number(e.target.value)))}
           />
         </div>
@@ -94,7 +113,7 @@ const CreateInvoice = () => {
 
       {/* Product List Table */}
       <div className="mb-4">
-        <table className="w-full table-auto">
+        <table className="w-full table-auto border">
           <thead>
             <tr>
               <th>Product</th>
@@ -130,7 +149,7 @@ const CreateInvoice = () => {
         </table>
       </div>
 
-      {/* Discount and Tax */}
+      {/* Discount and Tax Inputs */}
       <div className="flex space-x-4 mb-4">
         <div className="w-1/2">
           <Input
