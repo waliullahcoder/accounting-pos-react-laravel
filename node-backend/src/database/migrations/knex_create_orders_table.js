@@ -5,10 +5,14 @@
 exports.up = function (knex) {
     return knex.schema.createTable('orders', function (table) {
       table.increments('id').primary(); // Auto-incrementing ID
-      table.string('order_number').nullable(); // Nullable order number
-      table.bigInteger('customer_id').unsigned().nullable(); // Unsigned big integer for customer ID
-      table.float('price', 8, 2).nullable(); // Nullable price with two decimal places
-      table.integer('quantity').nullable(); // Nullable quantity
+      table.bigInteger('customer_id').unsigned(); 
+      table.bigInteger('total_quantity');
+      table.float('total_amount', 8, 2);
+      table.integer('discount_persantage');
+      table.float('discount_amount', 8, 2);
+      table.integer('tax_persantage');
+      table.float('tax_amount', 8, 2);
+      table.float('net_amount', 8, 2);
       table.timestamps(true, true); // Created and updated timestamps
     });
   };

@@ -5,12 +5,12 @@ const dbConfig = require('../config').dbConfig;
 const pool = mysql.createPool(dbConfig);
 
 // Create Customer
-const createCustomer = async ({ first_name, last_name, phone_number, email, zip_code }) => {
+const createCustomer = async ({ first_name, last_name, address, phone_number, email, zip_code }) => {
   const [result] = await pool.query(
-    'INSERT INTO customers (first_name, last_name, phone_number, email, zip_code) VALUES (?, ?, ?, ?, ?)',
-    [first_name, last_name, phone_number, email, zip_code]
+    'INSERT INTO customers (first_name, last_name, address, phone_number, email, zip_code) VALUES (?, ?, ?, ?, ?, ?)',
+    [first_name, last_name, address, phone_number, email, zip_code]
   );
-  return { id: result.insertId, first_name, last_name, phone_number, email, zip_code };
+  return { id: result.insertId, first_name, last_name, address, phone_number, email, zip_code };
 };
 
 // List Customers
@@ -26,17 +26,17 @@ const getCustomerById = async (id) => {
 };
 
 // Update Customer
-const updateCustomer = async (id, { first_name, last_name, phone_number, email, zip_code }) => {
+const updateCustomer = async (id, { first_name, last_name, address, phone_number, email, zip_code }) => {
   const [result] = await pool.query(
-    'UPDATE customers SET first_name = ?, last_name = ?, phone_number = ?, email = ?, zip_code = ? WHERE id = ?',
-    [first_name, last_name, phone_number, email, zip_code, id]
+    'UPDATE customers SET first_name = ?, last_name = ?, address = ?,phone_number = ?, email = ?, zip_code = ? WHERE id = ?',
+    [first_name, last_name, address, phone_number, email, zip_code, id]
   );
 
   if (result.affectedRows === 0) {
     return null;
   }
 
-  return { id, first_name, last_name, phone_number, email, zip_code };
+  return { id, first_name, last_name, address, phone_number, email, zip_code };
 };
 
 // Delete Customer

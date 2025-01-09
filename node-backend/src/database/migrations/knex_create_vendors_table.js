@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-    return knex.schema.createTable('customers', function (table) {
+    return knex.schema.createTable('vendors', function (table) {
       table.increments('id').primary(); // Auto-incrementing ID
       table.string('first_name').nullable(); // Nullable first name
       table.string('last_name').nullable(); // Nullable last name
@@ -20,6 +20,6 @@ exports.up = function (knex) {
    * @returns { Promise<void> }
    */
   exports.down = function (knex) {
-    return knex.schema.dropTableIfExists('customers'); // Drop the customers table
+    return knex.schema.dropTableIfExists('vendors'); // Drop the customers table
   };
   
