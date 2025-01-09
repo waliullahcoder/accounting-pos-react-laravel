@@ -5,6 +5,7 @@ const fs = require('fs');
 const categoryController = require('../controllers/categoryController');
 const productController = require('../controllers/productController');
 const customerController = require('../controllers/customerController');
+const vendorController = require('../controllers/vendorController');
 
 const router = express.Router();
 
@@ -44,6 +45,13 @@ router.get('/customer/list', customerController.getCustomerList);
 router.put('/customer/edit/:id', customerController.editCustomer);
 router.put('/customer/update/:id', customerController.updateCustomer);
 router.delete('/customer/delete/:id', customerController.deleteCustomer);
+
+// Vendor Routes
+router.post('/vendor/add', vendorController.createVendor);
+router.get('/vendor/list', vendorController.getVendorList);
+router.put('/vendor/edit/:id', vendorController.editVendor);
+router.put('/vendor/update/:id', vendorController.updateVendor);
+router.delete('/vendor/delete/:id', vendorController.deleteVendor);
 
 
 module.exports = router;
