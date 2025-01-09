@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const categoryController = require('../controllers/categoryController');
 const productController = require('../controllers/productController');
+const customerController = require('../controllers/customerController');
 
 const router = express.Router();
 
@@ -37,6 +38,12 @@ router.put('/product/edit/:id', upload.single('image'), productController.editPr
 router.put('/product/update/:id', productController.updateProduct);
 router.delete('/product/delete/:id', productController.deleteProduct);
 
+// Customer Routes
+router.post('/customer/add', customerController.createCustomer);
+router.get('/customer/list', customerController.getCustomerList);
+router.put('/customer/edit/:id', customerController.editCustomer);
+router.put('/customer/update/:id', customerController.updateCustomer);
+router.delete('/customer/delete/:id', customerController.deleteCustomer);
 
 
 module.exports = router;
