@@ -7,7 +7,7 @@ export const UserMenuData = [
         icon: "PresentationChartBarIcon",
         subMenu: [
           { title: "Create", path: "/customer/create" },
-          { title: "Manage", path: "/customer/manage" },
+          { title: "Manage", path: "/customer/list" },
           { title: "History", path: "/customer/history" },
         ],
       },

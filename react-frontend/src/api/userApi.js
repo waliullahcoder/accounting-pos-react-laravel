@@ -3,13 +3,15 @@ const baseurl = 'http://localhost:5000'; //node apis
 
 // Define your API endpoints
 const createCustomerApi = `${baseurl}/api/customer/add`;
+const customerListApi = `${baseurl}/api/customer/list`;
 
 // Export as named exports
-export { createCustomerApi };
+export { createCustomerApi, customerListApi };
 
 // OR export them as a single object
 const userApi = {
-createCustomerApi
+createCustomerApi,
+customerListApi
 };
 
 export default userApi; // Default export with all APIs

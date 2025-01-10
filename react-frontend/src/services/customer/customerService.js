@@ -1,8 +1,7 @@
 import axios from 'axios';
 import userApi from '../../api/userApi';
 
-// Create function
-
+// Create Customer function
 const createCustomerApiAxios = async ({ first_name, last_name, address, email, phone_number, zip_code }) => {
   try {
     const response = await axios.post(userApi.createCustomerApi, {
@@ -15,6 +14,18 @@ const createCustomerApiAxios = async ({ first_name, last_name, address, email, p
   }
 };
 
+
+// Create Customer function
+const customerListApiAxios = async () => {
+    try {
+      const response = await axios.get(userApi.customerListApi); // Correct API endpoint
+      return response; // Return the full response
+    } catch (error) {
+      console.error("list Customer API Error:", error.message);
+      throw error; // Rethrow the error for handling in calling code
+    }
+  };
+  
   
   // Export all methods
-  export { createCustomerApiAxios };
+  export { createCustomerApiAxios, customerListApiAxios };

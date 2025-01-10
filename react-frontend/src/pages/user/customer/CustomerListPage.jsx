@@ -8,9 +8,9 @@ import {
 } from "../../../widgets/layout/index";
 import { UserMenuData } from "../../../routes/UserMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../../../context/index";
-import CreateCustomer from "../../user/customer/CreateCustomer";
+import CustomerList from "../../user/customer/CustomerList";
 
-export function CreateCustomerPage() { // Renamed function to avoid conflict
+export function CustomerListPage() { // Renamed function to avoid conflict
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
@@ -35,7 +35,7 @@ export function CreateCustomerPage() { // Renamed function to avoid conflict
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
-        <CreateCustomer /> 
+        <CustomerList/>
         <div className="text-blue-gray-600">
           <Footer />
         </div>
@@ -44,4 +44,4 @@ export function CreateCustomerPage() { // Renamed function to avoid conflict
   );
 }
 
-export default CreateCustomerPage; // Export the renamed function
+export default CustomerListPage; // Export the renamed function

@@ -1,7 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userApi from '../../api/userApi';
-import { createCustomerApiAxios } from '../../services/customer/customerService';
+import { createCustomerApiAxios, customerListApiAxios } from '../../services/customer/customerService';
 // Async thunk for submitting customer data (simulating API call)
+
+
+
+
+
+
+
+//Create CUstomer Async thunk for submitting
 export const createCustomer = createAsyncThunk(
     userApi.createCustomerApi,
   async (customerData, { rejectWithValue }) => {
@@ -16,9 +24,27 @@ export const createCustomer = createAsyncThunk(
   }
 );
 
+
+//Customer list Async thunk for getting data
+export const fetchCustomers = createAsyncThunk(
+    userApi.customerListApi, // This is just the action type
+    async (_, { rejectWithValue }) => { // Add `_` as the first parameter for arguments
+      try {
+        const response = await customerListApiAxios();
+        return response.data;
+      } catch (error) {
+        const errorMessage =
+          error.response?.data || "Something went wrong. Please try again.";
+        return rejectWithValue(errorMessage);
+      }
+    }
+  );
+  
+
 const customerSlice = createSlice({
   name: 'customer',
   initialState: {
+    customers: [],
     customer: null,
     status: 'idle',
     error: null,
@@ -36,8 +62,20 @@ const customerSlice = createSlice({
       .addCase(createCustomer.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
+      })
+      .addCase(fetchCustomers.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCustomers.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.customers = action.payload; // Update customers array
+      })
+      .addCase(fetchCustomers.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       });
-  },
+  }
+  
 });
 
 export default customerSlice.reducer;
