@@ -5,8 +5,6 @@ exports.createOrderWithDetails = async (req, res) => {
   try {
     const { order, orderDetails } = req.body;
 
-    console.log("WALI ORDER",order,orderDetails,orderDetails.length);
-
     if (!order || !Array.isArray(orderDetails) || orderDetails.length === 0) {
       return res.status(400).json({ error: 'Invalid order or order details data' });
     }

@@ -50,6 +50,17 @@ const createOrderWithDetails = async (orderData, orderDetails) => {
 
     await connection.query(orderDetailsSql, [orderDetailsValues]);
 
+    // Update Product Quantities
+    for (const detail of orderDetails) {
+      const updateProductSql = `
+        UPDATE products 
+        SET quantity = quantity - ? 
+        WHERE id = ?
+      `;
+
+      await connection.query(updateProductSql, [detail.order_quantity, detail.product_id]);
+    }
+
     await connection.commit();
 
     return { orderId, ...orderData, orderDetails };
@@ -60,6 +71,7 @@ const createOrderWithDetails = async (orderData, orderDetails) => {
     connection.release();
   }
 };
+
 
 // Get Order by ID
 const getOrderById = async (id) => {

@@ -7,6 +7,7 @@ const productController = require('../controllers/productController');
 const customerController = require('../controllers/customerController');
 const vendorController = require('../controllers/vendorController');
 const orderController = require('../controllers/orderController');
+const purchaseOrderController = require('../controllers/purchaseOrderController');
 
 const router = express.Router();
 
@@ -59,5 +60,9 @@ router.post('/order/create', orderController.createOrderWithDetails);
 router.get('/order/show/:id', orderController.getOrderById);
 router.get('/order/list', orderController.listOrders);
 
+// Purchase Order routes
+router.post('/purchase/order/create', purchaseOrderController.createPurchaseOrderWithDetails);
+router.get('/purchase/order/show/:id', purchaseOrderController.getPurchaseOrderById);
+router.get('/purchase/order/list', purchaseOrderController.listPurchaseOrders);
 
 module.exports = router;
