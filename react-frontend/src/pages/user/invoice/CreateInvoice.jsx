@@ -11,7 +11,7 @@ import {
   setTax,
   setSelectedProduct,
   setQuantity,
-} from "../../slices/invoiceSlice";
+} from "../../../slices/invoice/invoiceSlice";
 
 const CreateInvoice = () => {
   const dispatch = useDispatch();

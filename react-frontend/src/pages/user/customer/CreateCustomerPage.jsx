@@ -5,12 +5,12 @@ import {
   Configurator,
   Footer,
   Sidenav,
-} from "../../widgets/layout/index";
-import { UserMenuData } from "../../routes/UserMenuData";
-import { useMaterialTailwindController, setOpenConfigurator } from "../../context/index";
- import CreateInvoice from "../../pages/user/CreateInvoice";
+} from "../../../widgets/layout/index";
+import { UserMenuData } from "../../../routes/UserMenuData";
+import { useMaterialTailwindController, setOpenConfigurator } from "../../../context/index";
+ import CreateCustomer from "../../user/customer/CreateCustomer";
 
-export function CreateInvoicePage() { // Renamed function to avoid conflict
+export function CreateCustomerPage() { // Renamed function to avoid conflict
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
@@ -35,7 +35,7 @@ export function CreateInvoicePage() { // Renamed function to avoid conflict
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
-        <CreateInvoice /> 
+        <CreateCustomer /> 
         <div className="text-blue-gray-600">
           <Footer />
         </div>
@@ -44,4 +44,4 @@ export function CreateInvoicePage() { // Renamed function to avoid conflict
   );
 }
 
-export default CreateInvoicePage; // Export the renamed function
+export default CreateCustomerPage; // Export the renamed function
