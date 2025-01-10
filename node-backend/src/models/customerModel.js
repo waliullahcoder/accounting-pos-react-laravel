@@ -15,9 +15,10 @@ const createCustomer = async ({ first_name, last_name, address, phone_number, em
 
 // List Customers
 const getCustomerList = async () => {
-  const [rows] = await pool.query('SELECT * FROM customers');
+  const [rows] = await pool.query('SELECT * FROM customers ORDER BY id DESC');
   return rows;
 };
+
 
 // Get Customer by ID
 const getCustomerById = async (id) => {

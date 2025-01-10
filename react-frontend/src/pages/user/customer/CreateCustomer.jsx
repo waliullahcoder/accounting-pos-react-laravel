@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input, Textarea } from "@material-tailwind/react"; // Import Material Tailwind components
+import { Button, Input, Textarea, CardHeader} from "@material-tailwind/react"; // Import Material Tailwind components
 import { createCustomer } from "../../../slices/customer/customerSlice";
+import { useNavigate } from "react-router-dom";
 
 const CreateCustomer = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { status, error } = useSelector((state) => state.customer);
 
   const [formData, setFormData] = useState({
@@ -17,6 +19,7 @@ const CreateCustomer = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   const validate = () => {
     const newErrors = {};
@@ -34,7 +37,11 @@ const CreateCustomer = () => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-      dispatch(createCustomer(formData));
+      dispatch(createCustomer(formData)).then((result) => {
+        if (result.meta.requestStatus === "fulfilled") {
+          setSuccessMessage("Customer created successfully!");
+        }
+      });
     } else {
       setErrors(validationErrors);
     }
@@ -44,6 +51,18 @@ const CreateCustomer = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const handleInsert = () => {
+    setSuccessMessage("Please wait.. going to listing Customer...");
+  };
+  useEffect(() => {
+    if (successMessage) {
+      const timeout = setTimeout(() => {
+        navigate("/customer/list");
+      }, 2000); // Redirect after 2 seconds
+      return () => clearTimeout(timeout);
+    }
+
+  }, [successMessage, navigate]);
 
   return (
     <form
@@ -51,8 +70,20 @@ const CreateCustomer = () => {
       className="w-full max-w-lg mx-auto p-5 bg-white rounded-md shadow-lg"
     >
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-        Create Customer
+        Create Customer or go to <Button color="green" onClick={handleInsert}>
+                     Customer List
+                  </Button>
+        
       </h2>
+      
+     
+          
+      {successMessage && (
+        <div className="bg-green-500 text-white text-center py-2 mb-4 rounded-md">
+          {successMessage}
+        </div>
+      )}
+
       <div className="mb-4">
         <Input
           label="First Name"
@@ -138,11 +169,9 @@ const CreateCustomer = () => {
         fullWidth
         disabled={status === "loading"}
       >
-        {status === "loading" ? "Submitting..." : "Create Customer"}
+        {status === "loading" ? "Submitting..." : "Save Customer"}
       </Button>
-      {error && (
-        <p className="text-red-500 text-center mt-4">{error}</p>
-      )}
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </form>
   );
 };
