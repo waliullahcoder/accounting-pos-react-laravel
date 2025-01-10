@@ -4,12 +4,12 @@ const dbConfig = require('../config').dbConfig;
 const pool = mysql.createPool(dbConfig);
 
 // Create Product
-const createProduct = async ({ name, category_id, quantity, sale_price, purchase_price, image }) => {
+const createProduct = async ({ name, model, code, category_id, quantity, sale_price, purchase_price, image }) => {
   const [result] = await pool.query(
-    'INSERT INTO products (name, category_id, quantity, sale_price, purchase_price, image) VALUES (?, ?, ?, ?, ?, ?)',
-    [name, category_id, quantity, sale_price, purchase_price, image]
+    'INSERT INTO products (name, model, code, category_id, quantity, sale_price, purchase_price, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [name, model, code, category_id, quantity, sale_price, purchase_price, image]
   );
-  return { id: result.insertId, name, category_id, quantity, sale_price, purchase_price, image };
+  return { id: result.insertId, name, model, code, category_id, quantity, sale_price, purchase_price, image };
 };
 
 // Get Product List
@@ -25,13 +25,13 @@ const getProductById = async (id) => {
 };
 
 // Update Product
-const updateProduct = async (id, { name, category_id, quantity, sale_price, purchase_price, image }) => {
+const updateProduct = async (id, { name, model, code, category_id, quantity, sale_price, purchase_price, image }) => {
   const [result] = await pool.query(
-    'UPDATE products SET name = ?, category_id = ?, quantity = ?, sale_price = ?, purchase_price = ?, image = ? WHERE id = ?',
-    [name, category_id, quantity, sale_price, purchase_price, image, id]
+    'UPDATE products SET name = ?, model = ?, code = ?, category_id = ?, quantity = ?, sale_price = ?, purchase_price = ?, image = ? WHERE id = ?',
+    [name, model, code, category_id, quantity, sale_price, purchase_price, image, id]
   );
 
-  return result.affectedRows > 0 ? { id, name, category_id, quantity, sale_price, purchase_price, image } : null;
+  return result.affectedRows > 0 ? { id, name, model, code, category_id, quantity, sale_price, purchase_price, image } : null;
 };
 
 // Delete Product

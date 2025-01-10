@@ -6,6 +6,8 @@ exports.up = function (knex) {
     return knex.schema.createTable('products', function (table) {
       table.increments('id').primary(); // Auto-incrementing ID
       table.string('name'); // Product name
+      table.string('model'); // Product model
+      table.string('code'); // Product code
       table.bigInteger('category_id').unsigned(); // Unsigned big integer for the category ID
       table.integer('quantity'); // Stock quantity
       table.float('sale_price', 8, 2); // Price with two decimal places

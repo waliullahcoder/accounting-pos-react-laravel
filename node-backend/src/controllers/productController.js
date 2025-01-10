@@ -5,9 +5,9 @@ const fs = require('fs');
 // Add Product
 exports.addProduct = async (req, res) => {
   try {
-    const { name, category_id, quantity, sale_price, purchase_price} = req.body;
+    const { name, model, code, category_id, quantity, sale_price, purchase_price} = req.body;
     const image = req.file ? `/uploads/products/${req.file.filename}` : null;
-    const product = await productService.addProduct({ name, category_id, quantity, sale_price, purchase_price, image });
+    const product = await productService.addProduct({ name, model, code, category_id, quantity, sale_price, purchase_price, image });
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -46,7 +46,7 @@ exports.editProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, category_id, quantity, sale_price, purchase_price } = req.body;
+      const { name, model, code, category_id, quantity, sale_price, purchase_price } = req.body;
       const newImage = req.file ? `/uploads/products/${req.file.filename}` : null;
   
       // Fetch the existing product to delete the old image if a new one is uploaded
@@ -63,7 +63,7 @@ exports.updateProduct = async (req, res) => {
       }
   
       const updatedProduct = await productService.updateProduct(id, { 
-        name, 
+        name, model, code, 
         category_id, 
         quantity, sale_price, purchase_price, 
         image: newImage || existingProduct.image 
