@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, CardBody, Typography, CardHeader } from "@material-tailwind/react";
+import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { fetchCustomers } from "../../../slices/customer/customerSlice";
 
@@ -11,6 +11,7 @@ const CustomerList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [customersPerPage] = useState(5); // Number of customers per page
+  const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
@@ -40,12 +41,23 @@ const CustomerList = () => {
     setSuccessMessage("Please wait.. going to create a new Customer...");
   };
 
+  // Filter customers based on the search term
+  const filteredCustomers = customers.filter((customer) => {
+    const searchString = searchTerm.toLowerCase();
+    return (
+      customer.first_name.toLowerCase().includes(searchString) ||
+      customer.last_name.toLowerCase().includes(searchString) ||
+      customer.email.toLowerCase().includes(searchString) ||
+      customer.phone_number.toLowerCase().includes(searchString)
+    );
+  });
+
   // Pagination logic
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
-  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+  const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
-  const totalPages = Math.ceil(customers.length / customersPerPage);
+  const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -74,6 +86,18 @@ const CustomerList = () => {
             </Button>
           </div>
         </CardHeader>
+        <CardHeader className="mb-8 p-6">
+          <div className="mt-4">
+            <Input
+             label="Search by name, email, or phone number"
+              type="text"
+              placeholder="Search by name, email, or phone number"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+        </div>
+        </CardHeader>
+        
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           {status === "loading" ? (
             <Typography className="text-center mt-5">Loading...</Typography>
@@ -87,6 +111,7 @@ const CustomerList = () => {
             </Typography>
           ) : currentCustomers.length > 0 ? (
             <>
+            
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
