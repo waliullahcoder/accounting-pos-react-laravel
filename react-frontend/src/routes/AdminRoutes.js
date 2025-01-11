@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import {Table} from "../components/AdminComponents";
-import DashboardAnalytics from "../pages/DashboardAnalytics";
-import DashboardReporting from "../pages/DashboardReporting";
+import {Table, CreateCategoryPage, CategoryListPage} from "../components/AdminComponents";
 import DashboardProjects from "../pages/DashboardProjects";
 import EcommerceOrders from "../pages/EcommerceOrders";
 import EcommerceProducts from "../pages/EcommerceProducts";
@@ -11,8 +9,8 @@ import EcommerceProducts from "../pages/EcommerceProducts";
 // Map of paths to components
 const routeComponents = {
   "/admin/table": Table,
-  "/dashboard/analytics": DashboardAnalytics,
-  "/dashboard/reporting": DashboardReporting,
+  "/admin/product/category/create": CreateCategoryPage,
+  "/admin/product/category/list": CategoryListPage,
   "/dashboard/projects": DashboardProjects,
   "/ecommerce/orders": EcommerceOrders,
   "/ecommerce/products": EcommerceProducts,

@@ -25,7 +25,7 @@ const createCategory = async (name) => {
 // Function to get all Category
 const getCategoryList = async () => {
   try {
-    const [rows] = await pool.query('SELECT id, name FROM categories');
+    const [rows] = await pool.query('SELECT id, name FROM categories ORDER BY id DESC');
     return rows;
   } catch (error) {
     console.error("Error executing categories query:", error.message);

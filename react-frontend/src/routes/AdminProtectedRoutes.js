@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
-import { Table, AdminDashboard } from "../components/AdminComponents";
+import { Table, AdminDashboard, CreateCategoryPage, CategoryListPage } from "../components/AdminComponents";
 
 const AdminProtectedRoutes = [
   <Route
@@ -19,6 +19,26 @@ const AdminProtectedRoutes = [
     element={
       <PrivateMiddleware isAdmin={true}>
         <Table />
+      </PrivateMiddleware>
+    }
+  />,
+
+  //Product Category Section
+  <Route
+    key="admin-product-category-create"
+    path="/admin/product/category/create"
+    element={
+      <PrivateMiddleware isAdmin={true}>
+        <CreateCategoryPage />
+      </PrivateMiddleware>
+    }
+  />,
+  <Route
+    key="admin-product-category-list"
+    path="/admin/product/category/list"
+    element={
+      <PrivateMiddleware isAdmin={true}>
+        <CategoryListPage />
       </PrivateMiddleware>
     }
   />,

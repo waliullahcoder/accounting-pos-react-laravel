@@ -7,8 +7,8 @@ export const AdminMenuData = [
     title: "Products",
     icon: "ShoppingCartIcon",
     subMenu: [
-      { title: "Categories", path: "/admin/products/categories" },
-      { title: "Create", path: "/admin/products/create" },
+      { title: "Product Category Create", path: "/admin/product/category/create" },
+      { title: "Product Category List", path: "/admin/product/category/list" },
       { title: "Manage", path: "/admin/products/manage" },
     ],
   },

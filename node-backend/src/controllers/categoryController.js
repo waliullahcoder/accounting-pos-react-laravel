@@ -19,22 +19,22 @@ exports.productCategoryAdd = async (req, res) => {
 //Category List
 exports.getProductCategoryList = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1]; // Get token from Authorization header
+    // const token = req.headers.authorization?.split(' ')[1]; // Get token from Authorization header
 
-    if (!token) {
-      return res.status(401).json({ error: "Sorry, Unauthenticated" });
-    }
+    // if (!token) {
+    //   return res.status(401).json({ error: "Sorry, Unauthenticated" });
+    // }
 
     // Verify token
-    jwt.verify(token, config.jwtSecret, async (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ error: "Invalid or expired token" });
-      }
+    // jwt.verify(token, config.jwtSecret, async (err, decoded) => {
+    //   if (err) {
+    //     return res.status(403).json({ error: "Invalid or expired token" });
+    //   }
 
       // If token is valid, fetch the users
       const category = await categoryService.getCategoryList();
       res.status(200).json(category);
-    });
+   // });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
