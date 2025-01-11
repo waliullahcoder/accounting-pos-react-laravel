@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from '@material-tailwind/react';
 import Select from 'react-select'; // Import react-select for searchable dropdown
+import { fetchCustomers } from "../../../slices/customer/action";
 import {
   setCustomer,
   addProduct,
@@ -11,23 +12,23 @@ import {
   setTax,
   setSelectedProduct,
   setQuantity,
-} from "../../../slices/invoice/invoiceSlice";
+} from "../../../slices/invoice/reducer";
 
 const CreateInvoice = () => {
   const dispatch = useDispatch();
-
+  
   // Extracting state from Redux
   const { products, customer, discount, tax, selectedProduct, quantity } = useSelector(
     (state) => state.invoice
   );
+  
+  const { customers, loading, error } = useSelector((state) => state.customer); // Use customer data from Redux
 
-  // Customer and Product Lists
-  const customerList = [
-    { id: 1, name: "Customer 1" },
-    { id: 2, name: "Customer 2" },
-    { id: 3, name: "Customer 3" },
-  ];
-
+  // Fetch customers when the component mounts
+  useEffect(() => {
+    dispatch(fetchCustomers());
+  }, [dispatch]);
+  // Product List
   const productList = [
     { id: 1, name: "Product 1", price: 100 },
     { id: 2, name: "Product 2", price: 200 },
@@ -72,14 +73,16 @@ const CreateInvoice = () => {
       <div className="mb-4">
         <Select
           placeholder="Select Customer"
-          options={customerList.map((cust) => ({
+          options={customers.map((cust) => ({
             value: cust.id,
-            label: cust.name,
+            label: `${cust.first_name} ${cust.last_name} (Phone: ${cust.phone_number})`,
           }))}
-          value={customerList
-            .map((cust) => ({ value: cust.id, label: cust.name }))
+          value={customers
+            .map((cust) => ({ value: cust.id, label: `${cust.first_name} ${cust.last_name} (Phone: ${cust.phone_number})` }))
             .find((option) => option.value === customer) || null}
           onChange={(selectedOption) => dispatch(setCustomer(selectedOption.value))}
+          isLoading={loading} // Show loading state while fetching customers
+          isDisabled={loading} // Disable the select while loading
         />
       </div>
 
