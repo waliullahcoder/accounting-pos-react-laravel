@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Textarea, CardHeader} from "@material-tailwind/react"; // Import Material Tailwind components
-import { createCustomer } from "../../../slices/customer/customerSlice";
+import { createCustomer } from "../../../slices/customer/action";
 import { useNavigate } from "react-router-dom";
 
 const CreateCustomer = () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { fetchCustomers } from "../../../slices/customer/customerSlice";
+import { fetchCustomers } from "../../../slices/customer/action";
 
 const CustomerList = () => {
   const dispatch = useDispatch();
@@ -86,6 +86,8 @@ const CustomerList = () => {
             </Button>
           </div>
         </CardHeader>
+
+        {/* Search Box */}
         <CardHeader className="mb-8 p-6">
           <div className="mt-4">
             <Input
@@ -97,6 +99,7 @@ const CustomerList = () => {
             />
         </div>
         </CardHeader>
+
         
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           {status === "loading" ? (
