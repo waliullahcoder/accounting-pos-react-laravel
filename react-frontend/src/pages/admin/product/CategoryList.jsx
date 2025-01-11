@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { fetchProductCategories } from "../../../slices/category/action";
+import { fetchProductCategories, deleteProductCategory } from "../../../slices/category/action";
+import Modal from "react-modal";
 
 const CategoryList = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const CategoryList = () => {
   const [categoryPerPage] = useState(5); // Number of categories per page
   const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [successMessage, setSuccessMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [categoryIdToDelete, setCategoryIdToDelete] = useState(null); // Store category ID to delete
 
   useEffect(() => {
     dispatch(fetchProductCategories());
@@ -22,23 +25,44 @@ const CategoryList = () => {
     if (successMessage) {
       const timeout = setTimeout(() => {
         setSuccessMessage("");
-        navigate("/admin/product/category/create");
+        navigate("/admin/product/category/list");
       }, 2000);
       return () => clearTimeout(timeout);
     }
   }, [successMessage, navigate]);
 
   const handleEdit = (id) => {
-    console.log("Edit Category with ID:", id);
+    navigate(`/admin/product/category/edit/${id}`);
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete Category with ID:", id);
-    setSuccessMessage("Category deleted successfully!");
+  const openModal = (id) => {
+    setCategoryIdToDelete(id); // Set the category ID to be deleted
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal
+    setCategoryIdToDelete(null); // Clear the category ID
+  };
+
+  const handleDelete = () => {
+    if (categoryIdToDelete !== null) {
+      dispatch(deleteProductCategory(categoryIdToDelete))
+        .then(() => {
+          setSuccessMessage("Category deleted successfully!");
+          // Refetch categories after delete
+          dispatch(fetchProductCategories());
+          closeModal(); // Close the modal after delete
+        })
+        .catch((err) => {
+          setSuccessMessage(`Error: ${err.message}`);
+          closeModal(); // Close the modal in case of an error
+        });
+    }
   };
 
   const handleInsert = () => {
-    setSuccessMessage("Please wait.. going to create a new Category...");
+    navigate("/admin/product/category/create");
   };
 
   // Filter categories based on the search term
@@ -159,7 +183,7 @@ const CategoryList = () => {
                               size="sm"
                               variant="text"
                               color="red"
-                              onClick={() => handleDelete(category.id)}
+                              onClick={() => openModal(category.id)} // Open the modal with category id
                             >
                               Delete
                             </Button>
@@ -199,6 +223,30 @@ const CategoryList = () => {
           )}
         </CardBody>
       </Card>
+
+      {/* Modal for delete confirmation */}
+       <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Delete Confirmation"
+        className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl z-50"
+        overlayClassName="fixed inset-0 bg-black opacity-50 flex justify-center items-center"
+        >
+
+        <div className="text-center">
+          <Typography variant="h6" color="blue-gray">
+            Are you sure you want to delete this category?
+          </Typography>
+          <div className="mt-6 flex justify-center gap-4">
+            <Button color="red" onClick={handleDelete} className="w-32">
+              Yes, Delete
+            </Button>
+            <Button color="gray" onClick={closeModal} className="w-32">
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

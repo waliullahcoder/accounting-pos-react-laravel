@@ -1,102 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input } from "@material-tailwind/react"; // Import Material Tailwind components
-import { createProductCategory } from "../../../slices/category/action";
-import { useNavigate } from "react-router-dom";
+import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
+import { useNavigate, useParams } from "react-router-dom";
+import { createProductCategory, updateProductCategory } from "../../../slices/category/action"; // Import actions
 
 const CreateCategory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.category);
+  const { id } = useParams(); // Get category ID from URL for edit
+  const { categories, error } = useSelector((state) => state.category);
 
-  const [formData, setFormData] = useState({
-    name: "",
-  });
+  const [categoryName, setCategoryName] = useState(""); // State for category name
+  const [isEdit, setIsEdit] = useState(false); // Flag to check if it's edit or create
+  const [successMessage, setSuccessMessage] = useState(""); // Success message for operations
 
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = "Category name is required";
-    return newErrors;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length === 0) {
-      dispatch(createProductCategory(formData)).then((result) => {
-        if (result.meta.requestStatus === "fulfilled") {
-          setSuccessMessage("Product Category created successfully!");
-        }
-      });
-    } else {
-      setErrors(validationErrors);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleInsert = () => {
-    setSuccessMessage("Please wait... Redirecting to Product Category List...");
-  };
-
+  // Check if it's an edit operation
   useEffect(() => {
-    if (successMessage) {
-      const timeout = setTimeout(() => {
-        navigate("/admin/product/category/list");
-      }, 2000); // Redirect after 2 seconds
-      return () => clearTimeout(timeout);
+    if (id) {
+      setIsEdit(true);
+      const category = categories.find((category) => category.id === parseInt(id));
+      if (category) {
+        setCategoryName(category.name);
+      } else {
+        // Handle category not found or other error cases
+        console.error("Category not found for editing");
+      }
     }
-  }, [successMessage, navigate]);
+  }, [id, categories]);
 
+  const handleSubmit = () => {
+    if (isEdit) {
+      dispatch(updateProductCategory({ id, name: categoryName })) // Updated to match the action's expected structure
+        .then(() => {
+          setSuccessMessage("Category updated successfully!");
+          setTimeout(() => navigate("/admin/product/category/list"), 2000);
+        })
+        .catch((err) => {
+          setSuccessMessage(`Error: ${err.message}`);
+        });
+    } else {
+      dispatch(createProductCategory({ name: categoryName }))
+        .then(() => {
+          setSuccessMessage("Category created successfully!");
+          setTimeout(() => navigate("/admin/product/category/list"), 2000);
+        })
+        .catch((err) => {
+          setSuccessMessage(`Error: ${err.message}`);
+        });
+    }
+  };
+  
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-lg mx-auto p-5 bg-white rounded-md shadow-lg"
-    >
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-        Create Product Category or go to{" "}
-        <Button color="green" onClick={handleInsert}>
-          Product Category List
-        </Button>
-      </h2>
-
+    <div className="mt-12 mb-8 flex flex-col gap-12">
       {successMessage && (
-        <div className="bg-green-500 text-white text-center py-2 mb-4 rounded-md">
+        <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
           {successMessage}
         </div>
       )}
 
-      <div className="mb-4">
-        <Input
-          label="Product Category Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          error={!!errors.name}
-          className="mb-2"
-        />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-      </div>
+      <Card>
+        <CardHeader variant="gradient" color="blue-gray" className="mb-8 p-6">
+          <div className="flex justify-between items-center">
+            <Typography variant="h6" color="white">
+              {isEdit ? "Edit Category" : "Create Category"}
+            </Typography>
+          </div>
+        </CardHeader>
 
-      <Button
-        type="submit"
-        color="blue"
-        fullWidth
-        disabled={status === "loading"}
-      >
-        {status === "loading" ? "Submitting..." : "Save Category"}
-      </Button>
+        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+          <div className="mb-4">
+            <Input
+              label="Category Name"
+              type="text"
+              placeholder="Enter category name"
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </div>
 
-      {error?.message && (
-        <p className="text-red-500 text-center mt-4">{error.message}</p>
-      )}
-    </form>
+          <div className="flex justify-end mt-4">
+            <Button
+              color="green"
+              onClick={handleSubmit}
+              disabled={categoryName.trim() === ""}
+            >
+              {isEdit ? "Update Category" : "Create Category"}
+            </Button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
   );
 };
 

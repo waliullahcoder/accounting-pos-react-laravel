@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createProductCategory, fetchProductCategories } from './action';
+import { createProductCategory, fetchProductCategories, updateProductCategory, deleteProductCategory  } from './action';
 import { initialCategoryState } from './state';
 
 const defaultErrorMessage = 'An unexpected error occurred. Please try again.';
@@ -46,7 +46,23 @@ const categorySlice = createSlice({
       .addCase(fetchProductCategories.rejected, (state, action) => {
         state.status = 'failed';
         state.error = { message: action.error.message || defaultErrorMessage };
+      })
+      .addCase(updateProductCategory.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Find and update the category
+        const updatedCategory = action.payload;
+        const index = state.categories.findIndex(category => category.id === updatedCategory.id);
+        if (index !== -1) {
+          state.categories[index] = updatedCategory;
+        }
+      })
+      
+      .addCase(deleteProductCategory.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Remove the deleted category from the state
+        state.categories = state.categories.filter(category => category.id !== action.payload.id);
       });
+      
   },
 });
 

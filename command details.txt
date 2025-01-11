@@ -54,6 +54,7 @@ These tools are the closest equivalents to Laravel's migration system, helping y
 React
 ========================
 npm install react-select
+npm install react-modal
 
 
 

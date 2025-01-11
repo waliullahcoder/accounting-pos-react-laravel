@@ -42,6 +42,15 @@ const AdminProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
+  <Route
+    key="admin-product-category-create"
+    path="/admin/product/category/edit/:id"
+    element={
+      <PrivateMiddleware isAdmin={true}>
+        <CreateCategoryPage />
+      </PrivateMiddleware>
+    }
+  />,
 ];
 
 export default AdminProtectedRoutes;
