@@ -28,3 +28,9 @@
   .mb-8{
     margin-bottom: 1.5rem;
   }
+  .z-50{
+    z-index:0;
+  }
+  .opacity-50{
+    opacity: 0.9;
+  }

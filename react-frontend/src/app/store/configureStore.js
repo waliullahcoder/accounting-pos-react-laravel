@@ -5,6 +5,7 @@ import authReducer from '../../slices/auth/authSlice';
 import invoiceReducer from '../../slices/invoice/reducer';
 import customerReducer from '../../slices/customer/reducer';
 import categoryReducer from '../../slices/category/reducer';
+import productReducer from '../../slices/product/reducer';
 // Configure the Redux store with the auth reducer
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     invoice: invoiceReducer,
     customer: customerReducer,
     category: categoryReducer,
+    product: productReducer,
   },
 });
 

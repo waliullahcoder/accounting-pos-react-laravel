@@ -9,6 +9,8 @@ export const AdminMenuData = [
     subMenu: [
       { title: "Product Category Create", path: "/admin/product/category/create" },
       { title: "Product Category List", path: "/admin/product/category/list" },
+      { title: "Product Create", path: "/admin/product/create" },
+      { title: "Product List", path: "/admin/product/list" },
       { title: "Manage", path: "/admin/products/manage" },
     ],
   },
