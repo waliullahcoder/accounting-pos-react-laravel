@@ -14,7 +14,7 @@ const createProduct = async ({ name, model, code, category_id, quantity, sale_pr
 
 // Get Product List
 const getProductList = async () => {
-  const [rows] = await pool.query('SELECT * FROM products');
+  const [rows] = await pool.query('SELECT * FROM products ORDER BY id DESC');
   return rows;
 };
 

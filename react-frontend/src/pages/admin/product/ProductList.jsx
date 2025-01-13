@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { fetchProducts, deleteProduct } from "../../../slices/product/action";
 import Modal from "react-modal";
 
+
 const ProductList = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.product);
@@ -114,13 +115,15 @@ const ProductList = () => {
                             ${Number(product.purchase_price).toFixed(2) || "0.00"}
                           </td>
 
-                          <td className="border p-2">
+                          <td className="border p-2">{product.image}
                             {product.image ? (
-                              <img
-                                src={`/uploads/${product.image}`}
+                             <img
+                                src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'} 
                                 alt={product.name || "Product Image"}
                                 className="w-16 h-16 object-cover"
                               />
+                           
+                            
                             ) : (
                               "No Image"
                             )}

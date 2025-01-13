@@ -5,7 +5,11 @@ const Routes = require('./routes/Routes');
 const cors = require('cors');
 const app = express();
 
+const path = require('path');
 
+app.use('/uploads/products', express.static(path.join(__dirname, 'uploads/products')));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware
 app.use(express.json());
