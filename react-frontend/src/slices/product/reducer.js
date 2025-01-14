@@ -34,22 +34,17 @@ const productSlice = createSlice({
 
       // Product List
       .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
-        state.error = { message: null }; // Reset error
+        state.status = "loading";
+        state.error = null; // Reset error when a new fetch starts
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        if (Array.isArray(action.payload)) {
-          state.products = action.payload;
-          state.status = 'succeeded';
-        } else {
-          state.status = 'failed';
-          state.products = [];
-          state.error = { message: 'Invalid data received.' };
-        }
+        state.status = "succeeded";
+        state.products = action.payload;
+        state.error = null; // Clear any previous error
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = { message: action.error.message || defaultErrorMessage };
+        state.status = "failed";
+        state.error = action.error; // Set the error message
       })
 
 
@@ -65,8 +60,7 @@ const productSlice = createSlice({
       
         // Remove the deleted Product from the state
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.products = state.products.filter(product => product.id !== action.payload.id);
+        state.products = state.products.filter((product) => product.id !== action.payload);
       });
       
   },
