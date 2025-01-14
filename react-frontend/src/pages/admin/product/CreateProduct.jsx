@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Input, Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
+import { Button, Input,Typography,CardHeader } from '@material-tailwind/react'; // Import Material Tailwind components
 import { createProduct, updateProduct } from '../../../slices/product/action';
 
 const CreateProduct = () => {
@@ -21,9 +21,23 @@ const CreateProduct = () => {
     image: null,
   });
 
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [imagePreview, setImagePreview] = useState(null); // New image preview
   const [existingImage, setExistingImage] = useState(null); // Existing image for edit mode
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Product name is required";
+    if (!formData.model) newErrors.model = "Model is required";
+    if (!formData.code) newErrors.code = "Code is required";
+    if (!formData.category_id) newErrors.category_id = "Category ID is required";
+    if (!formData.quantity) newErrors.quantity = "Quantity is required";
+    if (!formData.sale_price) newErrors.sale_price = "Sale price is required";
+    if (!formData.purchase_price) newErrors.purchase_price = "Purchase price is required";
+    return newErrors;
+  };
 
   useEffect(() => {
     if (id) {
@@ -68,60 +82,179 @@ const CreateProduct = () => {
     }
   };
 
-  const handleSubmit = () => {
-    const form = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === 'image' && value instanceof File) {
-        form.append(key, value); // Append file if it's selected
-      } else {
-        form.append(key, value || ''); // Append other fields
-      }
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length === 0) {
+      const form = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'image' && value instanceof File) {
+          form.append(key, value);
+        } else {
+          form.append(key, value || '');
+        }
+      });
 
     if (isEdit) {
-      dispatch(updateProduct({ id, data: form })).then(() => {
-        navigate('/admin/product/list');
-      });
+        dispatch(updateProduct({ id, data: form })).then(() => {
+          setSuccessMessage("Product updated successfully!");
+        });
+      } else {
+        dispatch(createProduct(form)).then(() => {
+          setSuccessMessage("Product created successfully!");
+        });
+      }
     } else {
-      dispatch(createProduct(form)).then(() => {
-        navigate('/admin/product/list');
-      });
+      setErrors(validationErrors);
     }
   };
 
-  return (
-    <div className="mt-12">
-      <Card>
-        <CardHeader color="blue-gray">
-          <Typography variant="h6">{isEdit ? 'Edit Product' : 'Create Product'}</Typography>
-        </CardHeader>
-        <CardBody>
-          <Input label="Product Name" name="name" value={formData.name} onChange={handleChange} />
-          <Input label="Model" name="model" value={formData.model} onChange={handleChange} />
-          <Input label="Code" name="code" value={formData.code} onChange={handleChange} />
-          <Input label="Category ID" name="category_id" value={formData.category_id} onChange={handleChange} />
-          <Input label="Quantity" name="quantity" value={formData.quantity} onChange={handleChange} />
-          <Input label="Sale Price" name="sale_price" value={formData.sale_price} onChange={handleChange} />
-          <Input label="Purchase Price" name="purchase_price" value={formData.purchase_price} onChange={handleChange} />
+  useEffect(() => {
+    if (successMessage) {
+      const timeout = setTimeout(() => {
+        navigate('/admin/product/list');
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [successMessage, navigate]);
 
-          <Input type="file" label="Upload Image" onChange={handleFileChange} />
-          <div className="mt-4">
-            {imagePreview ? (
+  return (
+    <div className="w-full max-w-lg mx-auto p-5 bg-white rounded-md shadow-lg">
+      {successMessage && (
+        <div className="bg-green-500 text-white text-center py-2 mb-4 rounded-md">
+          {successMessage}
+        </div>
+      )}
+
+       <CardHeader variant="gradient" color="blue-gray" className="mb-8 p-6">
+                <div className="flex justify-between items-center">
+                  <Typography variant="h6" color="white">
+                  {id ? 'Edit Product' : 'Create Product'}
+                  </Typography>
+                </div>
+              </CardHeader>
+
+      <div className="mb-4">
+        <Input
+          label="Product Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          error={!!errors.name}
+          className="mb-2"
+        />
+        {errors.name && (
+          <p className="text-red-500 text-sm">{errors.name}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Model"
+          name="model"
+          value={formData.model}
+          onChange={handleChange}
+          error={!!errors.model}
+          className="mb-2"
+        />
+        {errors.model && (
+          <p className="text-red-500 text-sm">{errors.model}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Code"
+          name="code"
+          value={formData.code}
+          onChange={handleChange}
+          error={!!errors.code}
+          className="mb-2"
+        />
+        {errors.code && (
+          <p className="text-red-500 text-sm">{errors.code}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Category ID"
+          name="category_id"
+          value={formData.category_id}
+          onChange={handleChange}
+          error={!!errors.category_id}
+          className="mb-2"
+        />
+        {errors.category_id && (
+          <p className="text-red-500 text-sm">{errors.category_id}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Quantity"
+          name="quantity"
+          value={formData.quantity}
+          onChange={handleChange}
+          error={!!errors.quantity}
+          className="mb-2"
+        />
+        {errors.quantity && (
+          <p className="text-red-500 text-sm">{errors.quantity}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Sale Price"
+          name="sale_price"
+          value={formData.sale_price}
+          onChange={handleChange}
+          error={!!errors.sale_price}
+          className="mb-2"
+        />
+        {errors.sale_price && (
+          <p className="text-red-500 text-sm">{errors.sale_price}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          label="Purchase Price"
+          name="purchase_price"
+          value={formData.purchase_price}
+          onChange={handleChange}
+          error={!!errors.purchase_price}
+          className="mb-2"
+        />
+        {errors.purchase_price && (
+          <p className="text-red-500 text-sm">{errors.purchase_price}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <Input
+          type="file"
+          label="Upload Image"
+          onChange={handleFileChange}
+          className="mb-2"
+        />
+        <div className="mt-4">
+          {imagePreview ? (
               <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded" />
             ) : existingImage ? (
               <img src={`http://localhost:5000${existingImage}`} alt="Existing" className="w-32 h-32 object-cover rounded" />
-            ) : (
-              <div className="w-32 h-32 bg-gray-200 rounded flex items-center justify-center">
-                <span>No Image</span>
-              </div>
-            )}
-          </div>
+          ) : (
+            <div className="w-32 h-32 bg-gray-200 rounded flex items-center justify-center">
+              <span>No Image</span>
+            </div>
+          )}
+        </div>
+      </div>
 
           <Button className="mt-4" onClick={handleSubmit}>
             {isEdit ? 'Update Product' : 'Create Product'}
-          </Button>
-        </CardBody>
-      </Card>
+      </Button>
     </div>
   );
 };
