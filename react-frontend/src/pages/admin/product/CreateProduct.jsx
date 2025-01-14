@@ -22,7 +22,7 @@ const CreateProduct = () => {
   });
 
   const [isEdit, setIsEdit] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null); // Preview for the image
+  const [imagePreview, setImagePreview] = useState(null); // New image preview
   const [existingImage, setExistingImage] = useState(null); // Existing image for edit mode
 
   useEffect(() => {
@@ -38,9 +38,9 @@ const CreateProduct = () => {
           quantity: product.quantity || '',
           sale_price: product.sale_price || '',
           purchase_price: product.purchase_price || '',
-          image: null, // New image to be uploaded
+          image: null,
         });
-        setExistingImage(product.image); // Set existing image for preview
+        setExistingImage(product.image || null); // Set the existing image if available
       }
     }
   }, [id, products]);
@@ -56,11 +56,15 @@ const CreateProduct = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImagePreview(URL.createObjectURL(file)); // Create a local preview URL
-      setFormData((prevState) => ({
-        ...prevState,
-        image: file,
-      }));
+      if (file.type.startsWith('image/')) {
+        setImagePreview(URL.createObjectURL(file)); // Set preview URL
+        setFormData((prevState) => ({
+          ...prevState,
+          image: file,
+        }));
+      } else {
+        alert('Please select a valid image file'); // Validate file type
+      }
     }
   };
 
@@ -68,7 +72,7 @@ const CreateProduct = () => {
     const form = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === 'image' && value instanceof File) {
-        form.append(key, value); // Append image if it is a file
+        form.append(key, value); // Append file if it's selected
       } else {
         form.append(key, value || ''); // Append other fields
       }
@@ -104,8 +108,12 @@ const CreateProduct = () => {
           <div className="mt-4">
             {imagePreview ? (
               <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded" />
+            ) : existingImage ? (
+              <img src={`http://localhost:5000${existingImage}`} alt="Existing" className="w-32 h-32 object-cover rounded" />
             ) : (
-              existingImage && <img src={existingImage} alt="Existing" className="w-32 h-32 object-cover rounded" />
+              <div className="w-32 h-32 bg-gray-200 rounded flex items-center justify-center">
+                <span>No Image</span>
+              </div>
             )}
           </div>
 
