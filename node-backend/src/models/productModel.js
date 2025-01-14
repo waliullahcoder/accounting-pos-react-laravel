@@ -14,9 +14,29 @@ const createProduct = async ({ name, model, code, category_id, quantity, sale_pr
 
 // Get Product List
 const getProductList = async () => {
-  const [rows] = await pool.query('SELECT * FROM products ORDER BY id DESC');
+  const [rows] = await pool.query(`
+    SELECT 
+      products.id,
+      products.name,
+      products.model,
+      products.code,
+      products.quantity,
+      products.sale_price,
+      products.purchase_price,
+      products.image,
+      categories.name AS category_name
+    FROM 
+      products
+    JOIN 
+      categories
+    ON 
+      products.category_id = categories.id
+    ORDER BY 
+      products.id DESC
+  `);
   return rows;
 };
+
 
 // Get Product by ID
 const getProductById = async (id) => {

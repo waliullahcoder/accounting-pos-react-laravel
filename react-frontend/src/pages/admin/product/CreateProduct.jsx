@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Input,Typography,CardHeader } from '@material-tailwind/react'; // Import Material Tailwind components
 import { createProduct, updateProduct } from '../../../slices/product/action';
-
+import { fetchProductCategories } from "../../../slices/category/action";
+import Select from 'react-select';
 const CreateProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const { products } = useSelector((state) => state.product);
-
+  const { categories, status, error } = useSelector((state) => state.category);
   const [formData, setFormData] = useState({
     name: '',
     model: '',
@@ -38,6 +39,12 @@ const CreateProduct = () => {
     if (!formData.purchase_price) newErrors.purchase_price = "Purchase price is required";
     return newErrors;
   };
+
+  useEffect(() => {
+    dispatch(fetchProductCategories());
+  }, [dispatch]);
+
+
 
   useEffect(() => {
     if (id) {
@@ -177,18 +184,26 @@ const CreateProduct = () => {
       </div>
 
       <div className="mb-4">
-        <Input
-          label="Category ID"
-          name="category_id"
-          value={formData.category_id}
-          onChange={handleChange}
-          error={!!errors.category_id}
-          className="mb-2"
-        />
-        {errors.category_id && (
-          <p className="text-red-500 text-sm">{errors.category_id}</p>
+        {categories && categories.length > 0 ? (
+          <Select
+            placeholder="Select Category"
+            options={categories.map((cat) => ({ value: cat.id, label: cat.name }))}
+            value={categories
+              .map((cat) => ({ value: cat.id, label: cat.name }))
+              .find((option) => option.value === formData.category_id) || null}
+            onChange={(selectedOption) =>
+              setFormData((prevState) => ({ ...prevState, category_id: selectedOption.value }))
+            }
+          />
+        ) : status === 'loading' ? (
+          <p>Loading categories...</p>
+        ) : (
+          <p className="text-red-500">
+            Failed to load categories: {error?.message || "An unknown error occurred"}
+          </p>
         )}
       </div>
+
 
       <div className="mb-4">
         <Input

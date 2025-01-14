@@ -140,7 +140,7 @@ console.log("WALI currentProducts",currentProducts);
                       <td className="py-3 px-5 border-b">{product.name}</td>
                       <td className="py-3 px-5 border-b">{product.model || "N/A"}</td>
                       <td className="py-3 px-5 border-b">{product.code || "N/A"}</td>
-                      <td className="py-3 px-5 border-b">{product.category_id || "N/A"}</td>
+                      <td className="py-3 px-5 border-b">{product.category_name || "N/A"}</td>
                       <td className="py-3 px-5 border-b">{product.quantity || 0}</td>
                       <td className="py-3 px-5 border-b">${product.sale_price.toFixed(2)}</td>
                       <td className="py-3 px-5 border-b">${product.purchase_price.toFixed(2)}</td>
