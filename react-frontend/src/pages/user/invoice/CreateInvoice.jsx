@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from '@material-tailwind/react';
-import Select from 'react-select'; // Import react-select for searchable dropdown
+import Select from 'react-select';
 import { fetchCustomers } from "../../../slices/customer/action";
 import { fetchProducts } from "../../../slices/product/action";
 import {
@@ -17,34 +17,25 @@ import {
 
 const CreateInvoice = () => {
   const dispatch = useDispatch();
-  
+
   // Extracting state from Redux
   const { products, customer, discount, tax, selectedProduct, quantity } = useSelector(
     (state) => state.invoice
   );
-  
-  const { customers, loading, error } = useSelector((state) => state.customer); // Use customer data from Redux
-  const { productLists } = useSelector((state) => state.product);
+  const { customers, loading: customerLoading } = useSelector((state) => state.customer);
+  const { productLists, loading: productLoading } = useSelector((state) => state.product);
+
+  // Fetch products and customers when the component mounts
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
-console.log("WALI INV PROD",productLists);
-  // Fetch customers when the component mounts
-  useEffect(() => {
     dispatch(fetchCustomers());
   }, [dispatch]);
-  // Product List
-  const productList = [
-    { id: 1, name: "Product 1", price: 100 },
-    { id: 2, name: "Product 2", price: 200 },
-    { id: 3, name: "Product 3", price: 300 },
-  ];
 
   // Add Product Handler
   const handleAddProduct = () => {
-    const product = productList.find((prod) => prod.id === selectedProduct?.value);
+    const product = productLists.find((prod) => prod.id === selectedProduct?.value);
     if (product) {
-      dispatch(addProduct({ id: product.id, name: product.name, price: product.price, quantity }));
+      dispatch(addProduct({ id: product.id, name: product.name, price: product.sale_price, quantity }));
     }
   };
 
@@ -86,8 +77,8 @@ console.log("WALI INV PROD",productLists);
             .map((cust) => ({ value: cust.id, label: `${cust.first_name} ${cust.last_name} (Phone: ${cust.phone_number})` }))
             .find((option) => option.value === customer) || null}
           onChange={(selectedOption) => dispatch(setCustomer(selectedOption.value))}
-          isLoading={loading} // Show loading state while fetching customers
-          isDisabled={loading} // Disable the select while loading
+          isLoading={customerLoading}
+          isDisabled={customerLoading}
         />
       </div>
 
@@ -96,14 +87,16 @@ console.log("WALI INV PROD",productLists);
         <div className="w-1/2">
           <Select
             placeholder="Select Product"
-            options={productList.map((prod) => ({
+            options={productLists.map((prod) => ({
               value: prod.id,
               label: prod.name,
             }))}
-            value={productList
+            value={productLists
               .map((prod) => ({ value: prod.id, label: prod.name }))
               .find((option) => option.value === selectedProduct?.value) || null}
             onChange={(selectedOption) => dispatch(setSelectedProduct(selectedOption))}
+            isLoading={productLoading}
+            isDisabled={productLoading}
           />
         </div>
         <div className="w-1/4">
