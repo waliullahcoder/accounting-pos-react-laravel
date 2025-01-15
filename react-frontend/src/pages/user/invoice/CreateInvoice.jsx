@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from '@material-tailwind/react';
 import Select from 'react-select'; // Import react-select for searchable dropdown
 import { fetchCustomers } from "../../../slices/customer/action";
+import { fetchProducts } from "../../../slices/product/action";
 import {
   setCustomer,
   addProduct,
@@ -23,7 +24,11 @@ const CreateInvoice = () => {
   );
   
   const { customers, loading, error } = useSelector((state) => state.customer); // Use customer data from Redux
-
+  const { productLists } = useSelector((state) => state.product);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+console.log("WALI INV PROD",productLists);
   // Fetch customers when the component mounts
   useEffect(() => {
     dispatch(fetchCustomers());
