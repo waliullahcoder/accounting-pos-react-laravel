@@ -1,4 +1,37 @@
 
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import invoiceApi from '../../api/invoiceApi';
+import { createInvoiceApiAxios, invoiceListApiAxios } from '../../services/invoice/invoiceService';
+
+export const createInvoice = createAsyncThunk(
+  invoiceApi.createInvoiceApi,
+  async (invoiceData, { rejectWithValue }) => {
+    try {
+      const response = await createInvoiceApiAxios(invoiceData);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const fetchInvoices = createAsyncThunk(
+  invoiceApi.invoiceListApi,
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await invoiceListApiAxios();
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+
 //setCustomer
 export const setCustomer = (state, action) => {
     console.log('setCustomer called with:', { state, action }); // Debugging log

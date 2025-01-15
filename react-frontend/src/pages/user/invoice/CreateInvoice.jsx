@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input } from '@material-tailwind/react';
-import Select from 'react-select';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Input } from "@material-tailwind/react";
+import Select from "react-select";
+import { createInvoice } from "../../../slices/invoice/action";
 import { fetchCustomers } from "../../../slices/customer/action";
 import { fetchProducts } from "../../../slices/product/action";
+import { useNavigate } from "react-router-dom";
 import {
   setCustomer,
   addProduct,
@@ -16,7 +18,8 @@ import {
 } from "../../../slices/invoice/reducer";
 
 const CreateInvoice = () => {
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
   // Extracting state from Redux
   const { products, customer, discount, tax, selectedProduct, quantity } = useSelector(
@@ -24,6 +27,7 @@ const CreateInvoice = () => {
   );
   const { customers, loading: customerLoading } = useSelector((state) => state.customer);
   const { productLists, loading: productLoading } = useSelector((state) => state.product);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Fetch products and customers when the component mounts
   useEffect(() => {
@@ -60,6 +64,49 @@ const CreateInvoice = () => {
   };
 
   const { subTotal, discountAmount, taxAmount, netTotal } = calculateTotals();
+
+  // Submit Invoice Handler
+  const handleSubmit = async () => {
+    const order = {
+      customer_id: customer,
+      total_quantity: products.reduce((acc, product) => acc + product.quantity, 0),
+      total_amount: subTotal,
+      discount_persantage: discount,
+      discount_amount: discountAmount,
+      tax_persantage: tax,
+      tax_amount: taxAmount,
+      net_amount: netTotal,
+    };
+
+    const orderDetails = products.map((product) => ({
+      product_id: product.id,
+      product_name: product.name,
+      order_quantity: product.quantity,
+      order_amount: product.total,
+    }));
+
+    const payload = { order, orderDetails };
+
+    try {
+      dispatch(createInvoice(payload)).then((result) => {
+             if (result.meta.requestStatus === "fulfilled") {
+               setSuccessMessage("Invoice created successfully!");
+               console.log("Invoice created successfully!");
+             }
+           });
+    } catch (error) {
+      console.error("Error creating invoice:", error);
+    }
+  };
+    useEffect(() => {
+      if (successMessage) {
+        const timeout = setTimeout(() => {
+          navigate("/invoice/list");
+        }, 2000); // Redirect after 2 seconds
+        return () => clearTimeout(timeout);
+      }
+  
+    }, [successMessage, navigate]);
 
   return (
     <div className="max-w-5xl mx-auto p-4 bg-white rounded-lg shadow-lg">
@@ -176,6 +223,13 @@ const CreateInvoice = () => {
         <div>Discount: {discountAmount}</div>
         <div>Tax: {taxAmount}</div>
         <div>Net Total: {netTotal}</div>
+      </div>
+
+      {/* Submit Button */}
+      <div className="mt-4">
+        <Button color="green" onClick={handleSubmit}>
+          Submit Invoice
+        </Button>
       </div>
     </div>
   );
