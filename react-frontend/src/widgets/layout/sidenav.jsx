@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserMenuData } from "../../routes/UserMenuData";
 import {
   List,
@@ -11,7 +11,11 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import * as Icons from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon, PowerIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronRightIcon,
+  ChevronDownIcon,
+  PowerIcon,
+} from "@heroicons/react/24/outline";
 import { useMaterialTailwindController } from "../../context/index";
 import Logout from "../../pages/auth/Logout";
 
@@ -26,9 +30,31 @@ export function Sidenav() {
   };
 
   const [open, setOpen] = React.useState(null);
+  const [selected, setSelected] = React.useState(""); // Track selected menu
+  const location = useLocation(); // Get current path
+
+  React.useEffect(() => {
+    // Expand the parent menu for the current route on load
+    UserMenuData.forEach((menu, index) => {
+      if (menu.subMenu) {
+        menu.subMenu.forEach((sub) => {
+          if (sub.path === location.pathname) {
+            setOpen(index);
+            setSelected(sub.path);
+          }
+        });
+      } else if (menu.path === location.pathname) {
+        setSelected(menu.path);
+      }
+    });
+  }, [location.pathname]);
 
   const handleOpen = (value) => {
     setOpen(open === value ? null : value);
+  };
+
+  const handleSelect = (path) => {
+    setSelected(path); // Update selected path
   };
 
   return (
@@ -41,7 +67,7 @@ export function Sidenav() {
         <List className="flex-1">
           {UserMenuData.map((menu, index) => {
             const Icon = Icons[menu.icon];
-  
+
             return menu.subMenu ? (
               <Accordion
                 key={menu.title}
@@ -70,12 +96,27 @@ export function Sidenav() {
                 <AccordionBody className="py-1 pl-8">
                   <List>
                     {menu.subMenu.map((sub) => (
-                      <ListItem key={sub.title} className="py-2">
-                        <Link to={sub.path} className="flex items-center w-full">
+                      <ListItem
+                        key={sub.title}
+                        className={`py-2 ${
+                          selected === sub.path ? "bg-blue-100" : ""
+                        }`}
+                        onClick={() => handleSelect(sub.path)}
+                      >
+                        <Link
+                          to={sub.path}
+                          className="flex items-center w-full"
+                        >
                           <ListItemPrefix>
                             <ChevronRightIcon className="h-4 w-4 text-gray-500" />
                           </ListItemPrefix>
-                          <Typography className="text-gray-700">
+                          <Typography
+                            className={`${
+                              selected === sub.path
+                                ? "text-blue-500"
+                                : "text-gray-700"
+                            }`}
+                          >
                             {sub.title}
                           </Typography>
                         </Link>
@@ -85,12 +126,24 @@ export function Sidenav() {
                 </AccordionBody>
               </Accordion>
             ) : (
-              <ListItem key={menu.title} className="p-3">
+              <ListItem
+                key={menu.title}
+                className={`p-3 ${
+                  selected === menu.path ? "bg-blue-100" : ""
+                }`}
+                onClick={() => handleSelect(menu.path)}
+              >
                 <Link to={menu.path} className="flex items-center w-full">
                   <ListItemPrefix>
                     <Icon className="h-5 w-5 text-gray-700" />
                   </ListItemPrefix>
-                  <Typography className="text-gray-900 font-medium">
+                  <Typography
+                    className={`${
+                      selected === menu.path
+                        ? "text-blue-500"
+                        : "text-gray-900"
+                    } font-medium`}
+                  >
                     {menu.title}
                   </Typography>
                 </Link>
