@@ -109,7 +109,7 @@ console.log("WALI currentProducts",currentProducts);
           </div>
         </CardHeader>
 
-        <CardBody>
+        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
 
           {status === "loading" ? (
             <Typography className="text-center mt-5">Loading...</Typography>
@@ -119,7 +119,7 @@ console.log("WALI currentProducts",currentProducts);
             </Typography>
           ) : currentProducts.length > 0 ? (
             <>
-              <table className="w-full table-auto">
+              <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
                     {["#", "Name", "Model", "Code", "Category", "Qty", "Sale Price", "Purchase Price", "Image", "Actions"].map(
