@@ -103,19 +103,22 @@ const getOrderById = async (id) => {
 
 
 // List Orders
+// List Orders with Sorting by ID (Descending)
 const listOrders = async (page, limit) => {
   const connection = await pool.getConnection();
 
   try {
     const offset = (page - 1) * limit;
 
-    const ordersSql = `SELECT * FROM orders  ORDER BY id DESC LIMIT ? OFFSET ?`;
+    // Fetch orders sorted by ID in descending order
+    const ordersSql = `SELECT * FROM orders ORDER BY id DESC LIMIT ? OFFSET ?`;
     const [orders] = await connection.query(ordersSql, [parseInt(limit), offset]);
 
     if (!orders.length) {
       return { orders: [], total: 0 };
     }
 
+    // Fetch total number of orders
     const totalSql = `SELECT COUNT(*) as total FROM orders`;
     const [totalResult] = await connection.query(totalSql);
 
@@ -126,5 +129,6 @@ const listOrders = async (page, limit) => {
     connection.release();
   }
 };
+
 
 module.exports = { createOrderWithDetails, getOrderById, listOrders };
