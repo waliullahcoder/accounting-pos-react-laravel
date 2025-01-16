@@ -32,7 +32,11 @@ const InvoiceList = () => {
   const handleInsert = () => {
     setSuccessMessage("Please wait.. going to create a new Invoice...");
   };
-
+  const handleInvoiceShow = (id) => { 
+   // navigate("/invoice/show");
+    navigate(`/invoice/show/${id}`);
+  };
+  
   // Filter invoices based on the search term
   const filteredInvoices = orders?.orders?.filter((invoice) => {
     const searchString = searchTerm.toLowerCase();
@@ -188,7 +192,7 @@ const InvoiceList = () => {
                               size="sm"
                               variant="text"
                               color="blue"
-                              onClick={() => navigate(`/invoice/show/${invoice.id}`)}
+                              onClick={() => handleInvoiceShow(invoice.id)}
                             >
                               Invoice Details
                             </Button>

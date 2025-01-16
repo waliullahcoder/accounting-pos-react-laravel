@@ -1,7 +1,7 @@
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import invoiceApi from '../../api/invoiceApi';
-import { createInvoiceApiAxios, invoiceListApiAxios } from '../../services/invoice/invoiceService';
+import { createInvoiceApiAxios, invoiceListApiAxios, invoiceShowApiAxios } from '../../services/invoice/invoiceService';
 
 export const createInvoice = createAsyncThunk(
   invoiceApi.createInvoiceApi,
@@ -32,6 +32,22 @@ export const fetchInvoices = createAsyncThunk(
     }
   }
 );
+
+export const invoiceShow = createAsyncThunk(
+  invoiceApi.getInvoiceShowApi,
+  async (id, { rejectWithValue }) => { 
+    try {
+      const response = await invoiceShowApiAxios(id);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data || 'Something went wrong. Please try again.';
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+
 
 
 //setCustomer

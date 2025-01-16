@@ -17,6 +17,7 @@
     "react-router-dom": "^6.14.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.9.0",
+    "react-to-print": "^3.0.4",
     "web-vitals": "^4.2.4"
   },
   "scripts": {

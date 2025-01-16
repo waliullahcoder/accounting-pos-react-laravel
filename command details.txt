@@ -55,6 +55,8 @@ React
 ========================
 npm install react-select
 npm install react-modal
+npm install @material-tailwind/react react-to-print
+
 
 
 

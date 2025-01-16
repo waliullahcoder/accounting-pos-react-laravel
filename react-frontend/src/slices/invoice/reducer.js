@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initialInvoiceState } from './state';
 import * as actions from './action';
-import { fetchInvoices } from './action';
+import { fetchInvoices, invoiceShow } from './action';
 
 const invoiceSlice = createSlice({
   name: 'invoice',
@@ -9,6 +9,7 @@ const invoiceSlice = createSlice({
   reducers: {
     setCustomer: actions.setCustomer,
     fetchInvoices: actions.fetchInvoices,
+    invoiceShow: actions.invoiceShow,
     addProduct: actions.addProduct,
     removeProduct: actions.removeProduct,
     updateQuantity: actions.updateQuantity,
@@ -29,7 +30,19 @@ const invoiceSlice = createSlice({
          .addCase(fetchInvoices.rejected, (state, action) => {
            state.status = 'failed';
            state.error = action.payload;
-         });
+         })
+         
+         .addCase(invoiceShow.pending, (state) => {
+          state.status = 'loading';
+        })
+        .addCase(invoiceShow.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+          state.invoice = action.payload;
+        })
+        .addCase(invoiceShow.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.payload;
+        });
   },
 });
 

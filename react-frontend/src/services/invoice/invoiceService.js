@@ -23,8 +23,20 @@ const invoiceListApiAxios = async () => {
   }
 };
 
+// Delete Product Category function
+const invoiceShowApiAxios = async (id) => {
+  try {
+    const response = await axios.get(`${invoiceApi.getInvoiceShowApi}/${id}`);
+    return response; // Return the full response
+  } catch (error) {
+    console.error("Invoice Details API Error:", error.message);
+    throw error; // Rethrow the error for handling in calling code
+  }
+};
+
 // Export all methods
 export {
   createInvoiceApiAxios,
   invoiceListApiAxios,
+  invoiceShowApiAxios
 };
