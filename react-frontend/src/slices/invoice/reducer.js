@@ -7,6 +7,7 @@ const invoiceSlice = createSlice({
   initialState: initialInvoiceState,
   reducers: {
     setCustomer: actions.setCustomer,
+    // fetchInvoices: actions.fetchInvoices,
     addProduct: actions.addProduct,
     removeProduct: actions.removeProduct,
     updateQuantity: actions.updateQuantity,
@@ -15,6 +16,14 @@ const invoiceSlice = createSlice({
     setSelectedProduct: actions.setSelectedProduct,
     setQuantity: actions.setQuantity,
   },
+  // extraReducers: (builder) => {
+  //   builder
+  //   .addCase(fetchInvoices.fulfilled, (state, action) => {
+  //     console.log('Fetched invoices:', action.payload); // Debug API response
+  //     state.status = 'succeeded';
+  //     state.invoices = action.payload;
+  //   });
+  // },
 });
 
 export const {

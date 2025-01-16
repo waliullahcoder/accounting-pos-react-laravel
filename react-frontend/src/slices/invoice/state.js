@@ -1,6 +1,7 @@
 export const initialInvoiceState = {
     customer: null,
     products: [],
+    invoices: [],
     productLists :[],
     discount: 0,
     tax: 0,

@@ -16,7 +16,7 @@ export const UserMenuData = [
         icon: "ShoppingBagIcon",
         subMenu: [
           { title: "Create", path: "/invoice/create" },
-          { title: "Manage", path: "/invoice/manage" },
+          { title: "Invoice List", path: "/invoice/list" },
           { title: "History", path: "/invoice/history" },
         ],
       },

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
-import { Dashboard, UserTable, CreateInvoicePage, CreateCustomerPage, CustomerListPage} from "../components/UserComponents";
+import { Dashboard, UserTable, CreateInvoicePage,InvoiceListPage, CreateCustomerPage, CustomerListPage} from "../components/UserComponents";
 
 const UserProtectedRoutes = [
 
@@ -70,6 +70,15 @@ const UserProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
+    <Route
+      key="Invoice-List"
+      path="/invoice/list"
+      element={
+        <PrivateMiddleware>
+          <InvoiceListPage />
+        </PrivateMiddleware>
+      }
+    />,
 ];
 
 export default UserProtectedRoutes;
