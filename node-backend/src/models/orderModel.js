@@ -109,7 +109,7 @@ const listOrders = async (page, limit) => {
   try {
     const offset = (page - 1) * limit;
 
-    const ordersSql = `SELECT * FROM orders LIMIT ? OFFSET ?`;
+    const ordersSql = `SELECT * FROM orders  ORDER BY id DESC LIMIT ? OFFSET ?`;
     const [orders] = await connection.query(ordersSql, [parseInt(limit), offset]);
 
     if (!orders.length) {

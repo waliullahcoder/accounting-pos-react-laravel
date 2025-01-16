@@ -1,3 +1,4 @@
+// InvoiceList.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
@@ -7,7 +8,7 @@ import { fetchInvoices } from "../../../slices/invoice/action";
 const InvoiceList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { invoices, status, error } = useSelector((state) => state.invoice);
+  const { orders, status, error } = useSelector((state) => state.invoice);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [invoicesPerPage] = useState(5); // Number of invoices per page
@@ -17,7 +18,6 @@ const InvoiceList = () => {
   useEffect(() => {
     dispatch(fetchInvoices());
   }, [dispatch]);
-console.log("INVOICELIST",invoices);
 
   useEffect(() => {
     if (successMessage) {
@@ -29,21 +29,19 @@ console.log("INVOICELIST",invoices);
     }
   }, [successMessage, navigate]);
 
-  console.log("WALI INVOICE LIST",invoices);
-  
   const handleInsert = () => {
     setSuccessMessage("Please wait.. going to create a new Invoice...");
   };
 
   // Filter invoices based on the search term
-  const filteredInvoices = invoices.filter((invoice) => {
+  const filteredInvoices = orders?.orders?.filter((invoice) => {
     const searchString = searchTerm.toLowerCase();
     return (
-      invoice.customer_name.toLowerCase().includes(searchString) ||
-      invoice.invoice_number.toLowerCase().includes(searchString) ||
-      invoice.status.toLowerCase().includes(searchString)
+      String(invoice.customer_id).toLowerCase().includes(searchString) ||
+      String(invoice.id).toLowerCase().includes(searchString) ||
+      String(invoice.status).toLowerCase().includes(searchString)
     );
-  });
+  }) || [];
 
   // Pagination logic
   const indexOfLastInvoice = currentPage * invoicesPerPage;
@@ -59,6 +57,20 @@ console.log("INVOICELIST",invoices);
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  const dateStr = "2025-01-10T01:41:44.000Z";
+  
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true, // Use 12-hour format
+  };
+  
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(new Date(dateStr));
+  console.log(formattedDate); // Output: January 10, 2025, 1 AM
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -80,7 +92,6 @@ console.log("INVOICELIST",invoices);
           </div>
         </CardHeader>
 
-        {/* Search Box */}
         <CardHeader className="mb-8 p-6">
           <div className="mt-4">
             <Input
@@ -112,10 +123,10 @@ console.log("INVOICELIST",invoices);
                     {[
                       "#",
                       "Invoice Number",
-                      "Customer Name",
+                      "Customer ID",
+                      "Total Quantity",
                       "Date",
-                      "Total Amount",
-                      "Status",
+                      "Net Amount",
                       "Actions",
                     ].map((el) => (
                       <th
@@ -148,27 +159,27 @@ console.log("INVOICELIST",invoices);
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {invoice.invoice_number}
+                            INVOICENO{invoice.id}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {invoice.customer_name}
+                            {invoice.customer_id}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-normal text-blue-gray-500">
-                            {invoice.date}
+                            {invoice.total_quantity}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-normal text-blue-gray-500">
-                            {invoice.total_amount}
+                            {new Intl.DateTimeFormat("en-US", options).format(new Date(invoice.created_at))}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-normal text-blue-gray-500">
-                            {invoice.status}
+                            {invoice.net_amount}
                           </Typography>
                         </td>
                         <td className={className}>
@@ -177,9 +188,9 @@ console.log("INVOICELIST",invoices);
                               size="sm"
                               variant="text"
                               color="blue"
-                            //   onClick={() => handleEdit(invoice.id)}
+                              onClick={() => navigate(`/invoice/show/${invoice.id}`)}
                             >
-                              Edit
+                              Invoice Details
                             </Button>
                           </div>
                         </td>

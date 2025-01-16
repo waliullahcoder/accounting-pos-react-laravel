@@ -22,6 +22,8 @@ export const fetchInvoices = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await invoiceListApiAxios();
+      console.log("action",response.data);
+      
       return response.data;
     } catch (error) {
       const errorMessage =

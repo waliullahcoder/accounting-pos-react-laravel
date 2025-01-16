@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initialInvoiceState } from './state';
 import * as actions from './action';
+import { fetchInvoices } from './action';
 
 const invoiceSlice = createSlice({
   name: 'invoice',
   initialState: initialInvoiceState,
   reducers: {
     setCustomer: actions.setCustomer,
-    // fetchInvoices: actions.fetchInvoices,
+    fetchInvoices: actions.fetchInvoices,
     addProduct: actions.addProduct,
     removeProduct: actions.removeProduct,
     updateQuantity: actions.updateQuantity,
@@ -16,14 +17,20 @@ const invoiceSlice = createSlice({
     setSelectedProduct: actions.setSelectedProduct,
     setQuantity: actions.setQuantity,
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //   .addCase(fetchInvoices.fulfilled, (state, action) => {
-  //     console.log('Fetched invoices:', action.payload); // Debug API response
-  //     state.status = 'succeeded';
-  //     state.invoices = action.payload;
-  //   });
-  // },
+  extraReducers: (builder) => {
+    builder
+     .addCase(fetchInvoices.pending, (state) => {
+           state.status = 'loading';
+         })
+         .addCase(fetchInvoices.fulfilled, (state, action) => {
+           state.status = 'succeeded';
+           state.orders = action.payload;
+         })
+         .addCase(fetchInvoices.rejected, (state, action) => {
+           state.status = 'failed';
+           state.error = action.payload;
+         });
+  },
 });
 
 export const {
