@@ -78,10 +78,18 @@ const getOrderById = async (id) => {
   const connection = await pool.getConnection();
 
   try {
-    const orderSql = `SELECT * FROM orders WHERE id = ?`;
+    const orderSql = `SELECT orders.*, 
+    customers.first_name AS customer_first_name, 
+    customers.last_name AS customer_last_name,
+    customers.address AS customer_address,
+    customers.phone_number AS customer_phone_no,
+    customers.email AS customer_email,
+    customers.zip_code AS customer_zip_code
+      FROM orders
+      INNER JOIN customers ON orders.customer_id = customers.id WHERE orders.id = ?`;
     const [order] = await connection.query(orderSql, [id]);
 
-    if (!order.length) {
+    if (!order || order.length === 0) {
       return null; // Order not found
     }
 
@@ -102,7 +110,8 @@ const getOrderById = async (id) => {
 };
 
 
-// List Orders
+
+
 // List Orders with Sorting by ID (Descending)
 const listOrders = async (page, limit) => {
   const connection = await pool.getConnection();
@@ -110,8 +119,14 @@ const listOrders = async (page, limit) => {
   try {
     const offset = (page - 1) * limit;
 
-    // Fetch orders sorted by ID in descending order
-    const ordersSql = `SELECT * FROM orders ORDER BY id DESC LIMIT ? OFFSET ?`;
+    // Modified query to join orders and customers table
+    const ordersSql = `
+      SELECT orders.*, customers.first_name AS customer_first_name, customers.last_name AS customer_last_name
+      FROM orders
+      INNER JOIN customers ON orders.customer_id = customers.id
+      ORDER BY orders.id DESC
+      LIMIT ? OFFSET ?`;
+
     const [orders] = await connection.query(ordersSql, [parseInt(limit), offset]);
 
     if (!orders.length) {
@@ -129,6 +144,8 @@ const listOrders = async (page, limit) => {
     connection.release();
   }
 };
+
+
 
 
 module.exports = { createOrderWithDetails, getOrderById, listOrders };

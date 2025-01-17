@@ -53,8 +53,8 @@ const InvoiceShow = () => {
           </div>
           <div>
             <Typography variant="h6" className="font-semibold">To:</Typography>
-            <Typography className="text-gray-700">Customer ID: {invoice?.customer_id}</Typography>
-            <Typography className="text-gray-500">456 Client Street</Typography>
+            <Typography className="text-gray-700">{invoice?.customer_first_name} {invoice?.customer_last_name}</Typography>
+            <Typography className="text-gray-500">{invoice?.customer_address}, {invoice?.customer_phone_no}, {invoice?.customer_email}, {invoice?.zip_code}</Typography>
             <Typography className="text-gray-500">
               {invoice?.created_at ? new Intl.DateTimeFormat("en-US", options).format(new Date(invoice.created_at)) : "N/A"}
             </Typography>

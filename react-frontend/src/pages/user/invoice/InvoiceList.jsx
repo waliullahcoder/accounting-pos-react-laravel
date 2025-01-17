@@ -127,7 +127,7 @@ const InvoiceList = () => {
                     {[
                       "#",
                       "Invoice Number",
-                      "Customer ID",
+                      "Customer Name",
                       "Total Quantity",
                       "Date",
                       "Net Amount",
@@ -168,7 +168,7 @@ const InvoiceList = () => {
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {invoice.customer_id}
+                            {invoice.customer_first_name} {invoice.customer_last_name}
                           </Typography>
                         </td>
                         <td className={className}>
