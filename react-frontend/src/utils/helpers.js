@@ -11,6 +11,7 @@ export const numberToWords = (num) => {
     const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
     const thousands = ["", "thousand", "million", "billion"];
   
+    // Function to convert hundreds
     const convertHundreds = (num) => {
       let result = "";
       if (num >= 100) {
@@ -32,17 +33,32 @@ export const numberToWords = (num) => {
   
     let result = "";
     let i = 0;
+    let integerPart = Math.floor(num); // Get integer part of number
+    let decimalPart = num % 1; // Get decimal part of number
   
-    while (num > 0) {
-      if (num % 1000 !== 0) {
-        result = convertHundreds(num % 1000) + " " + thousands[i] + " " + result;
+    // Handle integer part
+    while (integerPart > 0) {
+      if (integerPart % 1000 !== 0) {
+        result = convertHundreds(integerPart % 1000) + " " + thousands[i] + " " + result;
       }
-      num = Math.floor(num / 1000);
+      integerPart = Math.floor(integerPart / 1000);
       i++;
+    }
+  
+    result = result.trim();
+  
+    // Handle decimal part
+    if (decimalPart > 0) {
+      const decimalString = decimalPart.toFixed(2).split(".")[1]; // Get decimal part as string
+      result += " point ";
+      for (let i = 0; i < decimalString.length; i++) {
+        result += ones[parseInt(decimalString.charAt(i))] + " ";
+      }
     }
   
     return result.trim();
   };
+  
 
   export const defaultCurrency = () => { 
 
