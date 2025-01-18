@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, CardBody, Typography, CardHeader, Input } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import { fetchCustomers } from "../../../slices/customer/action";
-
+import { fetchCustomers,deleteCustomer } from "../../../slices/customer/action";
+import Modal from "react-modal";
 const CustomerList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { customers, status, error } = useSelector((state) => state.customer);
-
+  const [selectedCustomerId, setSelectedCustomerId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
   const [currentPage, setCurrentPage] = useState(1);
   const [customersPerPage] = useState(5); // Number of customers per page
   const [searchTerm, setSearchTerm] = useState(""); // Search term
@@ -22,7 +23,6 @@ const CustomerList = () => {
     if (successMessage) {
       const timeout = setTimeout(() => {
         setSuccessMessage("");
-        navigate("/customer/create");
       }, 2000);
       return () => clearTimeout(timeout);
     }
@@ -33,13 +33,37 @@ const CustomerList = () => {
     navigate(`/customer/edit/${id}`);
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete customer with ID:", id);
-    setSuccessMessage("Customer deleted successfully!");
+  const handleDelete = () => {
+    if (selectedCustomerId) {
+      dispatch(deleteCustomer(selectedCustomerId))
+        .then(() => {
+          setSuccessMessage("Customer deleted successfully!");
+          setIsModalOpen(false); // Close modal after deletion
+          setSelectedCustomerId(null); // Clear selected ID
+  
+          // Refetch customers from API to ensure updated data is shown
+          dispatch(fetchCustomers());
+        })
+        .catch((error) => {
+          console.error("Error deleting customer:", error);
+        });
+    }
+  };
+  
+  const openModal = (id) => {
+    setSelectedCustomerId(id); // Store the ID of the customer to be deleted
+    setIsModalOpen(true); // Open the modal
+  };
+
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal
+    deleteCustomer(null); // Clear the category ID
   };
 
   const handleInsert = () => {
     setSuccessMessage("Please wait.. going to create a new Customer...");
+    navigate("/customer/create");
   };
 
   // Filter customers based on the search term
@@ -189,9 +213,9 @@ const CustomerList = () => {
                               size="sm"
                               variant="text"
                               color="red"
-                              onClick={() => handleDelete(customer.id)}
-                            >
-                              Delete
+                              onClick={() => openModal(customer.id)} // Open the modal with category id
+                              >
+                             Delete
                             </Button>
                           </div>
                         </td>
@@ -229,6 +253,29 @@ const CustomerList = () => {
           )}
         </CardBody>
       </Card>
+       {/* Modal for delete confirmation */}
+             <Modal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              contentLabel="Delete Confirmation"
+              className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl z-50"
+              overlayClassName="fixed inset-0 bg-black opacity-50 flex justify-center items-center"
+              >
+      
+              <div className="text-center">
+                <Typography variant="h6" color="blue-gray">
+                  Are you sure you want to delete this Customer?
+                </Typography>
+                <div className="mt-6 flex justify-center gap-4">
+                  <Button color="red" onClick={handleDelete} className="w-32">
+                    Yes, Delete
+                  </Button>
+                  <Button color="gray" onClick={closeModal} className="w-32">
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+       </Modal>
     </div>
   );
 };
