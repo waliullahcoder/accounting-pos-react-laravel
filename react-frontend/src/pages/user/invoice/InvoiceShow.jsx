@@ -51,16 +51,16 @@ const InvoiceShow = () => {
       <div ref={invoiceRef} className="w-full max-w-3xl p-6 shadow-lg bg-white">
         <Card className="w-full max-w-3xl p-6 shadow-lg bg-white">
           <div className="flex bg-gray-200 text-gray-700 justify-between items-center border-b pb-4 mb-4">
-            <Typography variant="h5" className="font-bold">Invoice</Typography>
-            <Typography className="text-gray-500">#INVOICENO{invoice?.id}</Typography>
+            <Typography variant="h5" className="font-bold pl-1.5 pt-0.6">Invoice</Typography>
+            <Typography className="text-gray-500 pr-1.5 pt-0.6">#INVOICENO{invoice?.id}</Typography>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Typography variant="h6" className="font-semibold">From:</Typography>
-              <Typography className="text-gray-700">AccPost Software Co. Ltd.</Typography>
-              <Typography className="text-gray-500">H#15, R#06, Block-E, Banasree, Dhaka</Typography>
-              <Typography className="text-gray-500">Mobile: +8801575020231</Typography>
+              <Typography variant="h6" className="font-semibold pl-1.5">From:</Typography>
+              <Typography className="text-gray-700 pl-1.5">AccPost Software Co. Ltd.</Typography>
+              <Typography className="text-gray-500 pl-1.5">H#15, R#06, Block-E, Banasree, Dhaka</Typography>
+              <Typography className="text-gray-500 pl-1.5">Mobile: +8801575020231</Typography>
             </div>
             <div>
               <Typography variant="h6" className="font-semibold">To:</Typography>
@@ -139,7 +139,7 @@ const InvoiceShow = () => {
                   </tr>
                   <tr className="border-t">
                     <th className="p-2 text-center" colSpan={5}><br/>
-                    In Word: {numberToWords(invoice?.net_amount)}<br/>
+                    In Word: {numberToWords(invoice?.net_amount)}<br/><br/>
                     </th>
                   </tr>
                   <tr className="border-t">
@@ -159,8 +159,9 @@ const InvoiceShow = () => {
             </tbody>
           </table>
         </Card>
-        <button onClick={handleDownloadPDF} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded">Download as PDF</button>
+       
       </div>
+      <button onClick={handleDownloadPDF} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded">Download as PDF</button>
     </div>
   );
 };
