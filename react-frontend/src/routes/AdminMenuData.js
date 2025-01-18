@@ -35,7 +35,7 @@ export const AdminMenuData = [
     icon: "CogIcon",
     subMenu: [
       { title: "Roles", path: "/admin/configurations/roles" },
-      { title: "Permissions", path: "/admin/configurations/permissions" },
+      { title: "Permissions", path: "/admin/permission/create" },
     ],
   },
   { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },

@@ -1,7 +1,15 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
-import { Table, AdminDashboard, CreateCategoryPage, CategoryListPage, CreateProductPage, ProductListPage } from "../components/AdminComponents";
+import { 
+  Table, 
+  AdminDashboard, 
+  CreateCategoryPage, 
+  CategoryListPage, 
+  CreateProductPage, 
+  ProductListPage,
+  CreatePermissionPage 
+} from "../components/AdminComponents";
 
 const AdminProtectedRoutes = [
   <Route
@@ -79,6 +87,17 @@ const AdminProtectedRoutes = [
    element={
      <PrivateMiddleware isAdmin={true}>
        <CreateProductPage />
+     </PrivateMiddleware>
+   }
+   />,
+
+   //Configurations
+   <Route
+   key="admin-permission-create"
+   path="/admin/permission/create"
+   element={
+     <PrivateMiddleware isAdmin={true}>
+       <CreatePermissionPage />
      </PrivateMiddleware>
    }
  />,
