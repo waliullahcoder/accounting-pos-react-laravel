@@ -30,6 +30,7 @@ const CustomerList = () => {
 
   const handleEdit = (id) => {
     console.log("Edit customer with ID:", id);
+    navigate(`/customer/edit/${id}`);
   };
 
   const handleDelete = (id) => {

@@ -25,7 +25,28 @@ const customerListApiAxios = async () => {
       throw error; // Rethrow the error for handling in calling code
     }
   };
+
+  const updateCustomerApiAxios = async (id, customerData) => {
+    try {
+      const response = await axios.put(`${userApi.customerUpdateApi}/${id}`, customerData);
+      return response;
+    } catch (error) {
+      console.error("Update Customer API Error:", error.message);
+      throw error;
+    }
+  };
+  
+  // Delete Customer function
+  const deleteCustomerApiAxios = async (id) => {
+    try {
+      const response = await axios.delete(`${userApi.customerDeleteApi}/${id}`);
+      return response;
+    } catch (error) {
+      console.error("Delete Customer API Error:", error.message);
+      throw error;
+    }
+  };
   
   
   // Export all methods
-  export { createCustomerApiAxios, customerListApiAxios };
+  export { createCustomerApiAxios, customerListApiAxios, updateCustomerApiAxios, deleteCustomerApiAxios };

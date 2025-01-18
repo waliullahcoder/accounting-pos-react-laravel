@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createCustomer, fetchCustomers } from './action';
+import { createCustomer, fetchCustomers, updateCustomer, deleteCustomer } from './action';
 import { initialCustomerState } from './state';
 
 const customerSlice = createSlice({
@@ -29,7 +29,22 @@ const customerSlice = createSlice({
       .addCase(fetchCustomers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
-      });
+      })
+      
+      .addCase(updateCustomer.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const updateCustomer = action.payload;
+        const index = state.customers.findIndex(category => category.id === updateCustomer.id);
+        if (index !== -1) {
+        state.customers[index] = updateCustomer;
+         }
+        })
+            
+       .addCase(deleteCustomer.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.customers = state.customers.filter(category => category.id !== action.payload.id);
+       });
+      
   },
 });
 

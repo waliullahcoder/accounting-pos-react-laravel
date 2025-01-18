@@ -55,6 +55,15 @@ const UserProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
+  <Route
+  key="Customer"
+  path="/customer/edit/:id"
+  element={
+    <PrivateMiddleware>
+      <CreateCustomerPage />
+    </PrivateMiddleware>
+   }
+  />,
 
 
 

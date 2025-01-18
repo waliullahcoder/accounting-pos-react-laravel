@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input, Textarea, CardHeader} from "@material-tailwind/react"; // Import Material Tailwind components
-import { createCustomer } from "../../../slices/customer/action";
-import { useNavigate } from "react-router-dom";
+import { Button, Input, Textarea } from "@material-tailwind/react";
+import { createCustomer, fetchCustomers, updateCustomer } from "../../../slices/customer/action";
+import { useNavigate, useParams } from "react-router-dom";
 
-const CreateCustomer = () => {
+const CustomerForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.customer);
+  const { id } = useParams(); // Get customer ID from URL params
+  const { customers, customer, status, error  } = useSelector((state) => state.customer);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -19,15 +20,43 @@ const CreateCustomer = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  useEffect(() => {
+    dispatch(fetchCustomers());
+  }, [dispatch]);
+  console.log("Wali2",isEdit,customers);
+  useEffect(() => {
+      if (id) {
+        setIsEdit(true);
+        const customer = customers.find((customer) => customer.id === parseInt(id));
+        console.log("Wali",customer,customers);
+        
+        if (customer) {
+          setFormData({
+            first_name: customer.first_name || '',
+            last_name: customer.last_name || '',
+            address: customer.address || '',
+            phone_number: customer.phone_number || '',
+            email: customer.email || '',
+            zip_code: customer.zip_code || '',
+          }); // Set the existing image if available
+        }
+      }
+    }, [id, customers]);
+
+  useEffect(() => {
+    if (id && customer) {
+      setFormData(customer);
+    }
+  }, [customer, id]);
 
   const validate = () => {
     const newErrors = {};
     if (!formData.first_name) newErrors.first_name = "First name is required";
     if (!formData.last_name) newErrors.last_name = "Last name is required";
     if (!formData.address) newErrors.address = "Address is required";
-    if (!formData.phone_number)
-      newErrors.phone_number = "Phone number is required";
+    if (!formData.phone_number) newErrors.phone_number = "Phone number is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.zip_code) newErrors.zip_code = "ZIP Code is required";
     return newErrors;
@@ -37,9 +66,10 @@ const CreateCustomer = () => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
-      dispatch(createCustomer(formData)).then((result) => {
+      const action = id ? updateCustomer({ id, ...formData }) : createCustomer(formData);
+      dispatch(action).then((result) => {
         if (result.meta.requestStatus === "fulfilled") {
-          setSuccessMessage("Customer created successfully!");
+          setSuccessMessage(id ? "Customer updated successfully!" : "Customer created successfully!");
         }
       });
     } else {
@@ -47,37 +77,26 @@ const CreateCustomer = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-  const handleInsert = () => {
-    setSuccessMessage("Please wait.. going to listing Customer...");
-  };
   useEffect(() => {
     if (successMessage) {
       const timeout = setTimeout(() => {
         navigate("/customer/list");
-      }, 2000); // Redirect after 2 seconds
+      }, 2000);
       return () => clearTimeout(timeout);
     }
-
   }, [successMessage, navigate]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-lg mx-auto p-5 bg-white rounded-md shadow-lg"
-    >
+    <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto p-5 bg-white rounded-md shadow-lg">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-        Create Customer or go to <Button color="green" onClick={handleInsert}>
-                     Customer List
-                  </Button>
-        
+        {id ? "Edit Customer" : "Create Customer"}
       </h2>
-      
-     
-          
+
       {successMessage && (
         <div className="bg-green-500 text-white text-center py-2 mb-4 rounded-md">
           {successMessage}
@@ -96,7 +115,7 @@ const CreateCustomer = () => {
         {errors.first_name && (
           <p className="text-red-500 text-sm">{errors.first_name}</p>
         )}
-      </div>
+        </div>
       <div className="mb-4">
         <Input
           label="Last Name"
@@ -163,17 +182,14 @@ const CreateCustomer = () => {
           <p className="text-red-500 text-sm">{errors.zip_code}</p>
         )}
       </div>
-      <Button
-        type="submit"
-        color="blue"
-        fullWidth
-        disabled={status === "loading"}
-      >
-        {status === "loading" ? "Submitting..." : "Save Customer"}
+      <Button type="submit" color="blue" fullWidth disabled={status === "loading"}>
+        {status === "loading" ? "Processing..." : id ? "Update Customer" : "Save Customer"}
       </Button>
+
+
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </form>
   );
 };
 
-export default CreateCustomer;
+export default CustomerForm;
