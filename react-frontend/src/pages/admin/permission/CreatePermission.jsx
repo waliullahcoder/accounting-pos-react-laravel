@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox } from "@material-tailwind/react";
 import Select from 'react-select';
-
+import {ucfirst} from '../../../utils/helpers'
 const roles =[
   { id: "1", name: "Manager" },
   { id: "2", name: "Salesman" },
@@ -9,7 +9,7 @@ const roles =[
   { id: "4", name: "Accountant" },
 ];
 // const roles = ["Manager", "Salesman", "Purchase-Man", "Accountant"];
-const permissions = ["Create", "View", "Edit", "Delete"];
+const permissions = ["create", "view", "edit", "delete"];
 const modules = [
   { id: "pdid01", name: "Product" },
   { id: "inv002", name: "Invoice" },
@@ -117,7 +117,7 @@ const CreatePermission = () => {
               {permissions.map((perm, index) => (
                 <Checkbox
                   key={index}
-                  label={perm}
+                  label={ucfirst(perm)}
                   checked={permissionsState[module.id].permissions[perm] || false}
                   onChange={() => handleCheckboxChange(module.id, perm)}
                   name={`permissions[${module.id}][${perm}]`}
@@ -141,20 +141,20 @@ const CreatePermission = () => {
 //       "module_id": "pdid01",
 //       "name": "Product",
 //       "permissions": {
-//         "Create": true,
-//         "View": false,
-//         "Edit": true,
-//         "Delete": false
+//         "create": true,
+//         "view": false,
+//         "edit": true,
+//         "delete": false
 //       }
 //     },
 //     {
 //       "module_id": "inv002",
 //       "name": "Invoice",
 //       "permissions": {
-//         "Create": false,
-//         "View": true,
-//         "Edit": false,
-//         "Delete": true
+//         "create": false,
+//         "view": true,
+//         "edit": false,
+//         "delete": true
 //       }
 //     }
 //   ]

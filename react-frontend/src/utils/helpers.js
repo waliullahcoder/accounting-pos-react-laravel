@@ -65,3 +65,7 @@ export const numberToWords = (num) => {
         return 'Tk. ';
   };
   
+  export const ucfirst = (str) => {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
