@@ -9,7 +9,7 @@ const roles =[
   { id: "4", name: "Accountant" },
 ];
 // const roles = ["Manager", "Salesman", "Purchase-Man", "Accountant"];
-const permissions = ["create", "view", "edit", "delete"];
+const permissions = ["create", "listing", "view", "edit", "delete", "allow"];
 const modules = [
   { id: "pdid01", name: "Product" },
   { id: "inv002", name: "Invoice" },
@@ -113,7 +113,7 @@ const CreatePermission = () => {
               <label className="text-gray-700 text-sm font-bold">{module.name} Permissions</label>
               <Checkbox onChange={(e) => handleSelectAll(module.id, e.target.checked)} />
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {permissions.map((perm, index) => (
                 <Checkbox
                   key={index}
@@ -142,19 +142,23 @@ const CreatePermission = () => {
 //       "name": "Product",
 //       "permissions": {
 //         "create": true,
+//         "listing": false,
 //         "view": false,
 //         "edit": true,
-//         "delete": false
+//         "delete": false,
+//         "allow": false
 //       }
 //     },
 //     {
 //       "module_id": "inv002",
 //       "name": "Invoice",
 //       "permissions": {
-//         "create": false,
-//         "view": true,
-//         "edit": false,
-//         "delete": true
+//         "create": true,
+//         "listing": false,
+//         "view": false,
+//         "edit": true,
+//         "delete": false,
+//         "allow": false
 //       }
 //     }
 //   ]
