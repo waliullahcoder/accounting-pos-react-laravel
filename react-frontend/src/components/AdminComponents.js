@@ -7,3 +7,5 @@ export { default as CreateProductPage } from "../pages/admin/product/CreateProdu
 export { default as ProductListPage } from "../pages/admin/product/ProductListPage";
 export { default as CreatePermissionPage } from "../pages/admin/permission/CreatePermissionPage";
 export { default as UserListPage } from "../pages/admin/user/UserListPage";
+export { default as CreateRolePage } from "../pages/admin/role/CreateRolePage";
+export { default as RoleListPage } from "../pages/admin/role/RoleListPage";

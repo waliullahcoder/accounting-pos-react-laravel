@@ -8,6 +8,7 @@ const customerController = require('../controllers/customerController');
 const vendorController = require('../controllers/vendorController');
 const orderController = require('../controllers/orderController');
 const purchaseOrderController = require('../controllers/purchaseOrderController');
+const roleController = require('../controllers/roleController');
 
 const router = express.Router();
 
@@ -64,5 +65,11 @@ router.get('/order/list', orderController.listOrders);
 router.post('/purchase/order/create', purchaseOrderController.createPurchaseOrderWithDetails);
 router.get('/purchase/order/show/:id', purchaseOrderController.getPurchaseOrderById);
 router.get('/purchase/order/list', purchaseOrderController.listPurchaseOrders);
+
+//Product Categories
+router.post('/role/add', roleController.roleAdd);
+router.get('/role/list', roleController.getRoleList);
+router.put('/role/update/:id', roleController.updateRole);
+router.delete('/role/delete/:id', roleController.deleteRole);
 
 module.exports = router;

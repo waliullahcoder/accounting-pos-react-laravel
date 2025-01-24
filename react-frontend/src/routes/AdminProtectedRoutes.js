@@ -9,7 +9,10 @@ import {
   CreateProductPage, 
   ProductListPage,
   CreatePermissionPage,
-  UserListPage
+  UserListPage,
+  CreateRolePage,
+  RoleListPage
+
 } from "../components/AdminComponents";
 
 const AdminProtectedRoutes = [
@@ -102,6 +105,35 @@ const AdminProtectedRoutes = [
      </PrivateMiddleware>
    }
    />,
+
+   // Role 
+      <Route
+      key="admin-role-create"
+      path="/admin/role/create"
+      element={
+        <PrivateMiddleware isAdmin={true}>
+          <CreateRolePage />
+        </PrivateMiddleware>
+      }
+    />,
+    <Route
+    key="admin-role-update"
+    path="/admin/role/edit/:id"
+    element={
+      <PrivateMiddleware isAdmin={true}>
+        <CreateRolePage />
+      </PrivateMiddleware>
+    }
+  />,
+    <Route
+    key="admin-role-list"
+    path="/admin/role/list"
+    element={
+      <PrivateMiddleware isAdmin={true}>
+        <RoleListPage />
+      </PrivateMiddleware>
+    }
+  />,
 
    //Configurations
    <Route
