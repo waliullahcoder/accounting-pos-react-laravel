@@ -8,7 +8,8 @@ import {
   CategoryListPage, 
   CreateProductPage, 
   ProductListPage,
-  CreatePermissionPage 
+  CreatePermissionPage,
+  UserListPage
 } from "../components/AdminComponents";
 
 const AdminProtectedRoutes = [
@@ -30,6 +31,16 @@ const AdminProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
+    // User List
+      <Route
+      key="admin-user-list"
+      path="/admin/user/list"
+      element={
+        <PrivateMiddleware isAdmin={true}>
+          <UserListPage />
+        </PrivateMiddleware>
+      }
+    />,
 
   //Product Category Section
   <Route
@@ -50,6 +61,7 @@ const AdminProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
+ 
   <Route
     key="admin-product-category-create"
     path="/admin/product/category/edit/:id"

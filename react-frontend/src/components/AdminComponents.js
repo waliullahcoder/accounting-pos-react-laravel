@@ -6,3 +6,4 @@ export { default as CategoryListPage } from "../pages/admin/product/CategoryList
 export { default as CreateProductPage } from "../pages/admin/product/CreateProductPage";
 export { default as ProductListPage } from "../pages/admin/product/ProductListPage";
 export { default as CreatePermissionPage } from "../pages/admin/permission/CreatePermissionPage";
+export { default as UserListPage } from "../pages/admin/user/UserListPage";

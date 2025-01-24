@@ -2,7 +2,7 @@ export const AdminMenuData = [
   { title: "Admin Dashboard", icon: "HomeIcon", path: "/admin" },
   { title: "Epamle Table", icon: "UserGroupIcon", path: "/admin/table" },
   { title: "Customers", icon: "UserGroupIcon", path: "/admin/customers" },
-  { title: "Users", icon: "UserIcon", path: "/admin/users" },
+  { title: "Users", icon: "UserIcon", path: "/admin/user/list" },
   {
     title: "Products",
     icon: "ShoppingCartIcon",

@@ -42,7 +42,7 @@ const findUserByemail = async (email) => {
 // Function to get all users
 const getUserList = async () => {
   try {
-    const [rows] = await pool.query('SELECT id, first_name, last_name, email, phone_number, zip_code, is_superadmin FROM users');
+    const [rows] = await pool.query('SELECT id, first_name, last_name, email, phone_number, zip_code, is_superadmin FROM users WHERE is_superadmin=0');
     return rows;
   } catch (error) {
     console.error("Error executing getUserList query:", error.message);

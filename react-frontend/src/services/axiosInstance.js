@@ -26,6 +26,17 @@ const registerauthapi = async ({ first_name, last_name, email, phone_number, zip
   }
 };
 
+
+//User list
+const userListApiAxios = async () => {
+  try {
+    const response = await axios.get(apis.userlistapi); // Correct API endpoint
+    return response; // Return the full response
+  } catch (error) {
+    console.error("list User API Error:", error.message);
+    throw error; // Rethrow the error for handling in calling code
+  }
+};
   
   // Logout function
   const logoutauthapi = async (token) => {
@@ -47,4 +58,4 @@ const registerauthapi = async ({ first_name, last_name, email, phone_number, zip
   };
   
   // Export all methods
-  export { loginauthapi, registerauthapi, logoutauthapi };
+  export { loginauthapi, registerauthapi, logoutauthapi, userListApiAxios };

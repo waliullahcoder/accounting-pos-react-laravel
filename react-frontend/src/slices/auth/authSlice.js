@@ -1,7 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import apis from "../../api/authApi";
+import { userListApiAxios } from "../../services/axiosInstance";
 // Initialize the initial state with token and isSuperAdmin from localStorage
+
+// Async thunk for fetching user list
+export const fetchUserList = createAsyncThunk(
+  apis.userlistapi,
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await userListApiAxios();
+      console.log("API Response:", response.data); // Debugging API response
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data || "Something went wrong. Please try again.");
+    }
+  }
+);
 const initialState = {
+  users: [],  // Ensuring `users` is always an array
   token: localStorage.getItem("token") || null,
   isSuperAdmin: JSON.parse(localStorage.getItem("isSuperAdmin")) || false,
 };
@@ -24,6 +41,25 @@ const authSlice = createSlice({
       localStorage.removeItem("isSuperAdmin");
     },
   },
+
+  extraReducers: (builder) => {
+      builder
+        .addCase(fetchUserList.pending, (state) => {
+          state.status = "loading";
+        })
+        .addCase(fetchUserList.fulfilled, (state, action) => {
+          state.status = "succeeded";
+          state.users = Array.isArray(action.payload) ? action.payload : []; // Ensuring users is an array
+          console.log("Updated Redux Store Users:", state.users); // Debugging state update
+        })
+        
+        .addCase(fetchUserList.rejected, (state, action) => {
+          state.status = "failed";
+          state.error = action.payload;
+        });
+    },
+
+
 });
 
 // Export actions and reducer

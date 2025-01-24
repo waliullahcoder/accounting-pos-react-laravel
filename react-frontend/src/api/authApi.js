@@ -4,6 +4,7 @@ const baseurl = 'http://localhost:5000'; //node apis
 // Define your API endpoints
 const loginapi = `${baseurl}/api/auth/login`;
 const registerapi = `${baseurl}/api/auth/register`;
+const userlistapi = `${baseurl}/api/auth/users`;
 const logoutapi = `${baseurl}/api/auth/logout`;
 
 // Export as named exports
@@ -14,6 +15,7 @@ const apis = {
   loginapi,
   registerapi,
   logoutapi,
+  userlistapi
 };
 
 export default apis; // Default export with all APIs
