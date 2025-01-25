@@ -85,7 +85,8 @@ const PermissionForm = () => {
     setPermissionsState((prev) => ({
       ...prev,
       [moduleId]: {
-        ...prev[moduleId],
+        module_id: moduleId,  // Ensure module_id is always set
+        module_name: modules.find((mod) => mod.id === moduleId)?.name || "", // Ensure module_name is set
         permissions: permissions.reduce((acc, perm) => {
           acc[perm] = checked;
           return acc;
@@ -93,16 +94,13 @@ const PermissionForm = () => {
       },
     }));
   };
-
-  const handleCheckboxChange = (moduleId, permission) => {
-    console.log("Module ID:", moduleId);
-    console.log("Current State:", permissionsState);
-    console.log("Previous Module Data:", permissionsState[moduleId]);
   
+  const handleCheckboxChange = (moduleId, permission) => {
     setPermissionsState((prev) => ({
       ...prev,
       [moduleId]: {
-        ...prev[moduleId],
+        module_id: moduleId,  // Ensure module_id is always set
+        module_name: modules.find((mod) => mod.id === moduleId)?.name || "", // Ensure module_name is set
         permissions: {
           ...(prev[moduleId]?.permissions || {}),
           [permission]: !prev[moduleId]?.permissions?.[permission] || false,
@@ -110,6 +108,7 @@ const PermissionForm = () => {
       },
     }));
   };
+  
   
 
   const handleSubmit = async (e) => {
