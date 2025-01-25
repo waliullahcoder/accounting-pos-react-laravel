@@ -133,36 +133,6 @@ const CreatePermission = () => {
         Save Permission
       </Button>
     </form>
-// Request submit
-// {
-//   "role_id": "1",
-//   "modules": [
-//     {
-//       "module_id": "pdid01",
-//       "name": "Product",
-//       "permissions": {
-//         "create": true,
-//         "listing": false,
-//         "view": false,
-//         "edit": true,
-//         "delete": false,
-//         "allow": false
-//       }
-//     },
-//     {
-//       "module_id": "inv002",
-//       "name": "Invoice",
-//       "permissions": {
-//         "create": true,
-//         "listing": false,
-//         "view": false,
-//         "edit": true,
-//         "delete": false,
-//         "allow": false
-//       }
-//     }
-//   ]
-// }
 
   );
 };

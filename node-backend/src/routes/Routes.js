@@ -9,6 +9,7 @@ const vendorController = require('../controllers/vendorController');
 const orderController = require('../controllers/orderController');
 const purchaseOrderController = require('../controllers/purchaseOrderController');
 const roleController = require('../controllers/roleController');
+const permissionController = require('../controllers/permissionController');
 
 const router = express.Router();
 
@@ -66,10 +67,16 @@ router.post('/purchase/order/create', purchaseOrderController.createPurchaseOrde
 router.get('/purchase/order/show/:id', purchaseOrderController.getPurchaseOrderById);
 router.get('/purchase/order/list', purchaseOrderController.listPurchaseOrders);
 
-//Product Categories
+//Role
 router.post('/role/add', roleController.roleAdd);
 router.get('/role/list', roleController.getRoleList);
 router.put('/role/update/:id', roleController.updateRole);
 router.delete('/role/delete/:id', roleController.deleteRole);
+
+//Permission
+router.post('/permission/add', permissionController.permissionAdd);
+router.get('/permission/list', permissionController.getPermissionList);
+router.put('/permission/update/:id', permissionController.updatePermission);
+router.delete('/permission/delete/:id', permissionController.deletePermission);
 
 module.exports = router;
