@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox } from "@material-tailwind/react";
+import { useDispatch, useSelector } from "react-redux";
+import {ucfirst} from '../../../utils/helpers';
+import { fetchRoles } from "../../../slices/role/action";
 import Select from 'react-select';
-import {ucfirst} from '../../../utils/helpers'
-const roles =[
-  { id: "1", name: "Manager" },
-  { id: "2", name: "Salesman" },
-  { id: "3", name: "Purchase-Man" },
-  { id: "4", name: "Accountant" },
-];
-// const roles = ["Manager", "Salesman", "Purchase-Man", "Accountant"];
 const permissions = ["create", "listing", "view", "edit", "delete", "allow"];
 const modules = [
   { id: "pdid01", name: "Product" },
@@ -18,6 +13,9 @@ const modules = [
 ];
 
 const CreatePermission = () => {
+  const dispatch = useDispatch();
+  const { roles, status, error } = useSelector((state) => state.role);
+  
   const [selectedRole, setSelectedRole] = useState(roles[0]);
   const [permissionsState, setPermissionsState] = useState(
     modules.reduce((acc, module) => {
@@ -33,6 +31,12 @@ const CreatePermission = () => {
     }, {})
   );
 
+  useEffect(() => {
+    dispatch(fetchRoles());
+  }, [dispatch]);
+
+  console.log("WALI PERMISSION",roles, status, error);
+  
   const handleSelectAllModule = (checked) => {
     const newPermissions = modules.reduce((acc, module) => {
       acc[module.id] = {
