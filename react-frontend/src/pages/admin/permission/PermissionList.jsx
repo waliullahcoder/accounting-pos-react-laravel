@@ -182,7 +182,7 @@ const PermissionList = () => {
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {permission.module_name || "N/A"} {/* Default value if module_name is missing */}
+                            {permission.module_id || "N/A"} {/* Default value if module_name is missing */}
                           </Typography>
                         </td>
                         <td className={className}>

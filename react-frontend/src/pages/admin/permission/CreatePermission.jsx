@@ -47,7 +47,7 @@ const PermissionForm = () => {
         const found = existingPermissions.find((perm) => perm.module_id === module.id);
         acc[module.id] = {
           module_id: module.id,
-          name: module.name,
+          module_name: module.name,
           permissions: permissions.reduce((pAcc, perm) => {
             pAcc[perm] = found ? found[perm] : false;
             return pAcc;
@@ -70,7 +70,7 @@ const PermissionForm = () => {
       modules.reduce((acc, module) => {
         acc[module.id] = {
           module_id: module.id,
-          name: module.name,
+          module_name: module.name,
           permissions: permissions.reduce((pAcc, perm) => {
             pAcc[perm] = checked;
             return pAcc;
@@ -95,17 +95,22 @@ const PermissionForm = () => {
   };
 
   const handleCheckboxChange = (moduleId, permission) => {
+    console.log("Module ID:", moduleId);
+    console.log("Current State:", permissionsState);
+    console.log("Previous Module Data:", permissionsState[moduleId]);
+  
     setPermissionsState((prev) => ({
       ...prev,
       [moduleId]: {
         ...prev[moduleId],
         permissions: {
-          ...prev[moduleId].permissions,
-          [permission]: !prev[moduleId].permissions[permission],
+          ...(prev[moduleId]?.permissions || {}),
+          [permission]: !prev[moduleId]?.permissions?.[permission] || false,
         },
       },
     }));
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
