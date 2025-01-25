@@ -9,3 +9,5 @@ export { default as CreatePermissionPage } from "../pages/admin/permission/Creat
 export { default as UserListPage } from "../pages/admin/user/UserListPage";
 export { default as CreateRolePage } from "../pages/admin/role/CreateRolePage";
 export { default as RoleListPage } from "../pages/admin/role/RoleListPage";
+export { default as PermissionListPage } from "../pages/admin/permission/PermissionListPage";
+

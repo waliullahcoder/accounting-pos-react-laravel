@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import {ucfirst} from '../../../utils/helpers';
+import { ucfirst } from "../../../utils/helpers";
 import { fetchRoles } from "../../../slices/role/action";
-import Select from 'react-select';
+import { createPermission, updatePermission } from "../../../slices/permission/action";
+import Select from "react-select";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const permissions = ["create", "listing", "view", "edit", "delete", "allow"];
 const modules = [
   { id: "pdid01", name: "Product" },
@@ -12,44 +16,69 @@ const modules = [
   { id: "ven004", name: "Vendor" },
 ];
 
-const CreatePermission = () => {
+const PermissionForm = () => {
   const dispatch = useDispatch();
-  const { roles, status, error } = useSelector((state) => state.role);
-  
-  const [selectedRole, setSelectedRole] = useState(roles[0]);
-  const [permissionsState, setPermissionsState] = useState(
-    modules.reduce((acc, module) => {
-      acc[module.id] = {
-        module_id: module.id,
-        name: module.name,
-        permissions: permissions.reduce((pAcc, perm) => {
-          pAcc[perm] = false;
-          return pAcc;
-        }, {}),
-      };
-      return acc;
-    }, {})
-  );
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const isEdit = Boolean(id);
+  const { roles } = useSelector((state) => state.role);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [permissionsState, setPermissionsState] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
 
-  console.log("WALI PERMISSION",roles, status, error);
-  
+  useEffect(() => {
+    if (isEdit) {
+      fetchRolePermissions(id);
+    }
+  }, [isEdit, id]);
+
+  const fetchRolePermissions = async (roleId) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`/api/permissions/${roleId}`);
+      const existingPermissions = response.data;
+
+      const formattedPermissions = modules.reduce((acc, module) => {
+        const found = existingPermissions.find((perm) => perm.module_id === module.id);
+        acc[module.id] = {
+          module_id: module.id,
+          name: module.name,
+          permissions: permissions.reduce((pAcc, perm) => {
+            pAcc[perm] = found ? found[perm] : false;
+            return pAcc;
+          }, {}),
+        };
+        return acc;
+      }, {});
+
+      setPermissionsState(formattedPermissions);
+      setSelectedRole(roles.find((role) => role.id === roleId));
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching permissions:", error);
+      setLoading(false);
+    }
+  };
+
   const handleSelectAllModule = (checked) => {
-    const newPermissions = modules.reduce((acc, module) => {
-      acc[module.id] = {
-        module_id: module.id,
-        name: module.name,
-        permissions: permissions.reduce((pAcc, perm) => {
-          pAcc[perm] = checked;
-          return pAcc;
-        }, {}),
-      };
-      return acc;
-    }, {});
-    setPermissionsState(newPermissions);
+    setPermissionsState(
+      modules.reduce((acc, module) => {
+        acc[module.id] = {
+          module_id: module.id,
+          name: module.name,
+          permissions: permissions.reduce((pAcc, perm) => {
+            pAcc[perm] = checked;
+            return pAcc;
+          }, {}),
+        };
+        return acc;
+      }, {})
+    );
   };
 
   const handleSelectAll = (moduleId, checked) => {
@@ -78,38 +107,52 @@ const CreatePermission = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = {
-      role_id: selectedRole,
-      modules: Object.values(permissionsState),
-    };
-    console.log("Submitting Data: ", formData);
-    // Send formData to backend via API request
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const role_id = selectedRole?.value;
+    const modulesData = Object.values(permissionsState);
+
+    const payload = { role_id, modules: modulesData };
+
+    try {
+      if (isEdit) {
+        await dispatch(updatePermission({ id, ...payload }));
+        setSuccessMessage("Permission updated successfully!");
+      } else {
+        await dispatch(createPermission(payload));
+        setSuccessMessage("Permission created successfully!");
+      }
+      setTimeout(() => navigate("/admin/permission/list"), 2000);
+    } catch (error) {
+      console.error("Error submitting permissions:", error);
+    }
+    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-full mx-auto p-5 bg-white rounded-md shadow-lg">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Create Permission</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">
+        {isEdit ? "Edit Permissions" : "Create Permissions"}
+      </h2>
 
-      {/* Role Selection */}
+      {successMessage && <p className="text-green-600 text-center mb-4">{successMessage}</p>}
+
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
+        <label className="block text-gray-700 text-sm font-bold mb-2">Select Role</label>
         <Select
           options={roles.map((role) => ({ value: role.id, label: role.name }))}
-          value={roles.find((role) => role.id === selectedRole)}
+          value={selectedRole}
           onChange={(selectedOption) => setSelectedRole(selectedOption)}
           name="role_id"
         />
-
       </div>
 
-      {/* Select All Modules */}
       <div className="flex items-center justify-center mb-4">
-        <Checkbox label="All Select (All Modules)" onChange={(e) => handleSelectAllModule(e.target.checked)} />
+        <Checkbox label="Select All Modules" onChange={(e) => handleSelectAllModule(e.target.checked)} />
       </div>
 
-      {/* Modules & Permissions */}
       <div className="grid grid-cols-2 gap-8">
         {modules.map((module) => (
           <div key={module.id} className="mb-2 border p-2 rounded-lg">
@@ -122,7 +165,7 @@ const CreatePermission = () => {
                 <Checkbox
                   key={index}
                   label={ucfirst(perm)}
-                  checked={permissionsState[module.id].permissions[perm] || false}
+                  checked={permissionsState[module.id]?.permissions?.[perm] || false}
                   onChange={() => handleCheckboxChange(module.id, perm)}
                   name={`permissions[${module.id}][${perm}]`}
                 />
@@ -132,13 +175,11 @@ const CreatePermission = () => {
         ))}
       </div>
 
-      {/* Submit Button */}
-      <Button type="submit" color="blue" fullWidth>
-        Save Permission
+      <Button type="submit" color="blue" fullWidth disabled={loading}>
+        {loading ? "Saving..." : "Save Permission"}
       </Button>
     </form>
-
   );
 };
 
-export default CreatePermission;
+export default PermissionForm;

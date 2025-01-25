@@ -36,7 +36,8 @@ export const AdminMenuData = [
     subMenu: [
       { title: "Role Create", path: "/admin/role/create" },
       { title: "Role List", path: "/admin/role/list" },
-      { title: "Permissions", path: "/admin/permission/create" },
+      { title: "Create Permission", path: "/admin/permission/create" },
+      { title: "Permission List", path: "/admin/permission/list" },
     ],
   },
   { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },

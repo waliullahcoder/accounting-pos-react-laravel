@@ -7,6 +7,7 @@ import customerReducer from '../../slices/customer/reducer';
 import categoryReducer from '../../slices/category/reducer';
 import productReducer from '../../slices/product/reducer';
 import roleReducer from '../../slices/role/reducer';
+import permissionReducer from '../../slices/permission/reducer';
 // Configure the Redux store with the auth reducer
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     category: categoryReducer,
     product: productReducer,
     role: roleReducer,
+    permission: permissionReducer,
   },
 });
 

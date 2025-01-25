@@ -11,7 +11,8 @@ import {
   CreatePermissionPage,
   UserListPage,
   CreateRolePage,
-  RoleListPage
+  RoleListPage,
+  PermissionListPage,
 
 } from "../components/AdminComponents";
 
@@ -145,6 +146,15 @@ const AdminProtectedRoutes = [
      </PrivateMiddleware>
    }
  />,
+      <Route
+      key="admin-permission-list"
+      path="/admin/permission/list"
+      element={
+        <PrivateMiddleware isAdmin={true}>
+          <PermissionListPage />
+        </PrivateMiddleware>
+      }
+      />,
 
 
 
