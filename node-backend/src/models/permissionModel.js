@@ -56,6 +56,18 @@ const getPermissionList = async () => {
     }
 };
 
+
+// Edit Category
+const permissionByRoleId = async (role_id) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM permissions WHERE role_id = ?',[role_id]);
+    return rows;
+  } catch (error) {
+    console.error("Error edit permissions:", error.message);
+    throw error;
+  }
+};
+
 // Update Permission (Delete existing, then insert new)
 const updatePermission = async (role_id, modules) => {
     try {
@@ -126,6 +138,7 @@ const deletePermission = async (role_id) => {
 module.exports = {
     createPermission,
     getPermissionList,
+    permissionByRoleId,
     updatePermission,
     deletePermission,
 };

@@ -18,6 +18,10 @@ exports.getPermissionList = async () => {
   }
 };
 
+exports.permissionByRoleId = async (id) => {
+  return await permissionModel.permissionByRoleId(id);
+};
+
 // Update Permission
 exports.updatePermission = async (id, role_id, modules) => {
   try {

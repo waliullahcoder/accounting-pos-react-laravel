@@ -141,7 +141,7 @@ const PermissionList = () => {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {["S/L", "Permission ID", "User ID", "Name", "Actions"].map((el) => (
+                    {["S/L", "Role ID", "Module ID", "Module Name", "create", "listing", "view", "edit", "delete", "allow", "Actions"].map((el) => (
                       <th
                         key={el}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -172,26 +172,81 @@ const PermissionList = () => {
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {permission.id}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-                          <Typography className="text-xs font-semibold text-blue-gray-600">
                             {permission.role_id || null}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {permission.module_id || "N/A"} {/* Default value if module_name is missing */}
+                            {permission.module_id || "N/A"} 
                           </Typography>
                         </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {permission.module_name || "N/A"} 
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.create ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.create ? "True" : "False"}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.listing ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.listing ? "True" : "False"}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.view ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.view ? "True" : "False"}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.edit ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.edit ? "True" : "False"}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.delete ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.delete ? "True" : "False"}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography
+                            className={`text-xs font-semibold ${
+                              permission.allow ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {permission.allow ? "True" : "False"}
+                          </Typography>
+                        </td>
+
                         <td className={className}>
                           <div className="flex gap-2">
                             <Button
                               size="sm"
                               variant="text"
                               color="blue"
-                              onClick={() => handleEdit(permission.id)}
+                              onClick={() => handleEdit(permission.role_id)}
                             >
                               Edit
                             </Button>
@@ -199,7 +254,7 @@ const PermissionList = () => {
                               size="sm"
                               variant="text"
                               color="red"
-                              onClick={() => openModal(permission.id)} // Open the modal with permission id
+                              onClick={() => openModal(permission.role_id)} // Open the modal with permission id
                             >
                               Delete
                             </Button>

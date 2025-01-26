@@ -49,6 +49,24 @@ exports.updatePermission = async (req, res) => {
 };
 
 
+
+exports.getPermissionByRoleId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const permission = await permissionService.permissionByRoleId(id);
+console.log("Controller");
+    if (!permission) {
+      return res.status(404).json({ error: 'permission not found' });
+    }
+
+    res.status(200).json(permission);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 // Delete Permission
 exports.deletePermission = async (req, res) => {
   try {

@@ -41,9 +41,9 @@ export const fetchPermissions = createAsyncThunk(
 
 export const updatePermission = createAsyncThunk(
   thunksPermission.updatePermission,  // ✅ Use a string
-  async ({ id, role_id, name }, { rejectWithValue }) => {
+  async ({ id, role_id, modules }, { rejectWithValue }) => {
     try {
-      const response = await updatePermissionApiAxios(id, { role_id, name });
+      const response = await updatePermissionApiAxios(id, { role_id, modules });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || 'Something went wrong. Please try again.');

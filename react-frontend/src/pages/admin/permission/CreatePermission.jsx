@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Checkbox } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { ucfirst } from "../../../utils/helpers";
 import { fetchRoles } from "../../../slices/role/action";
 import { createPermission, updatePermission } from "../../../slices/permission/action";
 import Select from "react-select";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const permissions = ["create", "listing", "view", "edit", "delete", "allow"];
+const permissionChecks = ["create", "listing", "view", "edit", "delete", "allow"];
 const modules = [
   { id: "pdid01", name: "Product" },
   { id: "inv002", name: "Invoice" },
@@ -21,26 +20,24 @@ const PermissionForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
+
   const { roles } = useSelector((state) => state.role);
+
   const [selectedRole, setSelectedRole] = useState(null);
   const [permissionsState, setPermissionsState] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Fetch roles on mount
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (isEdit) {
-      fetchRolePermissions(id);
-    }
-  }, [isEdit, id]);
-
+  // Fetch permissions for selected role
   const fetchRolePermissions = async (roleId) => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/permissions/${roleId}`);
+      const response = await axios.put(`http://localhost:5000/api/permission/edit/${roleId}`);
       const existingPermissions = response.data;
 
       const formattedPermissions = modules.reduce((acc, module) => {
@@ -48,7 +45,7 @@ const PermissionForm = () => {
         acc[module.id] = {
           module_id: module.id,
           module_name: module.name,
-          permissions: permissions.reduce((pAcc, perm) => {
+          permissions: permissionChecks.reduce((pAcc, perm) => {
             pAcc[perm] = found ? found[perm] : false;
             return pAcc;
           }, {}),
@@ -65,13 +62,28 @@ const PermissionForm = () => {
     }
   };
 
+  // If editing, fetch role permissions
+  useEffect(() => {
+    if (isEdit && roles.length > 0) {
+      fetchRolePermissions(id);
+    }
+  }, [isEdit, id, roles]);
+
+  // Handle role selection
+  const handleRoleChange = (selectedOption) => { 
+    setSelectedRole(selectedOption.value);
+    fetchRolePermissions(selectedOption.value);
+    
+  };
+
+  // Handle Select All for all modules
   const handleSelectAllModule = (checked) => {
     setPermissionsState(
       modules.reduce((acc, module) => {
         acc[module.id] = {
           module_id: module.id,
           module_name: module.name,
-          permissions: permissions.reduce((pAcc, perm) => {
+          permissions: permissionChecks.reduce((pAcc, perm) => {
             pAcc[perm] = checked;
             return pAcc;
           }, {}),
@@ -81,51 +93,54 @@ const PermissionForm = () => {
     );
   };
 
+  // Handle Select All for individual modules
   const handleSelectAll = (moduleId, checked) => {
     setPermissionsState((prev) => ({
       ...prev,
       [moduleId]: {
-        module_id: moduleId,  // Ensure module_id is always set
-        module_name: modules.find((mod) => mod.id === moduleId)?.name || "", // Ensure module_name is set
-        permissions: permissions.reduce((acc, perm) => {
+        module_id: moduleId,
+        module_name: modules.find((mod) => mod.id === moduleId)?.name || "",
+        permissions: permissionChecks.reduce((acc, perm) => {
           acc[perm] = checked;
           return acc;
         }, {}),
       },
     }));
   };
-  
+
+  // Handle individual checkbox change
   const handleCheckboxChange = (moduleId, permission) => {
     setPermissionsState((prev) => ({
       ...prev,
       [moduleId]: {
-        module_id: moduleId,  // Ensure module_id is always set
-        module_name: modules.find((mod) => mod.id === moduleId)?.name || "", // Ensure module_name is set
+        module_id: moduleId,
+        module_name: modules.find((mod) => mod.id === moduleId)?.name || "",
         permissions: {
-          ...(prev[moduleId]?.permissions || {}),
-          [permission]: !prev[moduleId]?.permissions?.[permission] || false,
+          ...(prev[moduleId]?.permissions || {}), // Fixed incorrect key usage
+          [permission]: !prev[moduleId]?.permissions?.[permission],
         },
       },
     }));
   };
-  
-  
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const role_id = selectedRole?.value;
+    const role_id = selectedRole?.id;
+    
+    console.log("WALI role id2",selectedRole?.id);
+    console.log("WALI ROLE ID",role_id);
     const modulesData = Object.values(permissionsState);
-
     const payload = { role_id, modules: modulesData };
 
     try {
       if (isEdit) {
-        await dispatch(updatePermission({ id, ...payload }));
+        await dispatch(updatePermission({ id, ...payload })).unwrap();
         setSuccessMessage("Permission updated successfully!");
       } else {
-        await dispatch(createPermission(payload));
+        await dispatch(createPermission(payload)).unwrap();
         setSuccessMessage("Permission created successfully!");
       }
       setTimeout(() => navigate("/admin/permission/list"), 2000);
@@ -143,35 +158,41 @@ const PermissionForm = () => {
 
       {successMessage && <p className="text-green-600 text-center mb-4">{successMessage}</p>}
 
+      {/* Role Selection Dropdown */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Select Role</label>
         <Select
-          options={roles.map((role) => ({ value: role.id, label: role.name }))}
-          value={selectedRole}
-          onChange={(selectedOption) => setSelectedRole(selectedOption)}
-          name="role_id"
+          options={roles.map((role) => ({ value: role.id, label: `${role.name} (RoleID: ${role.id}) (UserId: ${role.user_id})` }))}
+          value={roles.find((role) => role.id === selectedRole?.value)}
+          onChange={handleRoleChange}
+          isLoading={roles.length === 0}
+          placeholder="Select a Role"
         />
       </div>
 
+      {/* Select All Modules */}
       <div className="flex items-center justify-center mb-4">
         <Checkbox label="Select All Modules" onChange={(e) => handleSelectAllModule(e.target.checked)} />
       </div>
 
+      {/* Modules Permissions Grid */}
       <div className="grid grid-cols-2 gap-8">
         {modules.map((module) => (
           <div key={module.id} className="mb-2 border p-2 rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <label className="text-gray-700 text-sm font-bold">{module.name} Permissions</label>
-              <Checkbox onChange={(e) => handleSelectAll(module.id, e.target.checked)} />
+              <Checkbox
+                checked={permissionsState[module.id]?.permissions && Object.values(permissionsState[module.id]?.permissions).every(Boolean)}
+                onChange={(e) => handleSelectAll(module.id, e.target.checked)}
+              />
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {permissions.map((perm, index) => (
+              {permissionChecks.map((perm) => (
                 <Checkbox
-                  key={index}
-                  label={ucfirst(perm)}
+                  key={perm}
+                  label={perm.charAt(0).toUpperCase() + perm.slice(1)}
                   checked={permissionsState[module.id]?.permissions?.[perm] || false}
                   onChange={() => handleCheckboxChange(module.id, perm)}
-                  name={`permissions[${module.id}][${perm}]`}
                 />
               ))}
             </div>
@@ -180,7 +201,7 @@ const PermissionForm = () => {
       </div>
 
       <Button type="submit" color="blue" fullWidth disabled={loading}>
-        {loading ? "Saving..." : "Save Permission"}
+        {loading ? "Saving..." : isEdit ? "Update Permission" : "Create Permission"}
       </Button>
     </form>
   );

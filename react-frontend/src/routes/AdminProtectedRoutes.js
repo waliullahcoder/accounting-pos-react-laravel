@@ -136,7 +136,7 @@ const AdminProtectedRoutes = [
     }
   />,
 
-   //Configurations
+   //Permission
    <Route
    key="admin-permission-create"
    path="/admin/permission/create"
@@ -145,7 +145,16 @@ const AdminProtectedRoutes = [
        <CreatePermissionPage />
      </PrivateMiddleware>
    }
- />,
+    />,
+    <Route
+   key="admin-permission-edit"
+   path="/admin/permission/edit/:id"
+   element={
+     <PrivateMiddleware isAdmin={true}>
+       <CreatePermissionPage />
+     </PrivateMiddleware>
+   }
+    />,
       <Route
       key="admin-permission-list"
       path="/admin/permission/list"
