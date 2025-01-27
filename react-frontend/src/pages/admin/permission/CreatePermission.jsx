@@ -23,7 +23,7 @@ const PermissionForm = () => {
 
   const { roles } = useSelector((state) => state.role);
 
-  const [selectedRole, setSelectedRole] = useState(null);
+  var [selectedRole, setSelectedRole] = useState(null);
   const [permissionsState, setPermissionsState] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -69,13 +69,15 @@ const PermissionForm = () => {
     }
   }, [isEdit, id, roles]);
 
+ 
+
   // Handle role selection
   const handleRoleChange = (selectedOption) => { 
     setSelectedRole(selectedOption.value);
     fetchRolePermissions(selectedOption.value);
     
   };
-
+ 
   // Handle Select All for all modules
   const handleSelectAllModule = (checked) => {
     setPermissionsState(
@@ -122,7 +124,10 @@ const PermissionForm = () => {
       },
     }));
   };
-
+console.log("WALIPPP",roles,selectedRole?.value,id,roles.find((role) => role.id === Number(id)));
+    if(isEdit){
+       selectedRole = roles.find((role) => role.id === Number(id));
+    }
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,9 +166,18 @@ const PermissionForm = () => {
       {/* Role Selection Dropdown */}
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2">Select Role</label>
-        <Select
+      
+
+          <Select
           options={roles.map((role) => ({ value: role.id, label: `${role.name} (RoleID: ${role.id}) (UserId: ${role.user_id})` }))}
-          value={roles.find((role) => role.id === selectedRole?.value)}
+          value={ 
+            isEdit ?  
+            selectedRole? {value: selectedRole.id,label: `${selectedRole.name} (RoleID: ${selectedRole.id}) (UserId: ${selectedRole.user_id})`}: null 
+            : 
+            roles.find((role) => role.id === selectedRole?.value)
+           
+          }
+         
           onChange={handleRoleChange}
           isLoading={roles.length === 0}
           placeholder="Select a Role"
