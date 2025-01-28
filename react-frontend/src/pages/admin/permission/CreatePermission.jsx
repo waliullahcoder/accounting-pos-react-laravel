@@ -23,6 +23,7 @@ const PermissionForm = () => {
 
   const { roles } = useSelector((state) => state.role);
 
+  var [isChangeRole, setIsChangeRole] = useState(false);
   var [selectedRole, setSelectedRole] = useState(null);
   const [permissionsState, setPermissionsState] = useState({});
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ const PermissionForm = () => {
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
+ 
 
   // Fetch permissions for selected role
   const fetchRolePermissions = async (roleId) => {
@@ -69,11 +71,22 @@ const PermissionForm = () => {
     }
   }, [isEdit, id, roles]);
 
- 
+  useEffect(() => {
+    if(isChangeRole==true){
+      setIsChangeRole(true);
+    }else{
+      setIsChangeRole(false);
+    }
+      
+      console.log("Updated isChangeRole inside useEffect:", isChangeRole);
+    
+  }, [isChangeRole]);
 
   // Handle role selection
   const handleRoleChange = (selectedOption) => { 
     setSelectedRole(selectedOption.value);
+    setIsChangeRole(true);
+    console.log("WALI ROLECH",isChangeRole,selectedOption.value);
     fetchRolePermissions(selectedOption.value);
     
   };
@@ -124,8 +137,8 @@ const PermissionForm = () => {
       },
     }));
   };
-console.log("WALIPPP",roles,selectedRole?.value,id,roles.find((role) => role.id === Number(id)));
-    if(isEdit){
+  
+if(isEdit && isChangeRole==false){
        selectedRole = roles.find((role) => role.id === Number(id));
     }
   // Handle form submission
@@ -171,7 +184,7 @@ console.log("WALIPPP",roles,selectedRole?.value,id,roles.find((role) => role.id 
           <Select
           options={roles.map((role) => ({ value: role.id, label: `${role.name} (RoleID: ${role.id}) (UserId: ${role.user_id})` }))}
           value={ 
-            isEdit ?  
+            isEdit && isChangeRole==false ?  
             selectedRole? {value: selectedRole.id,label: `${selectedRole.name} (RoleID: ${selectedRole.id}) (UserId: ${selectedRole.user_id})`}: null 
             : 
             roles.find((role) => role.id === selectedRole?.value)
