@@ -54,8 +54,25 @@ const createRole = async (user_id, name) => {
 // Function to get all Role
 const getRoleList = async () => {
   try {
-    const [rows] = await pool.query('SELECT id, user_id, name FROM roles ORDER BY id DESC');
+    const [rows] = await pool.query(`
+      SELECT 
+        roles.id, 
+        roles.user_id, 
+        roles.name,
+        users.email as user_email,
+        users.first_name as user_first_name,
+        users.last_name as user_last_name
+      FROM 
+        roles 
+      JOIN 
+        users
+      ON
+        roles.user_id = users.id 
+      ORDER BY 
+        roles.id DESC
+      `);
     return rows;
+    
   } catch (error) {
     console.error("Error executing roles query:", error.message);
     throw error;

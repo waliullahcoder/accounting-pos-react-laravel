@@ -141,7 +141,7 @@ const PermissionList = () => {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {["S/L", "Role ID", "Module ID", "Module Name", "create", "listing", "view", "edit", "delete", "allow", "Actions"].map((el) => (
+                    {["S/L", "Role", "Module ID", "Module Name", "create", "listing", "view", "edit", "delete", "allow", "Actions"].map((el) => (
                       <th
                         key={el}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -172,7 +172,7 @@ const PermissionList = () => {
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {permission.role_id || null}
+                            {permission.role_name || null} ({permission.role_id || null})
                           </Typography>
                         </td>
                         <td className={className}>

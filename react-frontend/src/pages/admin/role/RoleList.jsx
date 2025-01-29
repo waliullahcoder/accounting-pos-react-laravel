@@ -66,10 +66,11 @@ const RoleList = () => {
   };
 
   // Filter roles based on the search term
-  const filteredCategories = roles.filter((role) => {
+  const filteredCategories = roles?.filter((role) => {
     const searchString = searchTerm.toLowerCase();
-    return role.name.toLowerCase().includes(searchString);
-  });
+    return role?.name?.toLowerCase().includes(searchString);
+  }) || [];
+  
 
   // Pagination logic
   const indexOfLastCategory = currentPage * categoryPerPage;
@@ -135,7 +136,7 @@ const RoleList = () => {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {["S/L", "ROLE ID", "User ID", "Name", "Actions"].map((el) => (
+                    {["S/L", "ROLE ID", "User Name","User Email", "Role Name", "Actions"].map((el) => (
                       <th
                         key={el}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -171,13 +172,19 @@ const RoleList = () => {
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {role.user_id || null}
+                            {role.user_first_name || null} {role.user_last_name || null}
                           </Typography>
                         </td>
                         <td className={className}>
                           <Typography className="text-xs font-semibold text-blue-gray-600">
-                            {role.name || null}
+                            {role.user_email || null}
                           </Typography>
+                        </td>
+                        <td className={className}>
+                        <Typography className="text-xs font-semibold text-blue-gray-600">
+                          {role.name ? role.name : "No Name"}
+                        </Typography>
+
                         </td>
                         <td className={className}>
                           <div className="flex gap-2">

@@ -46,10 +46,32 @@ const createPermission = async (role_id, modules) => {
 
 // Get All Permissions
 const getPermissionList = async () => {
+
     try {
-        const query = `SELECT * FROM permissions ORDER BY id DESC`;
-        const [rows] = await pool.query(query);
+        const [rows] = await pool.query(`
+          SELECT 
+            permissions.id,
+            permissions.role_id,
+            permissions.module_id,
+            permissions.module_name,
+            permissions.create,
+            permissions.listing,
+            permissions.view,
+            permissions.edit,
+            permissions.delete,
+            permissions.allow, 
+            roles.name as role_name
+        FROM 
+            permissions
+        JOIN
+            roles
+        ON
+            permissions.role_id = roles.id 
+        ORDER BY 
+            permissions.id DESC
+          `);
         return rows;
+
     } catch (error) {
         console.error("Error retrieving permissions:", error.message);
         throw error;
