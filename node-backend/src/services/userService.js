@@ -26,6 +26,7 @@ exports.login = async ({ email, password }) => {
   console.log("WALIPAPPU",token);
  
   return {
+    "user": user,
     "access_token": token,
     "token_type": "bearer",
     "is_superadmin": user.is_superadmin || 0,

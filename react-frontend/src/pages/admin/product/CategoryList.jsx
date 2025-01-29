@@ -6,6 +6,7 @@ import { fetchProductCategories, deleteProductCategory } from "../../../slices/c
 import Modal from "react-modal";
 
 const CategoryList = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { categories, status, error } = useSelector((state) => state.category);

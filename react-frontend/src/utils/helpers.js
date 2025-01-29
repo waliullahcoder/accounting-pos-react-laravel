@@ -1,4 +1,7 @@
 // utils/helpers.js
+import { useSelector } from "react-redux";
+
+  
 
 export const numberToWords = (num) => {
     if (num === 0) return "zero";
@@ -69,3 +72,11 @@ export const numberToWords = (num) => {
     if (!str) return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+
+ 
+  export const user = () => {
+    const auth = useSelector((state) => state.auth);
+    return auth?.user; // Return the user object
+  };
+  

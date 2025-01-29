@@ -18,7 +18,8 @@ export const fetchUserList = createAsyncThunk(
   }
 );
 const initialState = {
-  users: [],  // Ensuring `users` is always an array
+  users: [],
+  user: localStorage.getItem("user") || null,
   token: localStorage.getItem("token") || null,
   isSuperAdmin: JSON.parse(localStorage.getItem("isSuperAdmin")) || false,
 };
@@ -29,8 +30,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
+      state.user = action.payload.user;
       state.token = action.payload.token;
       state.isSuperAdmin = action.payload.isSuperAdmin;
+      localStorage.setItem("user", action.payload.user);
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("isSuperAdmin", JSON.stringify(action.payload.isSuperAdmin));
     },

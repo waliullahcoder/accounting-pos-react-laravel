@@ -9,8 +9,9 @@ import {
 } from "../widgets/layout/index";
 import {UserMenuData} from "../routes/UserMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
-
+import {user} from '../utils/helpers';
 export function Dashboard() {
+  const currentUser = user();
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
@@ -37,6 +38,7 @@ export function Dashboard() {
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
+        {currentUser?.email}
         <Home/>
         <div className="text-blue-gray-600">
           <Footer />

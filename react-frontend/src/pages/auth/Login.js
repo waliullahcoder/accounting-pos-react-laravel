@@ -22,14 +22,15 @@ const Login = () => {
     //const loginapi='http://localhost:5000/api/auth/login';
     try {
       const response = await loginauthapi(email, password); 
-      const { access_token, is_superadmin } = response.data;
-
+      const { access_token, is_superadmin, user } = response.data;
+      localStorage.setItem('user', user);
       // Save token in localStorage to persist login
       localStorage.setItem('token', access_token);
 
       // Dispatch the token and user role info to Redux store
       dispatch(
         login({
+          user: user,
           token: access_token,
           isSuperAdmin: is_superadmin === 1, // Assuming 1 represents super admin
         })

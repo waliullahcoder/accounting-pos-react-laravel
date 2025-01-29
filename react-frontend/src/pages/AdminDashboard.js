@@ -9,8 +9,9 @@ import {
 } from "../widgets/layout/index";
 import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
-
+import {user} from '../utils/helpers';
 export function AdminDashboard() {
+  const currentUser = user();
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
@@ -35,8 +36,10 @@ export function AdminDashboard() {
           ripple={false}
           onClick={() => setOpenConfigurator(dispatch, true)}
         >
+          
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
+        {currentUser?.email}
         <Home/>
         <div className="text-blue-gray-600">
           <Footer />
