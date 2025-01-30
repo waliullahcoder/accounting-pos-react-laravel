@@ -48,6 +48,21 @@ exports.updatePermission = async (req, res) => {
     }
 };
 
+exports.getPermissionSingle = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const permission = await permissionService.permissionByUserId(id);
+console.log("Controller");
+    if (!permission) {
+      return res.status(404).json({ error: 'permission not found' });
+    }
+
+    res.status(200).json(permission);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 
 exports.getPermissionByRoleId = async (req, res) => {

@@ -79,7 +79,7 @@ const getPermissionList = async () => {
 };
 
 
-// Edit Category
+// Edit permissionByRoleId
 const permissionByRoleId = async (role_id) => {
   try {
     const [rows] = await pool.query('SELECT * FROM permissions WHERE role_id = ?',[role_id]);
@@ -89,6 +89,45 @@ const permissionByRoleId = async (role_id) => {
     throw error;
   }
 };
+
+
+// Show permissionByUserId
+const permissionByUserId = async (user_id) => {
+    try {
+      const [rows] = await pool.query(
+        `SELECT 
+          users.id AS user_id, 
+          users.first_name, 
+          users.last_name, 
+          users.email, 
+          users.phone_number, 
+          users.zip_code, 
+          users.is_superadmin, 
+          roles.id AS role_id, 
+          roles.name AS role_name, 
+          permissions.id AS permission_id, 
+          permissions.module_id, 
+          permissions.module_name, 
+          permissions.create, 
+          permissions.listing, 
+          permissions.view, 
+          permissions.edit, 
+          permissions.delete, 
+          permissions.allow
+        FROM users
+        JOIN roles ON roles.user_id = users.id
+        JOIN permissions ON permissions.role_id = roles.id
+        WHERE users.id = ?`,
+        [user_id]
+      );
+      return rows;
+    } catch (error) {
+      console.error("Error fetching user permissions:", error.message);
+      throw error;
+    }
+  };
+  
+  
 
 // Update Permission (Delete existing, then insert new)
 const updatePermission = async (role_id, modules) => {
@@ -163,4 +202,5 @@ module.exports = {
     permissionByRoleId,
     updatePermission,
     deletePermission,
+    permissionByUserId,
 };

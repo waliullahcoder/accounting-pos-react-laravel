@@ -76,6 +76,7 @@ router.delete('/role/delete/:id', roleController.deleteRole);
 //Permission
 router.post('/permission/add', permissionController.permissionAdd);
 router.get('/permission/list', permissionController.getPermissionList);
+router.get('/permission/single/:id', permissionController.getPermissionSingle);
 router.put('/permission/update/:id', permissionController.updatePermission);
 router.put('/permission/edit/:id', permissionController.getPermissionByRoleId);
 router.delete('/permission/delete/:id', permissionController.deletePermission);
