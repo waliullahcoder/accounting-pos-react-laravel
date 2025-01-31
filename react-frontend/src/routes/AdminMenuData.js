@@ -1,3 +1,5 @@
+const permissionCategoryList = true; // Replace with actual permission check
+
 export const AdminMenuData = [
   { title: "Admin Dashboard", icon: "HomeIcon", path: "/admin" },
   { title: "Epamle Table", icon: "UserGroupIcon", path: "/admin/table" },
@@ -8,7 +10,7 @@ export const AdminMenuData = [
     icon: "ShoppingCartIcon",
     subMenu: [
       { title: "Category Create", path: "/admin/product/category/create" },
-      { title: "Category List", path: "/admin/product/category/list" },
+      ...(!permissionCategoryList ? [] : [{ title: "Category List", path: "/admin/product/category/list" }]),
       { title: "Product Create", path: "/admin/product/create" },
       { title: "Product List", path: "/admin/product/list" },
       { title: "Manage", path: "/admin/products/manage" },

@@ -15,7 +15,7 @@ import {
   PermissionListPage,
 
 } from "../components/AdminComponents";
-
+const permissionCategoryList = true; 
 const AdminProtectedRoutes = [
   <Route
     key="admin-dashboard"
@@ -56,15 +56,17 @@ const AdminProtectedRoutes = [
       </PrivateMiddleware>
     }
   />,
-  <Route
-    key="admin-product-category-list"
-    path="/admin/product/category/list"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <CategoryListPage />
-      </PrivateMiddleware>
-    }
-  />,
+  !permissionCategoryList ? null : (
+    <Route
+      key="admin-product-category-list"
+      path="/admin/product/category/list"
+      element={
+        <PrivateMiddleware isAdmin={true}>
+          <CategoryListPage />
+        </PrivateMiddleware>
+      }
+    />
+  ),
  
   <Route
     key="admin-product-category-create"
