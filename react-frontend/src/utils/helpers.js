@@ -75,8 +75,6 @@ export const numberToWords = (num) => {
 
 
  
-  export const user = () => {
-    const auth = useSelector((state) => state.auth);
-    return auth?.user; // Return the user object
-  };
-  
+  export const useUser = () => {
+    return useSelector((state) => state.auth.user);
+  }

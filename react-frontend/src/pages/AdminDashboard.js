@@ -9,9 +9,11 @@ import {
 } from "../widgets/layout/index";
 import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
-import {user} from '../utils/helpers';
+import {useUser} from '../utils/helpers';
 export function AdminDashboard() {
-  const currentUser = user();
+  const currentUser = useUser();
+  console.log("Wlai currentUser",currentUser);
+  
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 

@@ -9,9 +9,9 @@ import {
 } from "../widgets/layout/index";
 import {UserMenuData} from "../routes/UserMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
-import {user} from '../utils/helpers';
+import {useUser} from '../utils/helpers';
 export function Dashboard() {
-  const currentUser = user();
+  const currentUser = useUser();
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 
