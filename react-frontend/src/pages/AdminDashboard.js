@@ -24,7 +24,7 @@ export function AdminDashboard() {
       
       
       <AdminSidenav
-        routes={AdminMenuData}
+        routes={AdminMenuData(usePermissionsData)}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
