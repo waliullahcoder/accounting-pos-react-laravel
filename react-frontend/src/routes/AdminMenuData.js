@@ -1,30 +1,19 @@
-export const AdminMenuData = (permissions = {}) => {
-  const modulePermissions = permissions?.permissionSingle || [];
 
-const hasCategoryListPermission = modulePermissions.some(
-  (p) => p.module_id === "pdid01" && p.listing
-);
-const permissionPermissionList = modulePermissions.some(
-  (p) => p.module_id === "cus003" && p.listing
-);
-console.log("WALI ADMIN MENU DATA",hasCategoryListPermission);
 
-  return [
+export const AdminMenuData = [
     { title: "Admin Dashboard", icon: "HomeIcon", path: "/admin" },
     { title: "Example Table", icon: "UserGroupIcon", path: "/admin/table" },
-    { title: "Customers", icon: "UserGroupIcon", path: "/admin/customers" },
-    { title: "Users", icon: "UserIcon", path: "/admin/user/list" },
+    { module_id:"custid01",permissionChecks:"listing",title: "Customers", icon: "UserGroupIcon", path: "/admin/customers" },
+    { module_id:"usrid01",permissionChecks:"listing", title: "Users", icon: "UserIcon", path: "/admin/user/list" },
     {
       title: "Products",
       icon: "ShoppingCartIcon",
       subMenu: [
-        { title: "Category Create", path: "/admin/product/category/create" },
-        ...(hasCategoryListPermission
-          ? [{ title: "Category List", path: "/admin/product/category/list" }]
-          : []),
-        { title: "Product Create", path: "/admin/product/create" },
-        { title: "Product List", path: "/admin/product/list" },
-        { title: "Manage", path: "/admin/products/manage" },
+        { module_id:"ctgid01",permissionChecks:"create",title: "Category Create", path: "/admin/product/category/create" },
+        { module_id:"ctgid01",permissionChecks:"listing",title: "Category List", path: "/admin/product/category/list" },
+        { module_id:"pdid01",permissionChecks:"create",title: "Product Create", path: "/admin/product/create" },
+        { module_id:"pdid01",permissionChecks:"listing",title: "Product List", path: "/admin/product/list" },
+        { module_id:"pdid01",permissionChecks:"allow",title: "Manage", path: "/admin/products/manage" },
       ],
     },
     { title: "Sales", icon: "CreditCardIcon", path: "/admin/sales" },
@@ -47,14 +36,12 @@ console.log("WALI ADMIN MENU DATA",hasCategoryListPermission);
       title: "Configurations",
       icon: "CogIcon",
       subMenu: [
-        { title: "Role Create", path: "/admin/role/create" },
-        ...(permissionPermissionList
-          ? [{ title: "Role List", path: "/admin/role/list" }]
-          : []),
-        { title: "Create Permission", path: "/admin/permission/create" },
-        { title: "Permission List", path: "/admin/permission/list" },
+        { module_id:"rolid01",permissionChecks:"create",title: "Role Create", path: "/admin/role/create" },
+        { module_id:"rolid01",permissionChecks:"listing",title: "Role List", path: "/admin/role/list" },
+        { module_id:"permid01",permissionChecks:"create",title: "Create Permission", path: "/admin/permission/create" },
+        { module_id:"permid01",permissionChecks:"listing",title: "Permission List", path: "/admin/permission/list" },
       ],
     },
     { title: "Settings", icon: "Cog6ToothIcon", path: "/settings" },
   ];
-};
+

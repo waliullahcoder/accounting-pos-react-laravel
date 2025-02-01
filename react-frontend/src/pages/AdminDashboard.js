@@ -10,11 +10,11 @@ import {
 import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 import {useUser} from '../utils/helpers';
-import {usePermissions} from '../utils/common';
+// import {usePermissions} from '../utils/common';
 export function AdminDashboard() {
   const currentUser = useUser();
-  const usePermissionsData = usePermissions();
-  console.log("Wlai currentUser",usePermissionsData,currentUser);
+  // const usePermissionsData = usePermissions();
+  // console.log("Wlai currentUser",usePermissionsData,currentUser);
   
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
@@ -24,7 +24,7 @@ export function AdminDashboard() {
       
       
       <AdminSidenav
-        routes={AdminMenuData(usePermissionsData)}
+        routes={AdminMenuData}
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }

@@ -9,10 +9,14 @@ import axios from "axios";
 
 const permissionChecks = ["create", "listing", "view", "edit", "delete", "allow"];
 const modules = [
-  { id: "pdid01", name: "Product" },
-  { id: "inv002", name: "Invoice" },
-  { id: "cus003", name: "Customer" },
-  { id: "ven004", name: "Vendor" },
+  { id: "usrid01", name: "Users" },
+  { id: "ctgid01", name: "Categories" },
+  { id: "pdid01", name: "Products" },
+  { id: "invid01", name: "Invoices" },
+  { id: "custid01", name: "Customers" },
+  { id: "vendid01", name: "Vendors" },
+  { id: "rolid01", name: "Roles" },
+  { id: "permid01", name: "Permissions" },
 ];
 
 const PermissionForm = () => {

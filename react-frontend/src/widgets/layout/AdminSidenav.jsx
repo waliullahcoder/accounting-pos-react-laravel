@@ -25,10 +25,28 @@ import * as Icons from "@heroicons/react/24/solid";
 export function AdminSidenav() {
   const [controller] = useMaterialTailwindController();
   const { sidenavType, openSidenav } = controller;
-
   const usePermissionsData = usePermissions(); // Fetch user permissions
-  const menuData = AdminMenuData(usePermissionsData); // Pass permissions to AdminMenuData
+  const modulePermissions = usePermissionsData?.permissionSingle || [];
+  //console.log("ADMINNAV WALI", AdminMenuData,modulePermissions);
+  console.log("ADMIN NAV MENU DATA1",AdminMenuData);
+  const filteredAdminMenuData = AdminMenuData.map(menu => {
 
+    if (menu.subMenu) {
+        menu.subMenu = menu.subMenu.filter(sub => {
+            const permission = modulePermissions.find(p => p.module_id === sub.module_id);
+            return permission ? permission[sub.permissionChecks] !== 0 : true;
+        });
+        return menu.subMenu.length > 0 ? menu : null;
+    } else {
+        const permission = modulePermissions.find(p => p.module_id === menu.module_id);
+        return permission ? permission[menu.permissionChecks] !== 0 ? menu : null : menu;
+    }
+    
+}).filter(Boolean);
+
+console.log("ADMIN NAV MENU DATA2",filteredAdminMenuData,AdminMenuData,modulePermissions);
+
+  
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",
     white: "bg-white shadow-sm",
@@ -41,7 +59,7 @@ export function AdminSidenav() {
 
   React.useEffect(() => {
     // Expand the parent menu for the current route on load
-    menuData.forEach((menu, index) => {
+    filteredAdminMenuData.forEach((menu, index) => {
       if (menu.subMenu) {
         menu.subMenu.forEach((sub) => {
           if (sub.path === location.pathname) {
@@ -53,9 +71,7 @@ export function AdminSidenav() {
         setSelected(menu.path);
       }
     });
-  }, [location.pathname
-    
-  ]);
+  }, [location.pathname]);
 
   const handleOpen = (value) => {
     setOpen(open === value ? null : value);
@@ -73,7 +89,7 @@ export function AdminSidenav() {
     >
       <div className="flex flex-col h-full">
         <List className="flex-1">
-          {menuData.map((menu, index) => {
+          {filteredAdminMenuData.map((menu, index) => {
             const Icon = Icons[menu.icon];
 
             if (!Icon) {
