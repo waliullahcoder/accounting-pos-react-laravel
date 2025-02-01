@@ -32,6 +32,7 @@ const PermissionForm = () => {
   const [permissionsState, setPermissionsState] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [permissionCount, setPermissionCount] = useState(0);
 
   // Fetch roles on mount
   useEffect(() => {
@@ -45,7 +46,9 @@ const PermissionForm = () => {
       setLoading(true);
       const response = await axios.put(`http://localhost:5000/api/permission/edit/${roleId}`);
       const existingPermissions = response.data;
-
+      const permissioncount = existingPermissions.length;
+      setPermissionCount(permissioncount);
+      
       const formattedPermissions = modules.reduce((acc, module) => {
         const found = existingPermissions.find((perm) => perm.module_id === module.id);
         acc[module.id] = {
@@ -76,22 +79,22 @@ const PermissionForm = () => {
   }, [isEdit, id, roles]);
 
   useEffect(() => {
-    if(isChangeRole==true){
+    if(isChangeRole===true){
       setIsChangeRole(true);
     }else{
       setIsChangeRole(false);
     }
       
-      console.log("Updated isChangeRole inside useEffect:", isChangeRole);
     
   }, [isChangeRole]);
 
   // Handle role selection
   const handleRoleChange = (selectedOption) => { 
+
     setSelectedRole(selectedOption.value);
     setIsChangeRole(true);
-    console.log("WALI ROLECH",isChangeRole,selectedOption.value);
     fetchRolePermissions(selectedOption.value);
+  
     
   };
  
@@ -142,7 +145,7 @@ const PermissionForm = () => {
     }));
   };
   
-if(isEdit && isChangeRole==false){
+if(isEdit && isChangeRole===false){
        selectedRole = roles.find((role) => role.id === Number(id));
     }
   // Handle form submission
@@ -182,13 +185,13 @@ if(isEdit && isChangeRole==false){
 
       {/* Role Selection Dropdown */}
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Select Role</label>
+        <label className="block text-gray-700 text-sm font-bold mb-2">Select Role </label>
       
 
           <Select
           options={roles.map((role) => ({ value: role.id, label: `${role.name} (RoleID: ${role.id}) (UserId: ${role.user_id})` }))}
           value={ 
-            isEdit && isChangeRole==false ?  
+            isEdit && isChangeRole===false ?  
             selectedRole? {value: selectedRole.id,label: `${selectedRole.name} (RoleID: ${selectedRole.id}) (UserId: ${selectedRole.user_id})`}: null 
             : 
             roles.find((role) => role.id === selectedRole?.value)
@@ -231,9 +234,15 @@ if(isEdit && isChangeRole==false){
         ))}
       </div>
 
-      <Button type="submit" color="blue" fullWidth disabled={loading}>
+      <Button 
+        type="submit" 
+        color="blue" 
+        fullWidth 
+        disabled={loading || (permissionCount > 0  && !isEdit)}
+      >
         {loading ? "Saving..." : isEdit ? "Update Permission" : "Create Permission"}
       </Button>
+
     </form>
   );
 };
