@@ -10,8 +10,11 @@ import {
 import {UserMenuData} from "../routes/UserMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 import {useUser} from '../utils/helpers';
+import {usePermissions} from '../utils/common';
 export function Dashboard() {
   const currentUser = useUser();
+  const usePermissionsData = usePermissions();
+  console.log("Wlai currentUser dashboard",usePermissionsData,currentUser);
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
 

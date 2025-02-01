@@ -10,9 +10,11 @@ import {
 import {AdminMenuData} from "../routes/AdminMenuData";
 import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
 import {useUser} from '../utils/helpers';
+import {usePermissions} from '../utils/common';
 export function AdminDashboard() {
   const currentUser = useUser();
-  console.log("Wlai currentUser",currentUser);
+  const usePermissionsData = usePermissions();
+  console.log("Wlai currentUser",usePermissionsData,currentUser);
   
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;

@@ -72,9 +72,9 @@ const CreateRole = () => {
             {users && users.length > 0 ? (
               <Select
                 placeholder="Select User"
-                options={users.map((user) => ({ value: user.id, label: user.first_name }))}
+                options={users.map((user) => ({ value: user.id, label: user.email }))}
                 value={users
-                  .map((user) => ({ value: user.id, label: user.first_name }))
+                  .map((user) => ({ value: user.id, label: user.email }))
                   .find((option) => option.value === formData.user_id) || null}
                 onChange={(selectedOption) =>
                   setFormData((prevState) => ({ ...prevState, user_id: selectedOption.value }))

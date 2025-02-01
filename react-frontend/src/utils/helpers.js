@@ -1,6 +1,6 @@
 // utils/helpers.js
 import { useSelector } from "react-redux";
-
+import axios from 'axios';
   
 
 export const numberToWords = (num) => {
@@ -78,3 +78,17 @@ export const numberToWords = (num) => {
   export const useUser = () => {
     return useSelector((state) => state.auth.user);
   }
+
+  export const fetchPermissionSingleData = async (userId) => {
+    if (!userId) return null; // Ensure userId is provided
+
+    try {
+        const response = await axios.get(`http://localhost:5000/api/permission/single/${userId}`);
+        console.log("SINGLE API DATA", response);
+        
+        return response.data; // Return fetched data
+    } catch (error) {
+        console.error("Error fetching permissions:", error);
+        return null; // Return null on error
+    }
+};
