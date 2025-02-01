@@ -89,8 +89,7 @@ const CreateProduct = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
       const form = new FormData();
