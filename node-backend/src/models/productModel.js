@@ -24,6 +24,7 @@ const getProductList = async () => {
       products.sale_price,
       products.purchase_price,
       products.image,
+      categories.id AS category_id,
       categories.name AS category_name
     FROM 
       products
