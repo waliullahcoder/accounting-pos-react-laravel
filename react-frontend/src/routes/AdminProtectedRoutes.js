@@ -1,174 +1,286 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
-import { 
-  Table, 
-  AdminDashboard, 
-  CreateCategoryPage, 
-  CategoryListPage, 
-  CreateProductPage, 
+import {useUser} from '../utils/helpers';
+import apis  from "../api/authApi";
+import {
+  Table,
+  AdminDashboard,
+  AdminDashboardWithoutHome,
+  CreateCategoryPage,
+  CategoryListPage,
+  CreateProductPage,
   ProductListPage,
   CreatePermissionPage,
   UserListPage,
   CreateRolePage,
   RoleListPage,
   PermissionListPage,
-
 } from "../components/AdminComponents";
-const permissionCategoryList = true; 
-const AdminProtectedRoutes = [
-  <Route
-    key="admin-dashboard"
-    path="/admin"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <AdminDashboard />
-      </PrivateMiddleware>
-    }
-  />,
-  <Route
-    key="admin-table"
-    path="/admin/table"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <Table />
-      </PrivateMiddleware>
-    }
-  />,
-    // User List
+
+const AdminProtectedRoutes = ({ permissions }) => {
+  const currentUser = useUser();
+const isSuperAdmin= (currentUser?.email===apis.superadminemail) ? true : false;
+console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
+  return (
+    <Routes>
+         
+        
+         
+       
+      {permissions?.usersAllow || isSuperAdmin ? (
+        <Route
+         path="/"
+         element={
+           <PrivateMiddleware isAdmin={true}>
+             <AdminDashboard />
+           </PrivateMiddleware>
+         }
+       />
+      ) :  (
+        <Route
+          path="/"
+          element={<Navigate to="/admin/home" replace />}
+        />
+      )}
+
+      
+      {!permissions?.usersAllow || isSuperAdmin ? (
+         <Route
+         path="/home"
+         element={
+           <PrivateMiddleware isAdmin={true}>
+             <AdminDashboardWithoutHome />
+           </PrivateMiddleware>
+         }
+       />
+      ) : (
+        <Route
+          path="/home"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      
+      
       <Route
-      key="admin-user-list"
-      path="/admin/user/list"
-      element={
-        <PrivateMiddleware isAdmin={true}>
-          <UserListPage />
-        </PrivateMiddleware>
-      }
-    />,
+        path="table"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <Table />
+          </PrivateMiddleware>
+        }
+      />
 
-  //Product Category Section
-  <Route
-    key="admin-product-category-create"
-    path="/admin/product/category/create"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <CreateCategoryPage />
-      </PrivateMiddleware>
-    }
-  />,
-  !permissionCategoryList ? null : (
-    <Route
-      key="admin-product-category-list"
-      path="/admin/product/category/list"
-      element={
-        <PrivateMiddleware isAdmin={true}>
-          <CategoryListPage />
-        </PrivateMiddleware>
-      }
-    />
-  ),
- 
-  <Route
-    key="admin-product-category-create"
-    path="/admin/product/category/edit/:id"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <CreateCategoryPage />
-      </PrivateMiddleware>
-    }
-  />,
+      {permissions?.usersListing || isSuperAdmin ? (
+        <Route
+         path="user/list"
+         element={
+           <PrivateMiddleware isAdmin={true}>
+             <UserListPage />
+           </PrivateMiddleware>
+         }
+       />
+      ) : (
+        <Route
+          path="user/list"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+      
 
+      {/* Product Category Section */}
+      {permissions?.categoriesCreate || isSuperAdmin ? (
+        <Route
+          path="product/category/create"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateCategoryPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
+        <Route
+          path="product/category/create"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
-   //Product Section
+      
+      {permissions?.categoriesListing || isSuperAdmin ? (
+        <Route
+          path="product/category/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CategoryListPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
+        <Route
+          path="product/category/list"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
-   <Route
-   key="admin-product-create"
-   path="/admin/product/create"
-   element={
-     <PrivateMiddleware isAdmin={true}>
-       <CreateProductPage />
-     </PrivateMiddleware>
-   }
- />,
- <Route
-   key="admin-product-list"
-   path="/admin/product/list"
-   element={
-     <PrivateMiddleware isAdmin={true}>
-       <ProductListPage />
-     </PrivateMiddleware>
-   }
- />,
- <Route
-   key="admin-product-category-create"
-   path="/admin/product/edit/:id"
-   element={
-     <PrivateMiddleware isAdmin={true}>
-       <CreateProductPage />
-     </PrivateMiddleware>
-   }
-   />,
-
-   // Role 
+       {permissions?.categoriesEdit || isSuperAdmin ? (
       <Route
-      key="admin-role-create"
-      path="/admin/role/create"
-      element={
-        <PrivateMiddleware isAdmin={true}>
-          <CreateRolePage />
-        </PrivateMiddleware>
-      }
-    />,
-    <Route
-    key="admin-role-update"
-    path="/admin/role/edit/:id"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <CreateRolePage />
-      </PrivateMiddleware>
-    }
-  />,
-    <Route
-    key="admin-role-list"
-    path="/admin/role/list"
-    element={
-      <PrivateMiddleware isAdmin={true}>
-        <RoleListPage />
-      </PrivateMiddleware>
-    }
-  />,
+        path="product/category/edit/:id"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreateCategoryPage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="product/category/edit/:id"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
-   //Permission
-   <Route
-   key="admin-permission-create"
-   path="/admin/permission/create"
-   element={
-     <PrivateMiddleware isAdmin={true}>
-       <CreatePermissionPage />
-     </PrivateMiddleware>
-   }
-    />,
-    <Route
-   key="admin-permission-edit"
-   path="/admin/permission/edit/:id"
-   element={
-     <PrivateMiddleware isAdmin={true}>
-       <CreatePermissionPage />
-     </PrivateMiddleware>
-   }
-    />,
+      {/* Product Section */}
+      {permissions?.productsCreate || isSuperAdmin ? (
       <Route
-      key="admin-permission-list"
-      path="/admin/permission/list"
-      element={
-        <PrivateMiddleware isAdmin={true}>
-          <PermissionListPage />
-        </PrivateMiddleware>
-      }
-      />,
+        path="product/create"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreateProductPage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="product/create"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
+      {permissions?.productsCreate || isSuperAdmin ? (
+      <Route
+        path="product/list"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <ProductListPage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="product/list"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
+      <Route
+        path="product/edit/:id"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreateProductPage />
+          </PrivateMiddleware>
+        }
+      />
 
-];
+      {/* Role Management */}
+      {permissions?.rolesCreate || isSuperAdmin ? (
+      <Route
+        path="role/create"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreateRolePage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="role/create"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      {permissions?.rolesEdit || isSuperAdmin ? (
+      <Route
+        path="role/edit/:id"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreateRolePage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="role/edit/:id"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      {permissions?.rolesListing || isSuperAdmin ? (
+      <Route
+        path="role/list"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <RoleListPage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="role/list"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      {/* Permission Management */}
+
+      {permissions?.permissionsCreate || isSuperAdmin ? (
+      <Route
+        path="permission/create"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreatePermissionPage />
+          </PrivateMiddleware>
+        }
+      />
+        ) : (
+          <Route
+            path="permission/create"
+            element={<Navigate to="/admin" replace />}
+          />
+        )}
+      {permissions?.permissionsEdit || isSuperAdmin ? (
+      <Route
+        path="permission/edit/:id"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <CreatePermissionPage />
+          </PrivateMiddleware>
+        }
+      />
+      ) : (
+        <Route
+          path="permission/edit/:id"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      {permissions?.permissionsListing || isSuperAdmin ? (
+      <Route
+        path="permission/list"
+        element={
+          <PrivateMiddleware isAdmin={true}>
+            <PermissionListPage />
+          </PrivateMiddleware>
+        }
+       />
+        ) : (
+          <Route
+            path="permission/list"
+            element={<Navigate to="/admin" replace />}
+          />
+        )}
+
+    </Routes>
+  );
+};
 
 export default AdminProtectedRoutes;

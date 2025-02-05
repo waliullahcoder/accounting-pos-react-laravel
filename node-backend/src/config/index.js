@@ -6,4 +6,5 @@ module.exports = {
     database: process.env.DB_NAME || 'accounting_pos_node_react',
   },
   jwtSecret: process.env.JWT_SECRET || 'bsCgierhYcSgG6uLyngwqAYkaGuNKgkhl8xNtyNzF2jbtSyR2asV1ppHaCAENlFa',
+  superadminmail: 'superadmin@example.com',
 };

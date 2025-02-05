@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const dbConfig = require('../config').dbConfig;
+const {dbConfig,superadminmail} = require('../config');
 
 // Create a connection pool
 const pool = mysql.createPool(dbConfig);
@@ -44,7 +44,7 @@ const getUserList = async () => {
   try {
     const [rows] = await pool.query(
       "SELECT id, first_name, last_name, email, phone_number, zip_code, is_superadmin FROM users WHERE email != ?",
-      ["superadmin@example.com"]
+      [superadminmail]
     );
     return rows;
   } catch (error) {
