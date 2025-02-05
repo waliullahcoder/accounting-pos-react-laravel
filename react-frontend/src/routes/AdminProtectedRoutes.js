@@ -172,6 +172,7 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
         />
       )}
 
+      {permissions?.productsEdit || isSuperAdmin ? (
       <Route
         path="product/edit/:id"
         element={
@@ -180,6 +181,12 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           </PrivateMiddleware>
         }
       />
+      ) : (
+        <Route
+          path="product/edit/:id"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
 
       {/* Role Management */}
       {permissions?.rolesCreate || isSuperAdmin ? (
