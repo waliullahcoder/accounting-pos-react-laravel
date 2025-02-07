@@ -21,6 +21,10 @@ import {
 const AdminProtectedRoutes = ({ permissions }) => {
   const currentUser = useUser();
 const isSuperAdmin= (currentUser?.email===apis.superadminemail) ? true : false;
+  if (Object.keys(permissions).length === 0 && !isSuperAdmin) {
+    return <div>Loading...</div>; // Show a loader or fallback UI
+  }
+
 console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
   return (
     <Routes>
@@ -71,8 +75,8 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           </PrivateMiddleware>
         }
       />
-
-      {permissions?.usersListing || isSuperAdmin ? (
+      {/* {permissions?.usersListing || isSuperAdmin ? ( */}
+      {isSuperAdmin ? (
         <Route
          path="user/list"
          element={
