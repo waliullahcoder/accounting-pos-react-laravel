@@ -18,7 +18,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useMaterialTailwindController } from "../../context/index";
 import Logout from "../../pages/auth/Logout";
-
+import apis  from "../../api/authApi";
+import {useUser} from '../../utils/helpers';
 // Import all solid icons dynamically
 import * as Icons from "@heroicons/react/24/solid";
 
@@ -27,6 +28,8 @@ export function AdminSidenav() {
   const { sidenavType, openSidenav } = controller;
   const usePermissionsData = usePermissions(); // Fetch user permissions
   const modulePermissions = usePermissionsData?.permissionSingle || [];
+  const currentUser = useUser();
+const isSuperAdmin= (currentUser?.email===apis.superadminemail) ? true : false;
   //console.log("ADMINNAV WALI", AdminMenuData,modulePermissions);
   console.log("ADMIN NAV MENU DATA1",AdminMenuData);
   const filteredAdminMenuData = AdminMenuData.map(menu => {
@@ -39,7 +42,11 @@ export function AdminSidenav() {
         return menu.subMenu.length > 0 ? menu : null;
     } else {
         const permission = modulePermissions.find(p => p.module_id === menu.module_id);
-        return permission ? permission[menu.permissionChecks] !== 0 ? menu : null : menu;
+        if (!isSuperAdmin && menu?.path === "/admin/user/list") {
+          return false; // Hide the "Users" menu item without superadmin email
+        }
+        
+        return permission ? permission[menu.permissionChecks] !== 0  ? menu : null : menu;
     }
     
 }).filter(Boolean);
