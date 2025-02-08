@@ -41,6 +41,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isSuperAdmin = false;
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       localStorage.removeItem("isSuperAdmin");
     },
   },

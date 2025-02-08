@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
 import {useUser} from '../utils/helpers';
 import apis  from "../api/authApi";
+import { useDispatch,useSelector } from "react-redux";
 import {
   Table,
   AdminDashboard,
@@ -20,6 +21,28 @@ import {
 
 const AdminProtectedRoutes = ({ permissions }) => {
   const currentUser = useUser();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+
+  //When browser tab will be closed then auto logout
+  useEffect(() => {
+    const handleTabClose = () => {
+      const logoutUrl = "/api/logout"; // Replace with your API endpoint
+      navigator.sendBeacon(logoutUrl, JSON.stringify({ logout: true }));
+      // Remove from local storage (synchronous operation)
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    };
+    window.addEventListener("beforeunload", handleTabClose);
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [dispatch]);
+  
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  
 const isSuperAdmin= (currentUser?.email===apis.superadminemail) ? true : false;
   if (Object.keys(permissions).length === 0 && !isSuperAdmin) {
     return <div>Loading...</div>; // Show a loader or fallback UI
@@ -31,7 +54,7 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
          
         
          
-       
+         
       {permissions?.usersAllow || isSuperAdmin ? (
         <Route
          path="/"

@@ -21,7 +21,10 @@ const loadState = () => {
 // Function to save the state to sessionStorage
 const saveState = (state) => {
   try {
-    const serializedState = JSON.stringify(state);
+    const serializedState = JSON.stringify({
+      auth: state.auth, // Persist auth state
+      permission: state.permission, // Persist permission state
+    });
     sessionStorage.setItem('reduxState', serializedState);
   } catch (err) {
     console.error("Error saving state:", err);
@@ -47,9 +50,7 @@ const store = configureStore({
 
 // Save state changes to sessionStorage
 store.subscribe(() => {
-  saveState({
-    auth: store.getState().auth, // Persist only auth state
-  });
+  saveState(store.getState());
 });
 
 export default store;
