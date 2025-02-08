@@ -4,6 +4,7 @@ import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
 import {useUser} from '../utils/helpers';
 import apis  from "../api/authApi";
 import { useDispatch,useSelector } from "react-redux";
+import "../assets/styles/loading.css";
 import {
   Table,
   AdminDashboard,
@@ -61,10 +62,13 @@ const AdminProtectedRoutes = ({ permissions }) => {
   if (Object.keys(permissions).length === 0 && !isSuperAdmin) {
     return (
       <div>
-         <div className="p-4 text-green rounded-md">Loading...</div>
+         <div className="loading-container">
+          {/* Custom CSS Spinner */}
+          <div className="spinner"></div>
+        </div>
         {showMessage && (
-          <div className="p-4 bg-green-500 text-white rounded-md">
-            Permission is not loaded or has not yet set. Please contact the Super Admin.
+          <div className="p-4 text-center text-red rounded-md">
+           <p class="text-customColor">Permission is not loaded or has not yet set. Please contact the Super Admin.</p> 
           </div>
         )}
       </div>
