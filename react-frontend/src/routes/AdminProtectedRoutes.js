@@ -1,5 +1,5 @@
-import React,{useEffect} from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate} from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
 import {useUser} from '../utils/helpers';
 import apis  from "../api/authApi";
@@ -24,7 +24,17 @@ const AdminProtectedRoutes = ({ permissions }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
 
-  //When browser tab will be closed then auto logout
+  // ✅ Move hooks to the top level (ensures they always run in the same order)
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowMessage(true);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []);
+
   useEffect(() => {
     const handleTabClose = () => {
       const logoutUrl = "/api/logout"; // Replace with your API endpoint
@@ -38,14 +48,27 @@ const AdminProtectedRoutes = ({ permissions }) => {
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, [dispatch]);
-  
+
+
+
+  // ✅ Ensure no conditional hooks
+  const isSuperAdmin = currentUser?.email === apis.superadminemail;
+
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-  
-const isSuperAdmin= (currentUser?.email===apis.superadminemail) ? true : false;
+
   if (Object.keys(permissions).length === 0 && !isSuperAdmin) {
-    return <div>Loading...</div>; // Show a loader or fallback UI
+    return (
+      <div>
+         <div className="p-4 text-green rounded-md">Loading...</div>
+        {showMessage && (
+          <div className="p-4 bg-green-500 text-white rounded-md">
+            Permission is not loaded or has not yet set. Please contact the Super Admin.
+          </div>
+        )}
+      </div>
+    );
   }
 
 console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
@@ -57,13 +80,13 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
          
       {permissions?.usersAllow || isSuperAdmin ? (
         <Route
-         path="/"
-         element={
-           <PrivateMiddleware isAdmin={true}>
-             <AdminDashboard />
-           </PrivateMiddleware>
-         }
-       />
+          path="/"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <AdminDashboard />
+            </PrivateMiddleware>
+          }
+        />
       ) :  (
         <Route
           path="/"
@@ -71,16 +94,16 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
         />
       )}
 
-      
+
       {!permissions?.usersAllow || isSuperAdmin ? (
-         <Route
-         path="/home"
-         element={
-           <PrivateMiddleware isAdmin={true}>
-             <AdminDashboardWithoutHome />
-           </PrivateMiddleware>
-         }
-       />
+        <Route
+          path="/home"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <AdminDashboardWithoutHome />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="/home"
@@ -89,7 +112,7 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       
-      
+
       <Route
         path="table"
         element={
@@ -101,13 +124,13 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       {/* {permissions?.usersListing || isSuperAdmin ? ( */}
       {isSuperAdmin ? (
         <Route
-         path="user/list"
-         element={
-           <PrivateMiddleware isAdmin={true}>
-             <UserListPage />
-           </PrivateMiddleware>
-         }
-       />
+          path="user/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <UserListPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="user/list"
@@ -133,7 +156,7 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
         />
       )}
 
-      
+
       {permissions?.categoriesListing || isSuperAdmin ? (
         <Route
           path="product/category/list"
@@ -150,15 +173,15 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
         />
       )}
 
-       {permissions?.categoriesEdit || isSuperAdmin ? (
-      <Route
-        path="product/category/edit/:id"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreateCategoryPage />
-          </PrivateMiddleware>
-        }
-      />
+      {permissions?.categoriesEdit || isSuperAdmin ? (
+        <Route
+          path="product/category/edit/:id"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateCategoryPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="product/category/edit/:id"
@@ -168,14 +191,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
 
       {/* Product Section */}
       {permissions?.productsCreate || isSuperAdmin ? (
-      <Route
-        path="product/create"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreateProductPage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="product/create"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateProductPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="product/create"
@@ -184,14 +207,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       {permissions?.productsCreate || isSuperAdmin ? (
-      <Route
-        path="product/list"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <ProductListPage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="product/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <ProductListPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="product/list"
@@ -200,14 +223,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       {permissions?.productsEdit || isSuperAdmin ? (
-      <Route
-        path="product/edit/:id"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreateProductPage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="product/edit/:id"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateProductPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="product/edit/:id"
@@ -217,14 +240,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
 
       {/* Role Management */}
       {permissions?.rolesCreate || isSuperAdmin ? (
-      <Route
-        path="role/create"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreateRolePage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="role/create"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateRolePage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="role/create"
@@ -233,14 +256,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       {permissions?.rolesEdit || isSuperAdmin ? (
-      <Route
-        path="role/edit/:id"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreateRolePage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="role/edit/:id"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateRolePage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="role/edit/:id"
@@ -249,14 +272,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       {permissions?.rolesListing || isSuperAdmin ? (
-      <Route
-        path="role/list"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <RoleListPage />
-          </PrivateMiddleware>
-        }
-      />
+        <Route
+          path="role/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <RoleListPage />
+            </PrivateMiddleware>
+          }
+        />
       ) : (
         <Route
           path="role/list"
@@ -267,15 +290,15 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       {/* Permission Management */}
 
       {permissions?.permissionsCreate || isSuperAdmin ? (
-      <Route
-        path="permission/create"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <CreatePermissionPage />
-          </PrivateMiddleware>
-        }
-      />
-        ) : (
+        <Route
+          path="permission/create"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreatePermissionPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
           <Route
             path="permission/create"
             element={<Navigate to="/admin" replace />}
@@ -298,20 +321,20 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       )}
 
       {permissions?.permissionsListing || isSuperAdmin ? (
-      <Route
-        path="permission/list"
-        element={
-          <PrivateMiddleware isAdmin={true}>
-            <PermissionListPage />
-          </PrivateMiddleware>
-        }
-       />
-        ) : (
+        <Route
+          path="permission/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <PermissionListPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
           <Route
             path="permission/list"
             element={<Navigate to="/admin" replace />}
           />
-        )}
+      )}
 
     </Routes>
   );
