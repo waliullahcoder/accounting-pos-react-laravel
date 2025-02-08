@@ -18,6 +18,12 @@ export function AdminDashboard() {
   
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+  
+ 
+  
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
@@ -44,6 +50,9 @@ export function AdminDashboard() {
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
         {currentUser?.email}
+        <button onClick={handleRefresh} className="px-4 py-2 bg-blue-600 text-white rounded-md">
+          Refresh Browser
+        </button>
         <Home/>
         <div className="text-blue-gray-600">
           <Footer />
