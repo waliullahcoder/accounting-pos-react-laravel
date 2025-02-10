@@ -1,7 +1,15 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { PrivateMiddleware } from "../app/middleware/indexMiddleware";
-import { Dashboard, UserTable, CreateInvoicePage,InvoiceListPage, InvoiceShowPage, CreateCustomerPage, CustomerListPage} from "../components/UserComponents";
+import { 
+  Dashboard, 
+  UserTable, 
+  CreateInvoicePage,
+  InvoiceListPage, 
+  InvoiceShowPage, 
+  CreateCustomerPage, 
+  CustomerListPage
+} from "../components/UserComponents";
 
 const UserProtectedRoutes = [
 

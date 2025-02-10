@@ -18,6 +18,8 @@ import {
   CreateRolePage,
   RoleListPage,
   PermissionListPage,
+  CreateVendorPage, 
+  VendorListPage
 } from "../components/AdminComponents";
 
 const AdminProtectedRoutes = ({ permissions }) => {
@@ -111,6 +113,56 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
       ) : (
         <Route
           path="/home"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+
+      {permissions?.vendorsCreate || isSuperAdmin ? (
+        <Route
+          path="vendor/create"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateVendorPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
+        <Route
+          path="vendor/create"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+
+      {permissions?.vendorsEdit || isSuperAdmin ? (
+        <Route
+          path="vendor/edit/:id"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <CreateVendorPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
+        <Route
+          path="vendor/edit/:id"
+          element={<Navigate to="/admin" replace />}
+        />
+      )}
+
+      {permissions?.vendorsListing || isSuperAdmin ? (
+        <Route
+          path="vendor/list"
+          element={
+            <PrivateMiddleware isAdmin={true}>
+              <VendorListPage />
+            </PrivateMiddleware>
+          }
+        />
+      ) : (
+        <Route
+          path="vendor/list"
           element={<Navigate to="/admin" replace />}
         />
       )}

@@ -11,4 +11,6 @@ export { default as UserListPage } from "../pages/admin/user/UserListPage";
 export { default as CreateRolePage } from "../pages/admin/role/CreateRolePage";
 export { default as RoleListPage } from "../pages/admin/role/RoleListPage";
 export { default as PermissionListPage } from "../pages/admin/permission/PermissionListPage";
+export { default as CreateVendorPage } from "../pages/admin/vendor/CreateVendorPage";
+export { default as VendorListPage } from "../pages/admin/vendor/VendorListPage";
 

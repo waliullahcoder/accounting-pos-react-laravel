@@ -6,6 +6,15 @@ export const AdminMenuData = [
     { module_id:"custid01",permissionChecks:"listing",title: "Customers", icon: "UserGroupIcon", path: "/admin/customers" },
     { module_id:"usrid01",permissionChecks:"listing", title: "Users", icon: "UserIcon", path: "/admin/user/list" },
     {
+      title: "Vendors",
+      icon: "UserGroupIcon",
+      subMenu: [
+        { module_id:"vendid01",permissionChecks:"create",title: "Vendor Create", icon: "UserGroupIcon", path: "/admin/vendor/create"  },
+        { module_id:"vendid01",permissionChecks:"listing",title: "Vendor Listing", icon: "UserGroupIcon", path: "/admin/vendor/list"  },
+        
+      ],
+    },
+    {
       title: "Products",
       icon: "ShoppingCartIcon",
       subMenu: [
