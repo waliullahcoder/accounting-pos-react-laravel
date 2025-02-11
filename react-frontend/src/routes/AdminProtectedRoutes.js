@@ -19,7 +19,10 @@ import {
   RoleListPage,
   PermissionListPage,
   CreateVendorPage, 
-  VendorListPage
+  VendorListPage,
+  CreatePurchasePage,
+  PurchaseListPage,
+  PurchaseShowPage
 } from "../components/AdminComponents";
 
 const AdminProtectedRoutes = ({ permissions }) => {
@@ -166,6 +169,81 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           element={<Navigate to="/admin" replace />}
         />
       )}
+
+<Route
+            path="/purchase/create"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <CreatePurchasePage />
+              </PrivateMiddleware>
+            }
+          />
+
+<Route
+            path="/purchase/list"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <PurchaseListPage />
+              </PrivateMiddleware>
+            }
+          />
+
+<Route
+            path="/purchase/show/:id"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <PurchaseShowPage />
+              </PrivateMiddleware>
+            }
+          />
+
+      {!permissions?.purchasesCreate || isSuperAdmin ? (
+          <Route
+            path="/purchase/create"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <CreatePurchasePage />
+              </PrivateMiddleware>
+            }
+          />
+        ) : (
+          <Route
+            path="/purchase/create"
+            element={<Navigate to="/admin" replace />}
+          />
+        )}
+
+      {!permissions?.purchasesListing || isSuperAdmin ? (
+          <Route
+            path="/purchase/list"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <PurchaseListPage />
+              </PrivateMiddleware>
+            }
+          />
+        ) : (
+          <Route
+            path="/purchase/list"
+            element={<Navigate to="/admin" replace />}
+          />
+        )}
+
+        {!permissions?.purchasesAllow || isSuperAdmin ? (
+          <Route
+            path="/purchase/show/:id"
+            element={
+              <PrivateMiddleware isAdmin={true}>
+                <PurchaseShowPage />
+              </PrivateMiddleware>
+            }
+          />
+        ) : (
+          <Route
+            path="/purchase/show/:id"
+            element={<Navigate to="/admin" replace />}
+          />
+        )}
 
       
 

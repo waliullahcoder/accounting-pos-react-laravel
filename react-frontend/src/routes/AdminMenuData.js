@@ -15,6 +15,14 @@ export const AdminMenuData = [
       ],
     },
     {
+      title: "Purchase",
+      icon: "ShoppingBagIcon",
+      subMenu: [
+        { module_id:"prchsid01",permissionChecks:"create",title: "Purchase Create", path: "/admin/purchase/create" },
+        { module_id:"prchsid01",permissionChecks:"listing",title: "Purchase List", path: "/admin/purchase/list" },
+      ],
+    },
+    {
       title: "Products",
       icon: "ShoppingCartIcon",
       subMenu: [

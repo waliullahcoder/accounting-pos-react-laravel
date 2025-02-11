@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../../slices/auth/authSlice';
 import invoiceReducer from '../../slices/invoice/reducer';
+import purchaseReducer from '../../slices/purchase/reducer';
 import customerReducer from '../../slices/customer/reducer';
 import vendorReducer from '../../slices/vendor/reducer';
 import categoryReducer from '../../slices/category/reducer';
@@ -40,6 +41,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     invoice: invoiceReducer,
+    purchase: purchaseReducer,
     customer: customerReducer,
     vendor: vendorReducer,
     category: categoryReducer,

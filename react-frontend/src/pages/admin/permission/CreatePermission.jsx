@@ -12,6 +12,7 @@ const modules = [
   { id: "usrid01", name: "Users" },
   { id: "ctgid01", name: "Categories" },
   { id: "pdid01", name: "Products" },
+  { id: "prchsid01", name: "Purchases" },
   { id: "invid01", name: "Invoices" },
   { id: "custid01", name: "Customers" },
   { id: "vendid01", name: "Vendors" },
