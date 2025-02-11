@@ -81,8 +81,8 @@ const CreatePurchase = () => {
     const purchaseOrderDetails = products.map((product) => ({
       product_id: product.id,
       product_name: product.name,
-      order_quantity: product.quantity,
-      order_amount: product.total,
+      purchase_order_quantity: product.quantity,
+      purchase_order_amount: product.total,
     }));
 
     const payload = { purchaseOrder, purchaseOrderDetails };
@@ -101,7 +101,7 @@ const CreatePurchase = () => {
     useEffect(() => {
       if (successMessage) {
         const timeout = setTimeout(() => {
-          navigate("/purchase/list");
+          navigate("/admin/purchase/list");
         }, 2000); // Redirect after 2 seconds
         return () => clearTimeout(timeout);
       }

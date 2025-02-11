@@ -78,7 +78,19 @@ const getPurchaseOrderById = async (id) => {
   const connection = await pool.getConnection();
 
   try {
-    const purchaseOrderSql = `SELECT * FROM purchase_orders WHERE id = ?`;
+
+
+    const purchaseOrderSql = 
+    // `SELECT * FROM purchase_orders WHERE id = ?`;
+    `SELECT purchase_orders.*, 
+    vendors.first_name AS vendor_first_name, 
+    vendors.last_name AS vendor_last_name,
+    vendors.address AS vendor_address,
+    vendors.phone_number AS vendor_phone_no,
+    vendors.email AS vendor_email,
+    vendors.zip_code AS vendor_zip_code
+      FROM purchase_orders
+      INNER JOIN vendors ON purchase_orders.vendor_id = vendors.id WHERE purchase_orders.id = ?`;
     const [purchaseOrder] = await connection.query(purchaseOrderSql, [id]);
 
     if (!purchaseOrder.length) {
@@ -88,11 +100,9 @@ const getPurchaseOrderById = async (id) => {
     const purchaseOrderDetailsSql = `SELECT * FROM purchase_order_details WHERE purchase_order_id = ?`;
     const [purchaseOrderDetails] = await connection.query(purchaseOrderDetailsSql, [id]);
 
-    // Debugging logs
-    console.log("purchaseOrder Data:", purchaseOrder[0]);
-    console.log("purchaseOrder Details Data:", purchaseOrderDetails);
-
+   
     return { ...purchaseOrder[0], purchaseOrderDetails };
+
   } catch (error) {
     console.error("Error fetching purchaseOrder by ID:", error.message);
     throw new Error("Error fetching purchaseOrder by ID: " + error.message);
@@ -110,7 +120,16 @@ const listPurchaseOrders = async (page, limit) => {
   try {
     const offset = (page - 1) * limit;
 
-    const purchaseOrdersSql = `SELECT * FROM purchase_orders LIMIT ? OFFSET ?`;
+    const purchaseOrdersSql = 
+    // `SELECT * FROM purchase_orders LIMIT ? OFFSET ?`;
+    `SELECT 
+    purchase_orders.*, 
+    vendors.first_name AS vendor_first_name, 
+    vendors.last_name AS vendor_last_name
+      FROM purchase_orders
+      INNER JOIN vendors ON purchase_orders.vendor_id = vendors.id
+      ORDER BY purchase_orders.id DESC
+      LIMIT ? OFFSET ?`;
     const [purchaseOrders] = await connection.query(purchaseOrdersSql, [parseInt(limit), offset]);
 
     if (!purchaseOrders.length) {

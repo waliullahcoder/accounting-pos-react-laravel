@@ -90,8 +90,8 @@ const PurchaseShow = () => {
                       <td className="p-2">{index + 1}</td>
                       <td className="p-2 text-right">{orderd.product_id}</td>
                       <td className="p-2 text-right">{orderd.product_name}</td>
-                      <td className="p-2 text-right">{orderd.order_quantity}</td>
-                      <td className="p-2 text-right">{defaultCurrency()}{orderd.order_amount}</td>
+                      <td className="p-2 text-right">{orderd.purchase_order_quantity}</td>
+                      <td className="p-2 text-right">{defaultCurrency()}{orderd.purchase_order_amount}</td>
                     </tr>
                   ))}
                   <tr className="border-t">
