@@ -170,36 +170,11 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
         />
       )}
 
-<Route
-            path="/purchase/create"
-            element={
-              <PrivateMiddleware isAdmin={true}>
-                <CreatePurchasePage />
-              </PrivateMiddleware>
-            }
-          />
 
-<Route
-            path="/purchase/list"
-            element={
-              <PrivateMiddleware isAdmin={true}>
-                <PurchaseListPage />
-              </PrivateMiddleware>
-            }
-          />
 
-<Route
-            path="/purchase/show/:id"
-            element={
-              <PrivateMiddleware isAdmin={true}>
-                <PurchaseShowPage />
-              </PrivateMiddleware>
-            }
-          />
-
-      {!permissions?.purchasesCreate || isSuperAdmin ? (
+      {permissions?.purchasesCreate || isSuperAdmin ? (
           <Route
-            path="/purchase/create"
+            path="purchase/create"
             element={
               <PrivateMiddleware isAdmin={true}>
                 <CreatePurchasePage />
@@ -208,14 +183,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           />
         ) : (
           <Route
-            path="/purchase/create"
+            path="purchase/create"
             element={<Navigate to="/admin" replace />}
           />
         )}
 
-      {!permissions?.purchasesListing || isSuperAdmin ? (
+      {permissions?.purchasesListing || isSuperAdmin ? (
           <Route
-            path="/purchase/list"
+            path="purchase/list"
             element={
               <PrivateMiddleware isAdmin={true}>
                 <PurchaseListPage />
@@ -224,14 +199,14 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           />
         ) : (
           <Route
-            path="/purchase/list"
+            path="purchase/list"
             element={<Navigate to="/admin" replace />}
           />
         )}
 
-        {!permissions?.purchasesAllow || isSuperAdmin ? (
+        {permissions?.purchasesAllow || isSuperAdmin ? (
           <Route
-            path="/purchase/show/:id"
+            path="purchase/show/:id"
             element={
               <PrivateMiddleware isAdmin={true}>
                 <PurchaseShowPage />
@@ -240,7 +215,7 @@ console.log("WALI PROTECTED",apis.superadminemail,permissions,isSuperAdmin);
           />
         ) : (
           <Route
-            path="/purchase/show/:id"
+            path="purchase/show/:id"
             element={<Navigate to="/admin" replace />}
           />
         )}
